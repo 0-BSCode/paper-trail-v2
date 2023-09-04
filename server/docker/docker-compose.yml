@@ -1,0 +1,19 @@
+services:
+  server:
+    # name of the built Dockerfile image in Docker Desktop
+    image: paper-trail
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    environment:
+      # must be the same as exposed host port below host:container
+      - PORT=3000
+    ports:
+      - 3000:3000
+    volumes:
+      # inside the container, the /server/ directory will copy all its files into the container's /usr/src/app
+      - ../:/usr/app/src
+    command: npm run dev
+
+  debug:
+    image: busybox

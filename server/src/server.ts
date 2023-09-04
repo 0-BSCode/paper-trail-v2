@@ -1,12 +1,13 @@
-import express, {Express, Request, Response} from 'express';
+import express, { Express, Request, Response } from 'express';
+require('dotenv').config();
 
 const app: Express = express();
-const port = 3000;
+const port = process.env.PORT;
 
-app.get('/', (req: Request, res: Response)=>{
-    res.send('Hello, this is Express asd TypeScript');
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello, this is Express asd TypsScript');
 });
 
-app.listen(port, ()=> {
-console.log(`[Server]: I am running at http://localhost:${port}`);
+app.listen(port, () => {
+  console.log(`[Server]: I am running at http://localhost:${port}`);
 });
