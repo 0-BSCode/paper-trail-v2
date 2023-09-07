@@ -1,3 +1,5 @@
+node_modules
+
 # Logs
 client/logs
 client/*.log
@@ -11,6 +13,7 @@ client/node_modules
 client/dist
 client/dist-ssr
 client/*.local
+client/.eslintcache
 
 # Editor directories and files
 client/.vscode/*
@@ -25,3 +28,4 @@ client/*.sw?
 
 server/node_modules
 server/dist
+server/.eslintcache
