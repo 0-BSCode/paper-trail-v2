@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
-import viteLogo from '../../../../../../vite.svg';
+// TODO: Find a way for this to be allowed w/o having to disable eslint
+// eslint-disable-next-line import/no-absolute-path
+import viteLogo from '/vite.svg';
 import './App.css';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
