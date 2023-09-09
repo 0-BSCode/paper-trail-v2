@@ -1,12 +1,13 @@
-import express, { Express, Request, Response } from "express"
+import dotenv from "dotenv";
+dotenv.config({ path: ".env" });
+import http from "http";
+import app from "./app";
+import env from "./config/env.config";
+import { authenticateConnection } from "./config/db.config";
 
-const app: Express = express()
-const port = 3000
+const server = http.createServer(app);
 
-app.get("/", (_req: Request, res: Response) => {
-  res.send("Hello, this is Express + TypeScript")
-})
-
-app.listen(port, () => {
-  console.log(`[Server]: I am running at http://localhost:${port}`)
-})
+server.listen(env.PORT, async () => {
+  await authenticateConnection();
+  console.log(`Server listening on port ${env.PORT}...`);
+});

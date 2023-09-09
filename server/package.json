@@ -14,12 +14,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "lint-staged": "^14.0.1"
+    "lint-staged": "^14.0.1",
+    "mysql2": "^3.6.0",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.33.0",
+    "sequelize-typescript": "^2.1.5"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.14",
     "@types/express": "^4.17.17",
-    "@types/node": "^20.5.9",
+    "@types/node": "^20.6.0",
+    "@types/validator": "^13.11.1",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
     "eslint": "^8.48.0",
@@ -32,6 +40,9 @@
     "typescript": "^5.2.2"
   },
   "lint-staged": {
-    "*.ts": ["npx prettier --write", "npx eslint --cache --fix"]
+    "*.ts": [
+      "npx prettier --write",
+      "npx eslint . --cache --fix"
+    ]
   }
 }
