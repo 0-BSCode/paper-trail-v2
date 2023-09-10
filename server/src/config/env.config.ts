@@ -1,5 +1,3 @@
-console.log(process.env);
-
 if (
   process.env.PORT === undefined ||
   process.env.USER === undefined ||

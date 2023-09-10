@@ -30,7 +30,7 @@ class Document extends Model {
   @Column(DataType.STRING)
   title!: string;
 
-  @Column(DataType.JSONB)
+  @Column(DataType.STRING)
   content!: string;
 
   @ForeignKey(() => User)
