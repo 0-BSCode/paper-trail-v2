@@ -3,11 +3,9 @@ dotenv.config({ path: ".env" });
 import http from "http";
 import app from "./app";
 import env from "./config/env.config";
-import { authenticateConnection } from "./config/db.config";
 
 const server = http.createServer(app);
 
-server.listen(env.PORT, async () => {
-  await authenticateConnection();
+server.listen(env.PORT, () => {
   console.log(`Server listening on port ${env.PORT}...`);
 });

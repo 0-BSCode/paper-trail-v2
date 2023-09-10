@@ -17,20 +17,17 @@ app.use(router);
 app.use(errorHandler);
 
 // DATABASE
-db.sequelize.sync();
-// import env from './config/env.config';
-// import seedDatabase from './db';
-// if (env.NODE_ENV === 'development' || env.NODE_ENV === 'test') {
-//   db.sequelize
-//     .sync({ force: true })
-//     .then(async () => {
-//       console.log('Drop and re-sync db...');
-//     })
-//     .then(() => {
-//       seedDatabase().then(() => {
-//         console.log('Seeding database...');
-//       });
-//     });
-// }
+// db.sequelize.sync({logging: (msg) => console.log(msg)});
+import seedDatabase from "./db";
+db.sequelize
+  .sync({ force: true, logging: (msg) => console.log(msg) })
+  .then(() => {
+    console.log("Drop and re-sync db...");
+  })
+  .then(() => {
+    seedDatabase().then(() => {
+      console.log("Seeding database...");
+    });
+  });
 
 export default app;

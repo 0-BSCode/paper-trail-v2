@@ -1,5 +1,5 @@
 node_modules
-.env
+*/node_modules
 
 # Logs
 client/logs
@@ -10,7 +10,6 @@ client/yarn-error.log*
 client/pnpm-debug.log*
 client/lerna-debug.log*
 
-client/node_modules
 client/dist
 client/dist-ssr
 client/*.local
@@ -27,6 +26,9 @@ client/*.njsproj
 client/*.sln
 client/*.sw?
 
-server/node_modules
 server/dist
 server/.eslintcache
+server/.env.*
+server/.env
+server/src/db/config.json
+server/src/db/models/index.js
