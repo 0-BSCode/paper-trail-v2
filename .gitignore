@@ -30,5 +30,3 @@ server/dist
 server/.eslintcache
 server/.env.*
 server/.env
-server/src/db/config.json
-server/src/db/models/index.js

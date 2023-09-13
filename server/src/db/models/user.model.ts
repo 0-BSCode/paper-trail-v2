@@ -1,4 +1,15 @@
-import { Table, Column, Model, DataType, HasMany, BelongsToMany, Scopes } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  HasMany,
+  BelongsToMany,
+  Scopes,
+  Unique,
+  AllowNull,
+  Default
+} from "sequelize-typescript";
 import { DocumentUser } from "./document-user.model";
 import { RefreshToken } from "./refresh-token.model";
 import { Role } from "./role.model";
@@ -17,12 +28,17 @@ import { UserRole } from "./user-role.model";
 }))
 @Table({ tableName: "user", underscored: true })
 class User extends Model {
+  @Unique
+  @AllowNull(false)
   @Column(DataType.STRING)
   email!: string;
 
+  @AllowNull(false)
   @Column(DataType.STRING)
   password!: string;
 
+  @AllowNull(false)
+  @Default(0)
   @Column(DataType.BOOLEAN)
   isVerified!: boolean;
 

@@ -18,16 +18,14 @@ app.use(errorHandler);
 
 // DATABASE
 // db.sequelize.sync({logging: (msg) => console.log(msg)});
-import seedDatabase from "./db";
-db.sequelize
-  .sync({ force: true, logging: (msg) => console.log(msg) })
-  .then(() => {
-    console.log("Drop and re-sync db...");
-  })
-  .then(() => {
-    seedDatabase().then(() => {
-      console.log("Seeding database...");
-    });
-  });
+// import seedDatabase from "./db";
+db.sequelize.sync({ force: true, logging: (msg) => console.log(msg) }).then(() => {
+  console.log("DB dropped and re-synced!");
+});
+// .then(() => {
+//   seedDatabase().then(() => {
+//     console.log("DB seeded!");
+//   });
+// });
 
 export default app;
