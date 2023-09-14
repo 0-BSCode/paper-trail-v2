@@ -7,7 +7,8 @@ import {
   BelongsTo,
   HasMany,
   DefaultScope,
-  Default
+  Default,
+  AllowNull
 } from "sequelize-typescript";
 import { DocumentUser } from "./document-user.model";
 import { User } from "./user.model";
@@ -27,6 +28,8 @@ import { User } from "./user.model";
 }))
 @Table({ tableName: "document", underscored: true })
 class Document extends Model {
+  @AllowNull(false)
+  @Default("[Untitled]")
   @Column(DataType.STRING)
   title!: string;
 
@@ -44,6 +47,7 @@ class Document extends Model {
   })
   users!: Array<DocumentUser>;
 
+  @AllowNull(false)
   @Default(false)
   @Column(DataType.BOOLEAN)
   isPublic!: boolean;

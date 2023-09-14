@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import db from "./db/models";
 import router from "./routes";
 import errorHandler from "./middleware/error-handler";
 import env from "./config/env.config";
@@ -16,12 +15,12 @@ app.use(
 app.use(router);
 app.use(errorHandler);
 
+// TODO: Remove once we can set up db with migrations and seeders
 // DATABASE
-// db.sequelize.sync({logging: (msg) => console.log(msg)});
 // import seedDatabase from "./db";
-db.sequelize.sync({ force: true, logging: (msg) => console.log(msg) }).then(() => {
-  console.log("DB dropped and re-synced!");
-});
+// db.sequelize.sync({ force: true, logging: (msg) => console.log(msg) }).then(() => {
+//   console.log("DB dropped and re-synced!");
+// });
 // .then(() => {
 //   seedDatabase().then(() => {
 //     console.log("DB seeded!");
