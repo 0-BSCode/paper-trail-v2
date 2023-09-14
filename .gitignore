@@ -28,5 +28,4 @@ client/*.sw?
 
 server/dist
 server/.eslintcache
-server/.env.*
 server/.env
