@@ -3,6 +3,7 @@ import { authenticate, authorize } from "../middleware/auth";
 import RoleEnum from "../types/enums/role-enum";
 import auth from "./auth.route";
 import document from "./document.route";
+import user from "./user.route";
 
 const router = Router();
 router.get("/", authenticate, authorize([RoleEnum.SUPERADMIN]), async (req: Request, res: Response) => {
@@ -10,5 +11,6 @@ router.get("/", authenticate, authorize([RoleEnum.SUPERADMIN]), async (req: Requ
 });
 router.use("/auth", auth);
 router.use("/document", document);
+router.use("/user", user);
 
 export default router;
