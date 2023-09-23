@@ -5,7 +5,7 @@ import { Umzug, SequelizeStorage } from "umzug";
 const sequelize = new Sequelize(env.DATABASE, env.USER, env.PASSWORD, {
   host: env.DB_HOST,
   dialect: "mysql",
-  logging: true
+  logging: console.log
 });
 
 export const migrator = new Umzug({
