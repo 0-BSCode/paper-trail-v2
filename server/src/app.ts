@@ -3,6 +3,9 @@ import cors from "cors";
 import router from "./routes";
 import errorHandler from "./middleware/error-handler";
 import env from "./config/env.config";
+import { setupDb } from "./db/models";
+
+setupDb();
 
 const app = express();
 app.use(express.json());
