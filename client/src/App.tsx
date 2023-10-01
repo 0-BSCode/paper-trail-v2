@@ -1,39 +1,25 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-// TODO: Find a way for this to be allowed w/o having to disable eslint
-// eslint-disable-next-line import/no-absolute-path
-import viteLogo from '/vite.svg';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
 import './App.css';
+import { AuthProvider } from './context/AuthContext';
+import RegisterPage from './pages/register';
+import LoginPage from './pages/login';
+import DocumentCreatePage from './pages/document/create';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button
-          onClick={() => {
-            setCount((count) => count + 1);
-          }}
-        >
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/document/create" element={<ProtectedRoute element={<DocumentCreatePage />} />} />
+          <Route path="/" element={<Navigate replace to="/document/create" />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </AuthProvider>
+    </Router>
   );
 }
 

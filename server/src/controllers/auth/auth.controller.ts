@@ -3,7 +3,7 @@ import { userService } from "../../services/user.service";
 import jwt, { VerifyErrors } from "jsonwebtoken";
 import catchAsync from "../../middleware/catch-async";
 import { Request, Response } from "express";
-import { userNotFound, emailNotVerified } from "../../responses";
+import { userNotFound } from "../../responses";
 import env from "../../config/env.config";
 
 class AuthController {
@@ -21,7 +21,8 @@ class AuthController {
     const validPassword = await userService.checkPassword(user, password);
     if (!validPassword) return res.status(401).json({ errors: userNotFound });
 
-    if (!user.isVerified) return res.status(403).json({ errors: emailNotVerified });
+    // TODO: Remove email verification for now
+    // if (!user.isVerified) return res.status(403).json({ errors: emailNotVerified });
 
     const authResponse = await userService.generateAuthResponse(user);
     return res.status(200).json(authResponse);
