@@ -23,6 +23,8 @@
         "@typescript-eslint/no-unused-vars": 0,
         "no-unused-vars": "off",
         "unused-imports/no-unused-imports": "warn",
+        "@typescript-eslint/no-floating-promises": "warn",
+        "@typescript-eslint/strict-boolean-expressions": "off",
         "unused-imports/no-unused-vars": [
           "warn",
           {

@@ -11,12 +11,25 @@
     "pre-commit": "npx lint-staged"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
+    "axios": "^1.5.1",
+    "inputmask": "^5.0.8",
+    "path": "^0.12.7",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0",
+    "react-transition-group": "^4.4.5",
+    "uuid": "^9.0.1",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
+    "@types/inputmask": "^5.0.4",
+    "@types/node": "^20.7.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/react-transition-group": "^4.4.7",
+    "@types/uuid": "^9.0.4",
+    "@types/validator": "^13.11.2",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
     "@vitejs/plugin-react": "^4.0.3",

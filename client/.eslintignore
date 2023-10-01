@@ -2,3 +2,4 @@ node_modules/
 dist/
 env.d.ts
 *.config.js
+*.config.ts
