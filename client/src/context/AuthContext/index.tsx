@@ -1,6 +1,6 @@
 import { createContext, type Dispatch, type SetStateAction, useState } from 'react';
 
-interface AuthContextInterface {
+export interface AuthContextInterface {
   accessToken: string | null;
   setAccessToken: Dispatch<SetStateAction<string | null>>;
   isAuthenticated: boolean;
