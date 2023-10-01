@@ -6,7 +6,7 @@ interface AuthRouteProps {
   element: JSX.Element;
 }
 
-const AuthRoute = ({ element }: AuthRouteProps): JSX.Element => {
+const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
   const { loadingAuth, isAuthenticated, refreshAccessToken } = useAuth();
 
   useEffect(() => {
@@ -21,4 +21,4 @@ const AuthRoute = ({ element }: AuthRouteProps): JSX.Element => {
   }
 };
 
-export default AuthRoute;
+export default ProtectedRoute;

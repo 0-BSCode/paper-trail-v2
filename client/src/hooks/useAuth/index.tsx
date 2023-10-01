@@ -15,8 +15,8 @@ interface AuthHookType {
   userId: number | null;
   email: string | null;
   login: (accessToken: string, refreshToken: string) => void;
-  logout: () => void;
-  refreshAccessToken: () => void;
+  logout: () => Promise<void>;
+  refreshAccessToken: () => Promise<void>;
 }
 
 const useAuth = (): AuthHookType => {

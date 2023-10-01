@@ -1,45 +1,27 @@
-// import DocumentCreateHeader from '../../components/organisms/document-create-header';
 import useWindowSize from '../../../hooks/useWindowSize';
-// import useDocuments from '../../hooks/use-documents';
 import useAuth from '../../../hooks/useAuth';
-// import DocumentsList from '../../components/molecules/documents-list';
-// import CreateDocumentButton from '../../components/atoms/create-document-button';
+import { useNavigate } from 'react-router-dom';
 
 const DocumentCreatePage = (): JSX.Element => {
   const { heightStr } = useWindowSize();
-  const { userId, email } = useAuth();
-  //   const { documents, loading, setDocuments } = useDocuments();
-
-  //   const recentDocuments =
-  //     documents === null
-  //       ? []
-  //       : documents.filter((document) => document.userId === userId);
-  //   const sharedDocuments =
-  //     documents === null
-  //       ? []
-  //       : documents.filter((document) => document.userId !== userId);
+  const { userId, email, logout } = useAuth();
+  const navigate = useNavigate();
+  const logoutUser = async (): Promise<void> => {
+    await logout();
+    // success('Successfully logged out!');
+    navigate('/login');
+  };
 
   return (
     <div style={{ height: heightStr }}>
       Hello, {email}
-      {/* <DocumentCreateHeader />
-      <CreateDocumentButton />
-      {loading ? (
-        <Spinner size="lg" />
-      ) : (
-        <>
-          <DocumentsList
-            title="Recent Documents"
-            documents={recentDocuments}
-            setDocuments={setDocuments}
-          />
-          <DocumentsList
-            title="Shared Documents"
-            documents={sharedDocuments}
-            setDocuments={setDocuments}
-          />
-        </>
-      )} */}
+      <button
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onClick={logoutUser}
+        className="w-full text-black hover:bg-gray-100 text-sm px-6 py-1 text-left"
+      >
+        Logout
+      </button>
     </div>
   );
 };
