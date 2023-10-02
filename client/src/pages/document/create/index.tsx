@@ -1,27 +1,31 @@
+import DocumentCreateHeader from '../../../components/Documents/CreateHeader';
 import useWindowSize from '../../../hooks/useWindowSize';
+import Spinner from '../../../components/Spinner';
+import useDocuments from '../../../hooks/useDocuments';
 import useAuth from '../../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import DocumentsList from '../../../components/Documents/List';
+import CreateDocumentButton from '../../../components/Documents/CreateButton';
 
 const DocumentCreatePage = (): JSX.Element => {
   const { heightStr } = useWindowSize();
-  const { userId, email, logout } = useAuth();
-  const navigate = useNavigate();
-  const logoutUser = async (): Promise<void> => {
-    await logout();
-    // success('Successfully logged out!');
-    navigate('/login');
-  };
+  const { userId } = useAuth();
+  const { documents, loading, setDocuments } = useDocuments();
+
+  const recentDocuments = documents === null ? [] : documents.filter((document) => document.userId === userId);
+  const sharedDocuments = documents === null ? [] : documents.filter((document) => document.userId !== userId);
 
   return (
     <div style={{ height: heightStr }}>
-      Hello, {email}
-      <button
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onClick={logoutUser}
-        className="w-full text-black hover:bg-gray-100 text-sm px-6 py-1 text-left"
-      >
-        Logout
-      </button>
+      <DocumentCreateHeader />
+      <CreateDocumentButton />
+      {loading ? (
+        <Spinner size="lg" />
+      ) : (
+        <>
+          <DocumentsList title="Recent Documents" documents={recentDocuments} setDocuments={setDocuments} />
+          <DocumentsList title="Shared Documents" documents={sharedDocuments} setDocuments={setDocuments} />
+        </>
+      )}
     </div>
   );
 };
