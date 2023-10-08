@@ -10,8 +10,6 @@ export default defineConfig({
     global: 'window',
   },
   resolve: {
-    alias: {
-      '@src': path.resolve(__dirname, './src'),
-    },
+    alias: [{ find: '@src', replacement: path.resolve(__dirname, 'src') }],
   },
 });

@@ -1,9 +1,9 @@
 import axios, { type AxiosError } from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import { ToastContext } from '../../context/ToastContext';
-import DocumentService from '../../services/document-service';
-import type DocumentInterface from '../../types/interfaces/document';
-import useAuth from '../useAuth';
+import { ToastContext } from '@src/context/ToastContext';
+import DocumentService from '@src/services/document-service';
+import type DocumentInterface from '@src/types/interfaces/document';
+import useAuth from '@src/hooks/useAuth';
 
 interface DocumentHookType {
   document: DocumentInterface | null;
