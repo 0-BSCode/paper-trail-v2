@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 import './App.css';
 import { AuthProvider } from './context/AuthContext';
+import Index from './pages/index';
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
 import DocumentCreatePage from './pages/document/create';
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Navigate replace to="/document/create" />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/home" element={<Index />} />
         </Routes>
       </AuthProvider>
     </Router>
