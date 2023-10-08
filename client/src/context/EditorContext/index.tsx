@@ -11,13 +11,13 @@ import {
   useState,
 } from 'react';
 import { io } from 'socket.io-client';
-import { FONTS } from '../../components/FontSelect';
-import useAuth from '../../hooks/useAuth';
-import { BASE_URL } from '../../services/api';
-import SocketEvent from '../../types/enums/socket-events';
-import type DocumentInterface from '../../types/interfaces/document';
-import { DocumentContext } from '../DocumentContext';
-import { ToastContext } from '../ToastContext';
+import { FONTS } from '@src/components/FontSelect';
+import useAuth from '@src/hooks/useAuth';
+import { BASE_URL } from '@src/services/api';
+import SocketEvent from '@src/types/enums/socket-events';
+import type DocumentInterface from '@src/types/interfaces/document';
+import { DocumentContext } from '@src/context/DocumentContext';
+import { ToastContext } from '@src/context/ToastContext';
 
 interface EditorContextInterface {
   editorState: EditorState;
@@ -109,7 +109,7 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
   // Load document content
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-    if (documentRendered || document === null || document?.content === null) return;
+    if (documentRendered || document === null || document.content === null) return;
 
     try {
       const contentState = convertFromRaw(JSON.parse(document.content) as RawDraftContentState);
