@@ -108,10 +108,11 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
 
   // Load document content
   useEffect(() => {
-    if (documentRendered || document?.content === null) return;
+    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
+    if (documentRendered || document === null || document?.content === null) return;
 
     try {
-      const contentState = convertFromRaw(JSON.parse(document?.content ?? '') as RawDraftContentState);
+      const contentState = convertFromRaw(JSON.parse(document.content) as RawDraftContentState);
       const newEditorState = EditorState.createWithContent(contentState);
       setEditorState(newEditorState);
     } catch {
@@ -131,7 +132,6 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
     )
       return;
 
-    console.log('CONNECTING SOCKET');
     socket.current = io(BASE_URL, {
       query: { documentId: document.id, accessToken },
     }).connect();
@@ -140,7 +140,7 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
   // Disconnect socket
   useEffect(() => {
     return () => {
-      socket.current.disconnect();
+      socket?.current?.disconnect();
     };
   }, []);
 
