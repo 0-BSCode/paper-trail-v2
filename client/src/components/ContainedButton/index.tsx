@@ -5,7 +5,8 @@ interface ContainedButtonProps {
 }
 
 function ContainedButton({ className, children, onClick }: ContainedButtonProps): JSX.Element {
-  const defaultStyles = 'bg-blue-500 h-fit px-[16px] py-[8px] rounded-[2px] hover:bg-blue-700';
+  const defaultStyles =
+    'bg-blue-500 h-fit px-[16px] py-[8px] rounded-[4px] hover:bg-blue-700 focus:bg-blue-700 text-white';
   const styles = `${defaultStyles} ${className ?? ''}`;
 
   return (
