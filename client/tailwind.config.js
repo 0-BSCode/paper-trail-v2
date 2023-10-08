@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Roboto', 'Helvetica', 'Arial', 'Tahoma', 'sans-serif'],
+      },
       maxWidth: {
         container: '85rem',
         '1/2': '50%',
