@@ -1,0 +1,18 @@
+interface ContainedButtonProps {
+  className?: string;
+  children: React.ReactNode;
+  onClick: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+function ContainedButton({ className, children, onClick }: ContainedButtonProps): JSX.Element {
+  const defaultStyles = 'bg-blue-500 h-fit px-[16px] py-[8px] rounded-[2px] hover:bg-blue-700';
+  const styles = `${defaultStyles} ${className ?? ''}`;
+
+  return (
+    <button className={styles} onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
+export default ContainedButton;
