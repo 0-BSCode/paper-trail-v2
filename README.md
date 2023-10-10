@@ -10,10 +10,17 @@
 7. On a separate terminal, go into `client/` and run `npm run dev` to run the client app
 
 ## Developer Workflow
+### Working on a feature/bug
 1. Checkout to main locally and pull from main in remote repo
 2. Checkout to new feature branch using the format `[first-name-initial][last-name-initial]--[feature-description]` (e.g. `bs--fix-navigation-bug`)
 3. Once feature is implemented, push branch to remote repo (e.g. `git push --set-upstream origin bs--fix-navigation-bug`), make a PR, and request for review
 4. Once PR is approved, merge PR to `main`
+
+### Creating a migration
+1. Change into the server directory and run `npm run db-migrate -- create --name [migration-name].ts --folder src/db/migrations`
+2. Remove the boilerplate, as it doesn't play well with TS, and replace it with the boilerplate found in the previous migrations
+3. Make the changes you want to place in the db inside the `up` function and make sure the `down` function reverses these changes
+4. To apply the migration, run `npm run db-migrate -- up`. To revert it, run `npm run db-migrate -- down`
 
 ## Tooling
 
