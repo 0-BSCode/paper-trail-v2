@@ -1,7 +1,7 @@
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useContext, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { EditorContext } from '../../context/EditorContext';
+import { EditorContext } from '@src/context/EditorContext';
 
 export const FONTS = ['Inter', 'Roboto', 'Open Sans'];
 

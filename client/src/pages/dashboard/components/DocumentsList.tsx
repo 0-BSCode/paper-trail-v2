@@ -1,6 +1,6 @@
 import { type Dispatch, type SetStateAction } from 'react';
-import type DocumentInterface from '../../../types/interfaces/document';
-import DocumentCard from '../Card';
+import type DocumentInterface from '@src/types/interfaces/document';
+import DocumentCard from './DocumentCard';
 
 interface DocumentsListProps {
   title: string;

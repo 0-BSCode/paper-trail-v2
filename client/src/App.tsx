@@ -4,7 +4,7 @@ import './App.css';
 import { AuthProvider } from './context/AuthContext';
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
-import DocumentCreatePage from './pages/document/create';
+import DashboardPage from './pages/dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import { ToastProvider } from './context/ToastContext';
 import { DocumentProvider } from './context/DocumentContext';
@@ -19,7 +19,7 @@ function App() {
         <ToastProvider>
           <DocumentProvider>
             <Routes>
-              <Route path="/document/create" element={<ProtectedRoute element={<DocumentCreatePage />} />} />
+              <Route path="/document/create" element={<ProtectedRoute element={<DashboardPage />} />} />
               <Route
                 path="/document/:id"
                 element={

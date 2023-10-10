@@ -1,11 +1,11 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContext } from '../../../context/ToastContext';
-import useAuth from '../../../hooks/useAuth';
-import DocumentService from '../../../services/document-service';
-import type DocumentInterface from '../../../types/interfaces/document';
-import Spinner from '../../Spinner';
+import { ToastContext } from '@src/context/ToastContext';
+import useAuth from '@src/hooks/useAuth';
+import DocumentService from '@src/services/document-service';
+import type DocumentInterface from '@src/types/interfaces/document';
+import Spinner from '@src/components/Spinner';
 
 const CreateDocumentButton = (): JSX.Element => {
   const { error } = useContext(ToastContext);

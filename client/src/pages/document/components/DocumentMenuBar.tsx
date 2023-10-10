@@ -1,12 +1,12 @@
 import { type ChangeEvent, type FocusEvent, useContext } from 'react';
-import Logo from '../../Logo';
-import UserDropdown from '../../UserDropdown';
-import ShareDocumentModal from '../ShareModal';
-import useRandomBackground from '../../../hooks/useRandomBackground';
-import useAuth from '../../../hooks/useAuth';
-import { DocumentContext } from '../../../context/DocumentContext';
-import DocumentService from '../../../services/document-service';
-import type DocumentInterface from '../../../types/interfaces/document';
+import Logo from '@src/components/Logo';
+import UserDropdown from '@src/components/UserDropdown';
+import ShareDocumentModal from './ShareDocumentModal';
+import useRandomBackground from '@src/hooks/useRandomBackground';
+import useAuth from '@src/hooks/useAuth';
+import { DocumentContext } from '@src/context/DocumentContext';
+import DocumentService from '@src/services/document-service';
+import type DocumentInterface from '@src/types/interfaces/document';
 
 const CurrentUsers = (): JSX.Element => {
   const { backgroundColor } = useRandomBackground();

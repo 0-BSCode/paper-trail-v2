@@ -1,6 +1,6 @@
-import DocumentSearchbar from '../SearchBar';
-import Logo from '../../Logo';
-import UserDropdown from '../../UserDropdown';
+import DocumentSearchbar from './DocumentSearchBar';
+import Logo from '@src/components/Logo';
+import UserDropdown from '@src/components/UserDropdown';
 
 const DocumentCreateHeader = (): JSX.Element => {
   return (

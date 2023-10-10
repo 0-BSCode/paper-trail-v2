@@ -1,6 +1,6 @@
-import type ToastInterface from '../../../types/interfaces/toast';
+import type ToastInterface from '@src/types/interfaces/toast';
 import { type MouseEvent, useContext } from 'react';
-import { ToastContext } from '../../../context/ToastContext';
+import { ToastContext } from '@src/context/ToastContext';
 
 const TOAST_CLASSES = {
   primary: 'toast-primary',

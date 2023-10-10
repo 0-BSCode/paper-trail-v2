@@ -1,16 +1,16 @@
-import Modal from '../../Modal';
+import Modal from '@src/components/Modal';
 import { UserPlusIcon, LinkIcon } from '@heroicons/react/24/outline';
 import { useContext, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react';
-import type DocumentInterface from '../../../types/interfaces/document';
-import Spinner from '../../Spinner';
+import type DocumentInterface from '@src/types/interfaces/document';
+import Spinner from '@src/components/Spinner';
 import validator from 'validator';
-import PermissionEnum from '../../../types/enums/permission-enum';
-import SharedUsers from '../../SharedUsers';
-import { DocumentContext } from '../../../context/DocumentContext';
-import useAuth from '../../../hooks/useAuth';
-import { ToastContext } from '../../../context/ToastContext';
-import DocumentUserService from '../../../services/document-user-service';
-import type DocumentUser from '../../../types/interfaces/document-user';
+import PermissionEnum from '@src/types/enums/permission-enum';
+import SharedUsers from './SharedUsers';
+import { DocumentContext } from '@src/context/DocumentContext';
+import useAuth from '@src/hooks/useAuth';
+import { ToastContext } from '@src/context/ToastContext';
+import DocumentUserService from '@src/services/document-user-service';
+import type DocumentUser from '@src/types/interfaces/document-user';
 
 const ShareDocumentModal = (): JSX.Element => {
   const { document, saving, saveDocument, setDocument } = useContext(DocumentContext);

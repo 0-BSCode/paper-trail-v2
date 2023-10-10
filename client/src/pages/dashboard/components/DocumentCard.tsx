@@ -1,8 +1,8 @@
-import useAuth from '../../../hooks/useAuth';
-import type DocumentInterface from '../../../types/interfaces/document';
+import useAuth from '@src/hooks/useAuth';
+import type DocumentInterface from '@src/types/interfaces/document';
 import { type Dispatch, type MouseEvent, type SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DocumentMenuButton from '../MenuButton';
+import DocumentMenuButton from './DocumentMenuButton';
 
 interface DocumentCardProps {
   document: DocumentInterface;

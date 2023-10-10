@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '@src/hooks/useAuth';
 
 interface AuthRouteProps {
   element: JSX.Element;

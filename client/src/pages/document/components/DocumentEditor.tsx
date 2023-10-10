@@ -1,6 +1,7 @@
+// TODO: Migrate to Lexical (or recent RTE)
 import { Editor } from 'draft-js';
 import { useContext } from 'react';
-import { EditorContext } from '../../../context/EditorContext';
+import { EditorContext } from '@src/context/EditorContext';
 
 const DocumentEditor = (): JSX.Element => {
   const { editorState, editorRef, handleEditorChange, focusEditor } = useContext(EditorContext);

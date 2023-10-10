@@ -1,10 +1,10 @@
 import { useContext, useEffect, useRef } from 'react';
-import useWindowSize from '../../hooks/useWindowSize';
+import useWindowSize from '@src/hooks/useWindowSize';
 import { useParams } from 'react-router-dom';
-import useDocument from '../../hooks/useDocument';
-import DocumentEditor from '../../components/Documents/Editor';
-import DocumentHeader from '../../components/Documents/Header';
-import { DocumentContext } from '../../context/DocumentContext';
+import useDocument from '@src/hooks/useDocument';
+import DocumentEditor from './components/DocumentEditor';
+import DocumentHeader from './components/DocumentHeader';
+import { DocumentContext } from '@src/context/DocumentContext';
 
 const DocumentPage = (): JSX.Element => {
   const { id: documentId } = useParams();
