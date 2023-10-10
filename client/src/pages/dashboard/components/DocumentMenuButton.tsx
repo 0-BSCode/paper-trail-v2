@@ -1,9 +1,9 @@
 import { useContext, useRef, useState, type FocusEvent, type Dispatch, type SetStateAction } from 'react';
-import useAuth from '../../../hooks/useAuth';
+import useAuth from '@src/hooks/useAuth';
 import { CSSTransition } from 'react-transition-group';
-import { ToastContext } from '../../../context/ToastContext';
-import DocumentService from '../../../services/document-service';
-import type DocumentInterface from '../../../types/interfaces/document';
+import { ToastContext } from '@src/context/ToastContext';
+import DocumentService from '@src/services/document-service';
+import type DocumentInterface from '@src/types/interfaces/document';
 
 interface DocumentMenuButtonProps {
   documentId: number;

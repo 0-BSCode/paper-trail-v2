@@ -1,6 +1,6 @@
 import { type MutableRefObject } from 'react';
-import DocumentMenuBar from '../MenuBar';
-import EditorToolbar from '../EditorToolbar';
+import DocumentMenuBar from './DocumentMenuBar';
+import EditorToolbar from './EditorToolbar';
 
 interface DocumentHeaderProps {
   documentHeaderRef: MutableRefObject<null | HTMLDivElement>;

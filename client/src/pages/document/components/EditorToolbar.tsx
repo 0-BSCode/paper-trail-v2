@@ -2,8 +2,8 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { EditorState } from 'draft-js';
 import { useContext } from 'react';
 import { EditorContext } from '../../../context/EditorContext';
-import IconButton from '../../IconButton';
-import FontSelect from '../../FontSelect';
+import IconButton from '../../../components/IconButton';
+import FontSelect from '../../../components/FontSelect';
 
 const EditorToolbar = (): JSX.Element => {
   const { editorState, setEditorState } = useContext(EditorContext);

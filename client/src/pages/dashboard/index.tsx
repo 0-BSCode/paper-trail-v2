@@ -1,12 +1,12 @@
-import DocumentCreateHeader from '../../../components/Documents/CreateHeader';
-import useWindowSize from '../../../hooks/useWindowSize';
-import Spinner from '../../../components/Spinner';
-import useDocuments from '../../../hooks/useDocuments';
-import useAuth from '../../../hooks/useAuth';
-import DocumentsList from '../../../components/Documents/List';
-import CreateDocumentButton from '../../../components/Documents/CreateButton';
+import DocumentCreateHeader from './components/DocumentCreateHeader';
+import useWindowSize from '@src/hooks/useWindowSize';
+import Spinner from '@src/components/Spinner';
+import useDocuments from '@src/hooks/useDocuments';
+import useAuth from '@src/hooks/useAuth';
+import DocumentsList from './components/DocumentsList';
+import CreateDocumentButton from './components/DocumentCreateButton';
 
-const DocumentCreatePage = (): JSX.Element => {
+const DashboardPage = (): JSX.Element => {
   const { heightStr } = useWindowSize();
   const { userId } = useAuth();
   const { documents, loading, setDocuments } = useDocuments();
@@ -30,4 +30,4 @@ const DocumentCreatePage = (): JSX.Element => {
   );
 };
 
-export default DocumentCreatePage;
+export default DashboardPage;

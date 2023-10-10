@@ -1,9 +1,9 @@
 import { useContext, useRef, useState } from 'react';
-import useRandomBackground from '../../hooks/useRandomBackground';
+import useRandomBackground from '@src/hooks/useRandomBackground';
 import { CSSTransition } from 'react-transition-group';
 import { useNavigate } from 'react-router-dom';
-import { ToastContext } from '../../context/ToastContext';
-import useAuth from '../../hooks/useAuth';
+import { ToastContext } from '@src/context/ToastContext';
+import useAuth from '@src/hooks/useAuth';
 
 const UserDropdown = (): JSX.Element => {
   const { backgroundColor } = useRandomBackground();

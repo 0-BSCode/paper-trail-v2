@@ -1,11 +1,11 @@
 import { type Dispatch, type SetStateAction, useContext, useState } from 'react';
-import { DocumentContext } from '../../context/DocumentContext';
-import { ToastContext } from '../../context/ToastContext';
-import useAuth from '../../hooks/useAuth';
-import useRandomBackground from '../../hooks/useRandomBackground';
-import DocumentUserService from '../../services/document-user-service';
-import type DocumentInterface from '../../types/interfaces/document';
-import type DocumentUser from '../../types/interfaces/document-user';
+import { DocumentContext } from '@src/context/DocumentContext';
+import { ToastContext } from '@src/context/ToastContext';
+import useAuth from '@src/hooks/useAuth';
+import useRandomBackground from '@src/hooks/useRandomBackground';
+import DocumentUserService from '@src/services/document-user-service';
+import type DocumentInterface from '@src/types/interfaces/document';
+import type DocumentUser from '@src/types/interfaces/document-user';
 
 interface SharedUsersProps {
   documentUsers: DocumentUser[];
