@@ -1,5 +1,5 @@
-import WordmarkLogo from '../../../components/WordmarkLogo';
-import ContainedButton from '../../../components/ContainedButton';
+import WordmarkLogo from '@src/components/WordmarkLogo';
+import ContainedButton from '@src/components/ContainedButton';
 
 function LandingHeader(): JSX.Element {
   const handleRegisterButtonClick = (): void => {

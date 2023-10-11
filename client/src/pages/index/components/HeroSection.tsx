@@ -1,6 +1,6 @@
 import Illustration from '@src/assets/hero-illustration.png';
-import ContainedButton from '../../../components/ContainedButton';
-import OutlinedButton from '../../../components/OutlinedButton';
+import ContainedButton from '@src/components/ContainedButton';
+import OutlinedButton from '@src/components/OutlinedButton';
 
 function HeroSection(): JSX.Element {
   const handleGetStartedClick = (): void => {
