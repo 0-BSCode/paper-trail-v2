@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 import './App.css';
 import { AuthProvider } from './context/AuthContext';
+import Index from './pages/index';
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
 import DashboardPage from './pages/dashboard';
@@ -19,6 +20,7 @@ function App() {
         <ToastProvider>
           <DocumentProvider>
             <Routes>
+              <Route path="/home" element={<Index />} />
               <Route path="/document/create" element={<ProtectedRoute element={<DashboardPage />} />} />
               <Route
                 path="/document/:id"
