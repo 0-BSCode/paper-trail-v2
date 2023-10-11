@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import useWindowSize from '../../hooks/useWindowSize';
-import TextField from '../../components/TextField';
+import useWindowSize from '@src/hooks/useWindowSize';
+import TextField from '@src/components/TextField';
 import { type KeyboardEvent, useContext, useState } from 'react';
-import { ToastContext } from '../../context/ToastContext';
-import Logo from '../../components/Logo';
+import { ToastContext } from '@src/context/ToastContext';
+import Logo from '@src/components/Logo';
 import validator from 'validator';
-import Spinner from '../../components/Spinner';
+import Spinner from '@src/components/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
 import axios, { type AxiosError } from 'axios';
-import AuthService from '../../services/auth-service';
+import AuthService from '@src/services/auth-service';
 
 const RegisterPage = (): JSX.Element => {
   const { widthStr, heightStr } = useWindowSize();

@@ -5,21 +5,43 @@ import { AuthProvider } from './context/AuthContext';
 import Index from './pages/index';
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
-import DocumentCreatePage from './pages/document/create';
+import DashboardPage from './pages/dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import { ToastProvider } from './context/ToastContext';
+import { DocumentProvider } from './context/DocumentContext';
+import { EditorProvider } from './context/EditorContext';
+import DocumentPage from './pages/document';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <Routes>
-          <Route path="/document/create" element={<ProtectedRoute element={<DocumentCreatePage />} />} />
-          <Route path="/" element={<Navigate replace to="/document/create" />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/home" element={<Index />} />
-        </Routes>
+        <ToastProvider>
+          <DocumentProvider>
+            <Routes>
+              <Route path="/home" element={<Index />} />
+              <Route path="/document/create" element={<ProtectedRoute element={<DashboardPage />} />} />
+              <Route
+                path="/document/:id"
+                element={
+                  <ProtectedRoute
+                    element={
+                      <DocumentProvider>
+                        <EditorProvider>
+                          <DocumentPage />
+                        </EditorProvider>
+                      </DocumentProvider>
+                    }
+                  />
+                }
+              />
+              <Route path="/" element={<Navigate replace to="/document/create" />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
+            </Routes>
+          </DocumentProvider>
+        </ToastProvider>
       </AuthProvider>
     </Router>
   );

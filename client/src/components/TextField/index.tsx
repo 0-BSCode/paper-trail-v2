@@ -2,8 +2,8 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import { useEffect, useRef, useState } from 'react';
 import InputMask from 'inputmask';
-import type InputProps from '../../types/interfaces/input';
-import Errors from '../Errors';
+import type InputProps from '@src/types/interfaces/input';
+import Errors from '@src/components/Errors';
 
 interface TextFieldProps extends InputProps {
   value?: string | number;

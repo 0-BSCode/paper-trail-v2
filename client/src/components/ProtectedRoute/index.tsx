@@ -1,16 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '@src/hooks/useAuth';
 
 interface AuthRouteProps {
   element: JSX.Element;
 }
 
 const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
+  const isApiCalled = useRef(false);
   const { loadingAuth, isAuthenticated, refreshAccessToken } = useAuth();
 
   useEffect(() => {
-    refreshAccessToken();
+    if (!isApiCalled.current) {
+      refreshAccessToken();
+      isApiCalled.current = true;
+    }
   }, []);
 
   if (loadingAuth) {
