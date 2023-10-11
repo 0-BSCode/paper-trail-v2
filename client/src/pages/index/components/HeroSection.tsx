@@ -14,7 +14,7 @@ function HeroSection(): JSX.Element {
   return (
     <section className="grid px-24 grid-cols-2 h-[calc(100lvh-64px)]">
       <div className="relative flex flex-col justify-center gap-4 -top-16">
-        <h2 className="text-6xl font-bold leading-[4rem]">Switft Conflict Resolution Made Easy</h2>
+        <h2 className="text-6xl font-bold leading-[4rem]">Swift Conflict Resolution Made Easy</h2>
         <p className="leading-8">
           No more guesswork or frustration when it comes to resolving issues. You&lsquo;ll be able to track the status
           of your grievances in real-time, knowing exactly where your concern stands in the resolution process.
