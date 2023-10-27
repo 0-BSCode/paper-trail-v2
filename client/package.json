@@ -11,7 +11,12 @@
     "pre-commit": "npx lint-staged"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@heroicons/react": "^2.0.18",
+    "@remirror/pm": "^2.0.8",
+    "@remirror/react": "^2.0.35",
+    "@remirror/react-editors": "^1.0.38",
     "axios": "^1.5.1",
     "draft-js": "^0.11.7",
     "inputmask": "^5.0.8",
@@ -21,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
     "react-transition-group": "^4.4.5",
+    "remirror": "^2.0.36",
     "socket.io-client": "^4.7.2",
     "uuid": "^9.0.1",
     "validator": "^13.11.0"
