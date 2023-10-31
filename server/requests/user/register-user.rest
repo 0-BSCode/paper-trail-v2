@@ -6,18 +6,18 @@ POST {{baseUrl}}/
 Content-Type: application/json
 
 {
-  "email": "test@gmail.com",
-  "password1": "test12345",
-  "password2": "test12345"
+  "email": "new.student@gmail.com",
+  "password1": "new12345",
+  "password2": "new12345"
 }
 
-# Expected: status code 200 on success, otherwise:
+# Expected: status code 200 OK on successful unique membership register, otherwise:
 #
 # {
 #   "errors": [
 #     {
 #       "type": "field",
-#       "value": "test@gmail.com",
+#       "value": "newstudent@gmail.com",
 #       "msg": "User with that email already exists.",
 #       "path": "email",
 #       "location": "body"

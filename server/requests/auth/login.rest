@@ -5,15 +5,15 @@ POST {{baseUrl}}/login
 Content-Type: application/json
 
 {
-  "email": "test@gmail.com",
-  "password": "test12345"
+  "email": "christian.dejesus@usc.edu.ph",
+  "password": "christianDeJesus1"
 }
 
 # Expected:
 #
 # {
-#   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzI0NDAwLCJleHAiOjE2OTkzMjkyMDB9.b5IyVWSPfCOrflBBt3-3q6oW3uFBzsvk8Hy4tuD7Pno",
-#   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzI0NDAwLCJleHAiOjE2OTkzMjkyMDB9.iel765GSSeDYeGl3P3bpvkUZqmmzrKsIbuWzU8OAn4o"
+#   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJjaHJpc3RpYW4uZGVqZXN1c0B1c2MuZWR1LnBoIiwicm9sZXMiOlsiQ0lTQ09fQURNSU4iXSwiaWF0IjoxNjk4NzYwMTU5LCJleHAiOjE2OTkzNjQ5NTl9.e7R-SBBauvZnAJIMA0WA25brT2roLowmIclRbmfv860",
+#   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJjaHJpc3RpYW4uZGVqZXN1c0B1c2MuZWR1LnBoIiwicm9sZXMiOlsiQ0lTQ09fQURNSU4iXSwiaWF0IjoxNjk4NzYwMTU5LCJleHAiOjE2OTkzNjQ5NTl9.2BO6zXxHq6wnV4ItD90Gy_T9g6uN4qdsdxvcZ1zZVgE"
 # }
 
 ###
@@ -42,7 +42,7 @@ POST {{baseUrl}}/login
 Content-Type: application/json
 
 {
-  "email": "testt@gmail.com",
+  "email": "christian.dejesus@usc.edu.ph",
   "password": "wrongpassword123"
 }
 

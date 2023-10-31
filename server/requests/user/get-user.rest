@@ -1,22 +1,42 @@
 @baseUrl = http://localhost:3000/user
-@userId = 1
 
-GET {{baseUrl}}/{{userId}}
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzI0NDAwLCJleHAiOjE2OTkzMjkyMDB9.b5IyVWSPfCOrflBBt3-3q6oW3uFBzsvk8Hy4tuD7Pno
+###
+# @name ciscoAdminToken
+GET {{baseUrl}}/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJjaHJpc3RpYW4uZGVqZXN1c0B1c2MuZWR1LnBoIiwicm9sZXMiOlsiQ0lTQ09fQURNSU4iXSwiaWF0IjoxNjk4NzYwMTU5LCJleHAiOjE2OTkzNjQ5NTl9.e7R-SBBauvZnAJIMA0WA25brT2roLowmIclRbmfv860
 
 # Expected:
 #
 # {
-#   "id": 1,
-#   "email": "alice@gmail.com",
-#   "password": "12345",
-#   "isVerified": true,
-#   "verificationToken": null,
+#   "id": 5,
+#   "email": "normalstudent@gmail.com",
+#   "password": "$2b$10$lZWq9TZH4PJZVKscZ7SDvezJo8TEDHLZk2Va8U0G998XNt80VsNXa",
+#   "isVerified": false,
+#   "verificationToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5vcm1hbHN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjk4NzYwNTgxfQ.NiBNjAbpGp85eo43nlWFoK_29wNEk_j31zLhX1yOKfQ",
 #   "passwordResetToken": null,
-#   "createdAt": "2023-10-31T04:31:45.000Z",
-#   "updatedAt": "2023-10-31T04:31:45.000Z"
+#   "createdAt": "2023-10-31T13:56:21.000Z",
+#   "updatedAt": "2023-10-31T13:56:21.000Z"
 # }
-#
-# Otherwise:
-# - Forbidden if bearer token is wrong
-# - 400 if :id does not exist
+
+###
+# @name nonExistentUser
+GET {{baseUrl}}/6969
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJjaHJpc3RpYW4uZGVqZXN1c0B1c2MuZWR1LnBoIiwicm9sZXMiOlsiQ0lTQ09fQURNSU4iXSwiaWF0IjoxNjk4NzYwMTU5LCJleHAiOjE2OTkzNjQ5NTl9.e7R-SBBauvZnAJIMA0WA25brT2roLowmIclRbmfv860
+
+# Expected: 400 Bad Request
+
+
+###
+# @name normalMemberToken
+GET {{baseUrl}}/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5vcm1hbHN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjk4NzYwNTgxfQ.NiBNjAbpGp85eo43nlWFoK_29wNEk_j31zLhX1yOKfQ
+
+# Expected: 403 Forbidden
+
+###
+# @name ciscoMemberToken
+GET {{baseUrl}}/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNpc2NvbWVtYmVyQGdtYWlsLmNvbSIsImlhdCI6MTY5ODc2MDkzM30.AD5D86rCQnp1MpeljBWqI80v2AkuiCXEJc97i4fmAjc
+
+# Expected: 403 Forbidden
+

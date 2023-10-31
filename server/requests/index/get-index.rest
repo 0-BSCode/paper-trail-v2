@@ -1,4 +1,26 @@
 @baseUrl = http://localhost:3000
 
+#################################################################
+# NOTE: BUGGY FOR SOME REASON, LOGIN TO GET BEARER TOKENS FIRST #
+#################################################################
+
+###
+# @name ciscoAdminToken
 GET {{baseUrl}}/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzI0NDAwLCJleHAiOjE2OTkzMjkyMDB9.b5IyVWSPfCOrflBBt3-3q6oW3uFBzsvk8Hy4tuD7Pno
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJjaHJpc3RpYW4uZGVqZXN1c0B1c2MuZWR1LnBoIiwicm9sZXMiOlsiQ0lTQ09fQURNSU4iXSwiaWF0IjoxNjk4NzYzOTk0LCJleHAiOjE2OTkzNjg3OTR9.MMxDVXbcQ3k5Us9AMxijUZkDsuxO349ue4Wia4L8kzQ
+
+# Expected: 200 OK
+
+###
+# @name normalMemberToken
+GET {{baseUrl}}/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5vcm1hbHN0dWRlbnRAZ21haWwuY29tIiwiaWF0IjoxNjk4NzYwNTgxfQ.NiBNjAbpGp85eo43nlWFoK_29wNEk_j31zLhX1yOKfQ
+
+# Expected: 403 Forbidden
+
+###
+# @name ciscoMemberToken
+GET {{baseUrl}}/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNpc2NvbWVtYmVyQGdtYWlsLmNvbSIsImlhdCI6MTY5ODc2MDkzM30.AD5D86rCQnp1MpeljBWqI80v2AkuiCXEJc97i4fmAjc
+
+# Expected: 403 Forbidden because authorize([RoleEnum.CISCO_ADMIN]) middleware only allows CISCO_ADMIN

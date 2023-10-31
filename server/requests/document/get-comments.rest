@@ -1,8 +1,16 @@
 @baseUrl = http://localhost:3000/document
-@documentId = 1
+@documentId = 3
 
+###
 # @name getAllComments
 GET {{baseUrl}}/{{documentId}}/comment
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzI0NDAwLCJleHAiOjE2OTkzMjkyMDB9.b5IyVWSPfCOrflBBt3-3q6oW3uFBzsvk8Hy4tuD7Pno
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJjaHJpc3RpYW4uZGVqZXN1c0B1c2MuZWR1LnBoIiwicm9sZXMiOlsiQ0lTQ09fQURNSU4iXSwiaWF0IjoxNjk4NzYwMTU5LCJleHAiOjE2OTkzNjQ5NTl9.e7R-SBBauvZnAJIMA0WA25brT2roLowmIclRbmfv860
 
+# Expected: Comment[] or 404 if no comments exist on document.
 
+###
+# @name nonExistentDocument
+GET {{baseUrl}}/6969/comment
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJjaHJpc3RpYW4uZGVqZXN1c0B1c2MuZWR1LnBoIiwicm9sZXMiOlsiQ0lTQ09fQURNSU4iXSwiaWF0IjoxNjk4NzYwMTU5LCJleHAiOjE2OTkzNjQ5NTl9.e7R-SBBauvZnAJIMA0WA25brT2roLowmIclRbmfv860
+
+# Expected: 404 Not Found

@@ -1,33 +1,44 @@
 @baseUrl = http://localhost:3000/document
-@documentId = 1
+@documentId = 3
 
 # @name byOwner
 POST {{baseUrl}}/{{documentId}}/comment
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzI0NDAwLCJleHAiOjE2OTkzMjkyMDB9.b5IyVWSPfCOrflBBt3-3q6oW3uFBzsvk8Hy4tuD7Pno
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJub3JtYWwuc3R1ZGVudEB1c2MuZWR1LnBoIiwicm9sZXMiOlsiU1RVREVOVCJdLCJpYXQiOjE2OTg3NjMxNzUsImV4cCI6MTY5OTM2Nzk3NX0.jKrmLRPUsUKexwMpLpCXNqBDFPlTExHfEhurNBkTmdM
 
 {
-  "content": "test comment by alice@gmail.com - with EDIT permission"
+  "content": "test comment by normal.student@usc.edu.ph - STUDENT role and OWNER"
 }
 
 ###
-# @name bySuperAdmin
-# you need to give the user the SUPERADMIN role in the UserRole table first
+# @name byCiscoAdmin
+# you need to give the user the CISCO_ADMIN role in the UserRole table first
 POST {{baseUrl}}/{{documentId}}/comment
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzMwNjg3LCJleHAiOjE2OTkzMzU0ODd9.EcPrPiYKxEALqeXBbaS9jant5oNxd2K57pfdUG7crrQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJjaHJpc3RpYW4uZGVqZXN1c0B1c2MuZWR1LnBoIiwicm9sZXMiOlsiQ0lTQ09fQURNSU4iXSwiaWF0IjoxNjk4NzYwMTU5LCJleHAiOjE2OTkzNjQ5NTl9.e7R-SBBauvZnAJIMA0WA25brT2roLowmIclRbmfv860
 
 {
-  "content": "test comment by test@gmail.com - with SUPERADMIN role"
+  "content": "test comment by christian.dejesus@usc.edu.ph - with CISCO_ADMIN role"
 }
 
 ###
-# @name byNobodyRelevant
-# not a SUPERADMIN nor an EDIT permission user should give unauthorized
+# @name byCiscoMember
+# you need to give the user the CISCO_MEMBER role in the UserRole table first
 POST {{baseUrl}}/{{documentId}}/comment
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJwb2dAZ21haWwuY29tIiwicm9sZXMiOltdLCJpYXQiOjE2OTg3MzIyODUsImV4cCI6MTY5OTMzNzA4NX0.WPxQLBtsbxJePjj6a8uAcSLAU-XPEHfAPbZrnGiTtXE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJjaXNjby5tZW1iZXJAdXNjLmVkdS5waCIsInJvbGVzIjpbIkNJU0NPX01FTUJFUiJdLCJpYXQiOjE2OTg3NjMyNDQsImV4cCI6MTY5OTM2ODA0NH0.HZNPZ4txdEBQQDPg_mLMHkCpY7gl_yuD6EIKfwNJbts
 
 {
-  "content": "test comment by pog@gmail.com - with NOTHING"
+  "content": "test comment by cisco.member@usc.edu.ph - with CISCO_MEMBER role"
+}
+
+###
+# @name byNotRelevant
+# another STUDENT without any EDIT permissions
+POST {{baseUrl}}/{{documentId}}/comment
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJhbm90aGVyLnN0dWRlbnRAdXNjLmVkdS5waCIsInJvbGVzIjpbIlNUVURFTlQiXSwiaWF0IjoxNjk4NzYzMjE5LCJleHAiOjE2OTkzNjgwMTl9.GZzPVLWuYFs-Z2DLEtnRuT6QJ__1kkz9deriqnil2BI
+
+{
+  "content": "test comment by another.student@usc.edu.ph - with STUDENT ROLE AND NO EDIT"
 }
