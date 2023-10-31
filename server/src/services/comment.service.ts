@@ -3,12 +3,11 @@ import { User } from "../db/models/user.model";
 import { Role } from "../db/models/role.model";
 import { DocumentUser } from "../db/models/document-user.model";
 import { Document } from "../db/models/document.model";
-import documentService from "./document.service";
 
 class CommentService {
   public createComment = async (userId: number, documentId: number, content: string): Promise<Comment | null> => {
     // we check if the userId is associated with a document
-    const targetDocument = await documentService.findDocumentById(documentId, userId);
+    const targetDocument = await Document.findByPk(documentId);
     const commentingUser = await User.findByPk(userId, { include: [Role, DocumentUser] });
 
     if (targetDocument === null || commentingUser === null) {
@@ -16,19 +15,21 @@ class CommentService {
       return null;
     }
 
+    const notTheOwner = targetDocument.userId !== userId;
+
     const doesNotHavePermissionToEdit =
       commentingUser?.sharedDocuments.find((d) => targetDocument.id === d.documentId && d.permission === "EDIT") ===
       undefined;
 
-    const isNotAdminOrSuperAdmin =
-      commentingUser?.roles.find((r) => r.name === "ADMIN" || r.name === "SUPERADMIN") === undefined;
+    const notACiscoMember =
+      commentingUser?.roles.find((r) => r.name === "CISCO_MEMBER" || r.name === "CISCO_ADMIN") === undefined;
 
-    if (doesNotHavePermissionToEdit && isNotAdminOrSuperAdmin) {
+    if (notTheOwner && doesNotHavePermissionToEdit && notACiscoMember) {
       // no comment is created
       return null;
     }
 
-    // insert the new comment if the association exists
+    // so, commentingUser could be: an owner, has EDIT permission, or is a CISCO_MEMBER or CISCO_ADMIN
     const newComment: Comment = await Comment.create({
       userId,
       documentId,
