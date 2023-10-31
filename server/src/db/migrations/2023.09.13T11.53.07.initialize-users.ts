@@ -52,9 +52,9 @@ export const up: Migration = async ({ context: sequelize }) => {
       autoIncrement: true
     },
     name: {
-      type: DataTypes.ENUM("ADMIN", "SUPERADMIN"),
+      type: DataTypes.ENUM("STUDENT", "CISCO_MEMBER", "CISCO_ADMIN"),
       allowNull: false,
-      defaultValue: RoleEnum.ADMIN
+      defaultValue: RoleEnum.STUDENT
     }
   });
 

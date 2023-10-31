@@ -9,8 +9,14 @@
     "start": "tsc && node dist/server.js",
     "dev": "ts-node-dev src/server.ts",
     "pre-commit": "npx lint-staged",
-    "db-migrate": "node src/config/umzug/migrate",
-    "db-seed": "node src/config/umzug/seed"
+    "db:migrate": "node src/config/umzug/migrate",
+    "db:migrate-up": "node src/config/umzug/migrate up --to \"0\"",
+    "db:migrate-down": "node src/config/umzug/migrate down --to \"0\"",
+    "db:seed": "node src/config/umzug/seed",
+    "db:seed-up": "node src/config/umzug/seed up --to \"0\"",
+    "db:seed-down": "node src/config/umzug/seed down --to \"0\"",
+    "db:up": "npm run db:migrate-up && npm run db:seed-up ",
+    "db:down": "npm run db:seed-down && npm run db:migrate-down"
   },
   "keywords": [],
   "author": "",
