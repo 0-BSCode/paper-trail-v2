@@ -5,7 +5,7 @@
 2. Run `npm install` in the root directory, the client directory, and the server directory
 3. Create a db on your local machine (this project uses XAMPP)
 4. Change the `.env.example` file to `.env` and fill in the required values for the environment variables
-5. Go into `server/` and run `npm run db-migrate -- up --step` to run all the migrations
+5. Go into `server/` and run `npm run db:up` to run all the migrations and seeders
 6. Run `npm run dev` to run the server
 7. On a separate terminal, go into `client/` and run `npm run dev` to run the client app
 
@@ -17,10 +17,16 @@
 4. Once PR is approved, merge PR to `main`
 
 ### Creating a migration
-1. Change into the server directory and run `npm run db-migrate -- create --name [migration-name].ts --folder src/db/migrations`
+1. Change into the server directory and run `npm run db:migrate -- create --name [migration-name].ts`
 2. Remove the boilerplate, as it doesn't play well with TS, and replace it with the boilerplate found in the previous migrations
 3. Make the changes you want to place in the db inside the `up` function and make sure the `down` function reverses these changes
-4. To apply the migration, run `npm run db-migrate -- up`. To revert it, run `npm run db-migrate -- down`
+4. To apply the migration, run `npm run db:migrate -- up`. To revert it, run `npm run db:migrate -- down`
+
+### Creating a seeder
+1. Change into the server directory and run `npm run db:seed -- create --name [seeder-name].ts`
+2. Remove the boilerplate, as it doesn't play well with TS, and replace it with the boilerplate found in the previous seeders
+3. Specify the data that you want placed in the db inside the `up` function and make sure the `down` function reverses these changes
+4. To apply the seeder, run `npm run db:seed -- up`. To revert it, run `npm run db:seed -- down`
 
 ## Tooling
 

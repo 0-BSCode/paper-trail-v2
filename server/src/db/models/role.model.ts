@@ -5,7 +5,7 @@ import { UserRole } from "./user-role.model";
 
 @Table({ tableName: "role", underscored: true, timestamps: false })
 class Role extends Model {
-  @Column(DataType.ENUM("ADMIN", "SUPERADMIN"))
+  @Column(DataType.ENUM("STUDENT", "CISCO_MEMBER", "CISCO_ADMIN"))
   name!: RoleEnum;
 
   @BelongsToMany(() => User, {
