@@ -1,0 +1,33 @@
+@baseUrl = http://localhost:3000/document
+@documentId = 1
+
+# @name byOwner
+POST {{baseUrl}}/{{documentId}}/comment
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzI0NDAwLCJleHAiOjE2OTkzMjkyMDB9.b5IyVWSPfCOrflBBt3-3q6oW3uFBzsvk8Hy4tuD7Pno
+
+{
+  "content": "test comment by alice@gmail.com - with EDIT permission"
+}
+
+###
+# @name bySuperAdmin
+# you need to give the user the SUPERADMIN role in the UserRole table first
+POST {{baseUrl}}/{{documentId}}/comment
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzMwNjg3LCJleHAiOjE2OTkzMzU0ODd9.EcPrPiYKxEALqeXBbaS9jant5oNxd2K57pfdUG7crrQ
+
+{
+  "content": "test comment by test@gmail.com - with SUPERADMIN role"
+}
+
+###
+# @name byNobodyRelevant
+# not a SUPERADMIN nor an EDIT permission user should give unauthorized
+POST {{baseUrl}}/{{documentId}}/comment
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJwb2dAZ21haWwuY29tIiwicm9sZXMiOltdLCJpYXQiOjE2OTg3MzIyODUsImV4cCI6MTY5OTMzNzA4NX0.WPxQLBtsbxJePjj6a8uAcSLAU-XPEHfAPbZrnGiTtXE
+
+{
+  "content": "test comment by pog@gmail.com - with NOTHING"
+}

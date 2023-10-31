@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:3000/user
+
+###
+# @name registerUser
+POST {{baseUrl}}/
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password1": "test12345",
+  "password2": "test12345"
+}
+
+# Expected: status code 200 on success, otherwise:
+#
+# {
+#   "errors": [
+#     {
+#       "type": "field",
+#       "value": "test@gmail.com",
+#       "msg": "User with that email already exists.",
+#       "path": "email",
+#       "location": "body"
+#     }
+#   ]
+# }

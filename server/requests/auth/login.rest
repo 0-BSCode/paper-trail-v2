@@ -1,0 +1,57 @@
+@baseUrl = http://localhost:3000/auth
+
+# @name successLogin
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "test12345"
+}
+
+# Expected:
+#
+# {
+#   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzI0NDAwLCJleHAiOjE2OTkzMjkyMDB9.b5IyVWSPfCOrflBBt3-3q6oW3uFBzsvk8Hy4tuD7Pno",
+#   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzI0NDAwLCJleHAiOjE2OTkzMjkyMDB9.iel765GSSeDYeGl3P3bpvkUZqmmzrKsIbuWzU8OAn4o"
+# }
+
+###
+# @name nonExistentEmail
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "i-dont-exist@gmail.com",
+  "password": "test12345"
+}
+
+# Expected:
+#
+# {
+#   "errors": [
+#     {
+#       "msg": "Your email or password is incorrect"
+#     }
+#   ]
+# }
+
+###
+# @name wrongPassword
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "testt@gmail.com",
+  "password": "wrongpassword123"
+}
+
+# Expected:
+#
+# {
+#   "errors": [
+#     {
+#       "msg": "Your email or password is incorrect"
+#     }
+#   ]
+# }

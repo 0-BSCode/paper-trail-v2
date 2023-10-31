@@ -1,0 +1,22 @@
+@baseUrl = http://localhost:3000/user
+@userId = 1
+
+GET {{baseUrl}}/{{userId}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGVzIjpbXSwiaWF0IjoxNjk4NzI0NDAwLCJleHAiOjE2OTkzMjkyMDB9.b5IyVWSPfCOrflBBt3-3q6oW3uFBzsvk8Hy4tuD7Pno
+
+# Expected:
+#
+# {
+#   "id": 1,
+#   "email": "alice@gmail.com",
+#   "password": "12345",
+#   "isVerified": true,
+#   "verificationToken": null,
+#   "passwordResetToken": null,
+#   "createdAt": "2023-10-31T04:31:45.000Z",
+#   "updatedAt": "2023-10-31T04:31:45.000Z"
+# }
+#
+# Otherwise:
+# - Forbidden if bearer token is wrong
+# - 400 if :id does not exist
