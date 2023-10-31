@@ -4,10 +4,10 @@ const seedUsers = [
   {
     id: 1,
     email: "bryan.sanchez@usc.edu.ph",
-    password: "$2b$10$i3KaIbiHdt.6Ejv9kMJlh.oAS9gBnWXdQmmAZp7Z9JoKb8nNy76lG",
+    password: "$2b$10$URq.WnApWY.iNnZMQa4jcOlC/hjnZR4wv.1E1sN2wYI088XVnx.O2",
     is_verified: true,
     verification_token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJyeWFuLnNhbmNoZXpAdXNjLmVkdS5waCIsImlhdCI6MTY5ODc1MTYxNX0.4fVR22Cw28veJrklgqmWossdM4Z8kXyLHYjhJoO5gOw",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJyeWFuLnNhbmNoZXpAdXNjLmVkdS5waCIsImlhdCI6MTY5ODc1NTI5MH0.IGwviF7-2Ap8cwcQRJLS13OlwC2XXezlnjYPhpYNiHk",
     created_at: new Date(),
     updated_at: new Date()
   },
