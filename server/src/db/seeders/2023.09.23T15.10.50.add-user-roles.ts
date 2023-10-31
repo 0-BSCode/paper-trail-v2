@@ -11,7 +11,10 @@ const seedUserRoles = [
   { user_id: 1, role_id: 3, created_at: new Date(), updated_at: new Date() },
   { user_id: 2, role_id: 3, created_at: new Date(), updated_at: new Date() },
   { user_id: 3, role_id: 3, created_at: new Date(), updated_at: new Date() },
-  { user_id: 4, role_id: 3, created_at: new Date(), updated_at: new Date() }
+  { user_id: 4, role_id: 3, created_at: new Date(), updated_at: new Date() },
+  { user_id: 5, role_id: 1, created_at: new Date(), updated_at: new Date() },
+  { user_id: 6, role_id: 1, created_at: new Date(), updated_at: new Date() },
+  { user_id: 7, role_id: 2, created_at: new Date(), updated_at: new Date() }
 ];
 
 export const up: Seeder = async ({ context: sequelize }) => {

@@ -18,12 +18,29 @@ const seedDocuments = [
     content: "Dummy Content",
     created_at: new Date(),
     updated_at: new Date()
+  },
+  {
+    id: 3,
+    title: "Owned by a normal student",
+    user_id: 5,
+    content: "Dummy Content",
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: 4,
+    title: "Owned by a CISCO member",
+    user_id: 6,
+    content: "Dummy Content",
+    created_at: new Date(),
+    updated_at: new Date()
   }
 ];
 
 const seedDocumentUsers = [
   { permission: PermissionEnum.EDIT, user_id: 1, document_id: 2, created_at: new Date(), updated_at: new Date() },
-  { permission: PermissionEnum.VIEW, user_id: 2, document_id: 1, created_at: new Date(), updated_at: new Date() }
+  { permission: PermissionEnum.VIEW, user_id: 2, document_id: 1, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 5, document_id: 4, created_at: new Date(), updated_at: new Date() }
 ];
 
 export const up: Seeder = async ({ context: sequelize }) => {
