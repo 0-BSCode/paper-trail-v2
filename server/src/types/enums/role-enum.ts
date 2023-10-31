@@ -1,6 +1,7 @@
 enum RoleEnum {
-  ADMIN = "ADMIN",
-  SUPERADMIN = "SUPERADMIN"
+  STUDENT = "STUDENT",
+  CISCO_MEMBER = "CISCO_MEMBER",
+  CISCO_ADMIN = "CISCO_ADMIN"
 }
 
 export default RoleEnum;

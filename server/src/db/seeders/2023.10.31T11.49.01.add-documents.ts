@@ -1,6 +1,7 @@
 import { Seeder } from "../../config/db.config";
 import PermissionEnum from "../../types/enums/permission-enum";
 
+// TODO: Refactor to include proper documents
 const seedDocuments = [
   {
     id: 1,
@@ -32,10 +33,8 @@ export const up: Seeder = async ({ context: sequelize }) => {
 
 export const down: Seeder = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().bulkDelete("document", { id: seedDocuments.map((u) => u.id) });
-  await sequelize
-    .getQueryInterface()
-    .bulkDelete("document_user", {
-      document_id: seedDocumentUsers.map((d) => d.document_id),
-      user_id: seedDocumentUsers.map((u) => u.user_id)
-    });
+  await sequelize.getQueryInterface().bulkDelete("document_user", {
+    document_id: seedDocumentUsers.map((d) => d.document_id),
+    user_id: seedDocumentUsers.map((u) => u.user_id)
+  });
 };

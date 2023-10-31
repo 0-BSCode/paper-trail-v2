@@ -8,7 +8,6 @@ const sequelize = new Sequelize(env.DATABASE, env.USER, env.PASSWORD, {
   logging: console.log
 });
 
-// TODO: Specify folder so there's no need for --folder flag
 export const migrator = new Umzug({
   migrations: {
     glob: ["../db/migrations/*.ts", { cwd: __dirname }]

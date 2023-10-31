@@ -6,7 +6,8 @@ import document from "./document.route";
 import user from "./user.route";
 
 const router = Router();
-router.get("/", authenticate, authorize([RoleEnum.SUPERADMIN]), async (req: Request, res: Response) => {
+// TODO: Refactor this to appropriate role
+router.get("/", authenticate, authorize([RoleEnum.CISCO_ADMIN]), async (req: Request, res: Response) => {
   return res.sendStatus(200);
 });
 router.use("/auth", auth);
