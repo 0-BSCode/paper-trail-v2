@@ -12,6 +12,7 @@ import {
 } from "sequelize-typescript";
 import { DocumentUser } from "./document-user.model";
 import { User } from "./user.model";
+import { Comment } from "./comment.model";
 
 @DefaultScope(() => ({
   include: [
@@ -46,6 +47,11 @@ class Document extends Model {
     onDelete: "CASCADE"
   })
   users!: Array<DocumentUser>;
+
+  @HasMany(() => Comment, {
+    onDelete: "CASCADE"
+  })
+  comments!: Array<Comment>;
 
   @AllowNull(false)
   @Default(false)
