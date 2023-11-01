@@ -18,7 +18,7 @@ class CommentController {
       return res.sendStatus(401);
     }
 
-    return res.json(newComment);
+    return res.status(201).json(newComment);
   });
 
   public getDocumentComments = catchAsync(async (req: Request, res: Response) => {
