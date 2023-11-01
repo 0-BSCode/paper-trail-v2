@@ -5,7 +5,7 @@ import RichTextEditor from '@src/components/RichTextEditor';
 import ControlledRichTextEditor from '@src/components/ControlledRichTextEditor';
 
 const DocumentEditorV2 = (): JSX.Element => {
-  const { handleEditorChange, editorState } = useContext(EditorContextV2);
+  const { handleEditorChange, editorState, editorRef } = useContext(EditorContextV2);
 
   return (
     <div
@@ -13,7 +13,7 @@ const DocumentEditorV2 = (): JSX.Element => {
       className="bg-white shadow-md flex-shrink-0 cursor-text p-12"
       // onClick={focusEditor}
     >
-      <ControlledRichTextEditor />
+      <ControlledRichTextEditor editorRef={editorRef} handleEditorChange={handleEditorChange} />
       <RichTextEditor onChange={handleEditorChange} initialContent={editorState} />
       {/* <Editor ref={editorRef} editorState={editorState} onChange={handleEditorChange} /> */}
     </div>

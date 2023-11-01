@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { type Editor } from 'draft-js';
 import {
   createContext,
   type Dispatch,
@@ -19,6 +18,7 @@ import type DocumentInterface from '@src/types/interfaces/document';
 import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
 import type { RemirrorJSON } from 'remirror';
+import { type EditorRef } from '@src/types/interfaces/editor-ref';
 
 interface EditorContextInterface {
   editorState: RemirrorJSON;
@@ -26,9 +26,8 @@ interface EditorContextInterface {
   socket: null | MutableRefObject<any>;
   documentRendered: boolean;
   setDocumentRendered: Dispatch<SetStateAction<boolean>>;
-  editorRef: null | MutableRefObject<null | Editor>;
+  editorRef: null | MutableRefObject<null | EditorRef>;
   handleEditorChange: (content: RemirrorJSON) => void;
-  focusEditor: () => void;
   currentFont: string;
   setCurrentFont: Dispatch<SetStateAction<string>>;
 }
@@ -52,7 +51,6 @@ const defaultValues = {
   setDocumentRendered: () => {},
   editorRef: null,
   handleEditorChange: () => {},
-  focusEditor: () => {},
   currentFont: FONTS[0],
   setCurrentFont: () => {},
 };
@@ -70,24 +68,19 @@ export const EditorProviderV2 = ({ children }: EditorProviderInterface): JSX.Ele
   const [editorState, setEditorState] = useState(defaultValues.editorState);
   const socket = useRef<any>(defaultValues.socket);
   const [documentRendered, setDocumentRendered] = useState(defaultValues.documentRendered);
-  const editorRef = useRef<null | Editor>(defaultValues.editorRef);
+  const editorRef = useRef<null | EditorRef>(defaultValues.editorRef);
   const [currentFont, setCurrentFont] = useState(defaultValues.currentFont);
 
   const { document, setCurrentUsers, setSaving, setDocument, saveDocument } = useContext(DocumentContext);
   const { error } = useContext(ToastContext);
   const { accessToken } = useAuth();
 
-  const focusEditor = (): void => {
-    if (editorRef?.current === null) return;
-
-    editorRef.current.focus();
-  };
-
   // Send changes
   const handleEditorChange = (content: RemirrorJSON): void => {
+    if (JSON.stringify(content) === JSON.stringify(editorState)) return;
     setEditorState(content);
 
-    if (socket === null) return;
+    if (socket === null || socket.current === null) return;
 
     socket.current.emit(SocketEvent.SEND_CHANGES, content);
 
@@ -160,8 +153,6 @@ export const EditorProviderV2 = ({ children }: EditorProviderInterface): JSX.Ele
     if (socket.current === null) return;
 
     const handler = (newEditorState: RemirrorJSON): void => {
-      console.log('RECEIVING CHANGES');
-      console.log(newEditorState);
       setEditorState(newEditorState);
     };
 
@@ -187,6 +178,13 @@ export const EditorProviderV2 = ({ children }: EditorProviderInterface): JSX.Ele
     };
   }, [socket.current]);
 
+  // Update editor content on state change
+  useEffect(() => {
+    if (editorRef?.current) {
+      editorRef.current.setContent(editorState);
+    }
+  }, [editorState]);
+
   return (
     <EditorContextV2.Provider
       value={{
@@ -198,7 +196,6 @@ export const EditorProviderV2 = ({ children }: EditorProviderInterface): JSX.Ele
         setEditorState,
         setDocumentRendered,
         handleEditorChange,
-        focusEditor,
         setCurrentFont,
       }}
     >

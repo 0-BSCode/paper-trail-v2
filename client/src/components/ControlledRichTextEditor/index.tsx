@@ -1,33 +1,68 @@
-import 'remirror/styles/all.css';
+/* eslint-disable react/display-name */
+import React, { forwardRef, type Ref, useImperativeHandle, type MutableRefObject } from 'react';
+import { Remirror, useRemirror, useRemirrorContext } from '@remirror/react';
+import { type RemirrorJSON } from 'remirror';
+import { type EditorRef } from '@src/types/interfaces/editor-ref';
 
-import React from 'react';
-import { Remirror } from '@remirror/react';
-import type { EditorState, Extension, RemirrorEventListenerProps, RemirrorManager } from 'remirror';
-
-const remirrorJsonFromStorage = {
+const DOC: RemirrorJSON = {
   type: 'doc',
   content: [
     {
       type: 'paragraph',
-      attrs: { dir: null, ignoreBidiAutoUpdate: null },
-      content: [{ type: 'text', text: 'test' }],
+      content: [
+        {
+          type: 'text',
+          text: 'New content',
+        },
+      ],
     },
   ],
 };
 
+const ImperativeHandle = forwardRef((_: unknown, ref: Ref<EditorRef>) => {
+  const { setContent, chain } = useRemirrorContext({
+    autoUpdate: true,
+  });
+
+  // useEffect(() => {
+  //   chain.focus().run()
+
+  // }, [])
+
+  // Expose content handling to outside
+  useImperativeHandle(ref, () => ({ setContent }));
+
+  return <></>;
+});
+
 interface Props {
-  manager: RemirrorManager<Extension>;
-  state: Readonly<EditorState>;
-  setState: (state: Readonly<EditorState>) => void;
-  handleEditorChange: (params: RemirrorEventListenerProps<Extension>) => void;
+  editorRef: null | MutableRefObject<null | EditorRef>;
+  handleEditorChange: (content: RemirrorJSON) => void;
 }
 
-const ControlledRichTextEditor: React.FC<Props> = ({ manager, state, setState, handleEditorChange }: Props) => {
+const ControlledRichTextEditor = ({ editorRef, handleEditorChange }: Props): JSX.Element => {
+  const { manager, state } = useRemirror({
+    extensions: () => [],
+    content: '<p>[Replace] button is placed outside the editor (see code)</p>',
+    stringHandler: 'html',
+  });
+
   return (
-    <div className="remirror-theme">
-      {/* the className is used to define css variables necessary for the editor */}
-      <Remirror manager={manager} initialContent={state} state={state} onChange={handleEditorChange} />
-    </div>
+    <>
+      {/* <ThemeProvider> */}
+      <Remirror
+        manager={manager}
+        initialContent={state}
+        autoRender="end"
+        onChange={(params) => {
+          const newContent: RemirrorJSON = params.state.doc.toJSON();
+          handleEditorChange(newContent);
+        }}
+      >
+        <ImperativeHandle ref={editorRef} />
+      </Remirror>
+      {/* </ThemeProvider> */}
+    </>
   );
 };
 
