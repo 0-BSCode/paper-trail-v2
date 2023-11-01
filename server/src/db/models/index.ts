@@ -5,7 +5,8 @@ import { Role } from "./role.model";
 import { UserRole } from "./user-role.model";
 import { Document } from "./document.model";
 import { DocumentUser } from "./document-user.model";
+import { Comment } from "./comment.model";
 
 export const setupDb = (): void => {
-  sequelize.addModels([User, RefreshToken, Role, UserRole, Document, DocumentUser]);
+  sequelize.addModels([User, RefreshToken, Role, UserRole, Document, DocumentUser, Comment]);
 };
