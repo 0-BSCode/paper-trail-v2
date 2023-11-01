@@ -3,33 +3,35 @@ import { User } from "../db/models/user.model";
 import { Role } from "../db/models/role.model";
 import { DocumentUser } from "../db/models/document-user.model";
 import { Document } from "../db/models/document.model";
+import RoleEnum from "../types/enums/role-enum";
 
 class CommentService {
   public createComment = async (userId: number, documentId: number, content: string): Promise<Comment | null> => {
-    // we check if the userId is associated with a document
+    // We check if the userId is associated with a document
     const targetDocument = await Document.findByPk(documentId);
     const commentingUser = await User.findByPk(userId, { include: [Role, DocumentUser] });
 
     if (targetDocument === null || commentingUser === null) {
-      // no comment is created
+      // No comment is created
       return null;
     }
 
-    const notTheOwner = targetDocument.userId !== userId;
+    const isOwner = targetDocument.userId === userId;
 
-    const doesNotHavePermissionToEdit =
-      commentingUser?.sharedDocuments.find((d) => targetDocument.id === d.documentId && d.permission === "EDIT") ===
-      undefined;
+    const isPermittedToEdit = commentingUser.sharedDocuments.some(
+      (d) => targetDocument.id === d.documentId && d.permission === "EDIT"
+    );
 
-    const notACiscoMember =
-      commentingUser?.roles.find((r) => r.name === "CISCO_MEMBER" || r.name === "CISCO_ADMIN") === undefined;
+    const isCisco = commentingUser.roles.some(
+      (r) => r.name === RoleEnum.CISCO_MEMBER || r.name === RoleEnum.CISCO_ADMIN
+    );
 
-    if (notTheOwner && doesNotHavePermissionToEdit && notACiscoMember) {
-      // no comment is created
+    if (!isOwner && !isPermittedToEdit && !isCisco) {
+      // No comment is created
       return null;
     }
 
-    // so, commentingUser could be: an owner, has EDIT permission, or is a CISCO_MEMBER or CISCO_ADMIN
+    // So, commentingUser could be: an owner, has EDIT permission, or is a CISCO_MEMBER or CISCO_ADMIN
     const newComment: Comment = await Comment.create({
       userId,
       documentId,
@@ -43,7 +45,7 @@ class CommentService {
     const document = await Document.findByPk(documentId, { include: [Comment] });
 
     if (document === null || document.comments.length === 0) {
-      // document does not exist or it does not have any comments
+      // Document does not exist or it does not have any comments
       return null;
     }
 
