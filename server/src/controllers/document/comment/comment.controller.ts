@@ -14,7 +14,7 @@ class CommentController {
     const newComment = await commentService.createComment(parseInt(userId), parseInt(documentId), content);
 
     if (newComment === null) {
-      // creating a new comment failed
+      // Creating a new comment failed
       return res.sendStatus(401);
     }
 
@@ -27,7 +27,7 @@ class CommentController {
     const comments = await commentService.getComments(parseInt(documentId));
 
     if (comments === null) {
-      // no comments exist yet or the document does not exist
+      // The document does not exist
       return res.sendStatus(404);
     }
 

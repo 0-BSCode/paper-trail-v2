@@ -41,12 +41,15 @@ class CommentService {
     return newComment;
   };
 
-  public getComments = async (documentId: number): Promise<Comment[] | null> => {
+  public getComments = async (documentId: number): Promise<Comment[] | { error: string } | null> => {
     const document = await Document.findByPk(documentId, { include: [Comment] });
 
-    if (document === null || document.comments.length === 0) {
-      // Document does not exist or it does not have any comments
+    if (!document) {
       return null;
+    }
+
+    if (document.comments.length === 0) {
+      return [];
     }
 
     return document.comments;
