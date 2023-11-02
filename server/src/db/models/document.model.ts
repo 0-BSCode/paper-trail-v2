@@ -56,7 +56,7 @@ class Document extends Model {
 
   @AllowNull(false)
   @Column(DataType.ENUM("DRAFT", "REVIEW_REQUESTED", "REVIEW", "CHANGES_REQUESTED", "RAISED", "RESOLVED"))
-  name!: StatusEnum;
+  status!: StatusEnum;
 
   @AllowNull(false)
   @Default(false)
