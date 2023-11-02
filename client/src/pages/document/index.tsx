@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import useDocument from '@src/hooks/useDocument';
 import DocumentHeader from './components/DocumentHeader';
 import { DocumentContext } from '@src/context/DocumentContext';
-import DocumentEditorV2 from './components/DocumentEditorV2';
+import DocumentEditor from './components/DocumentEditor';
 
 const DocumentPage = (): JSX.Element => {
   const { id: documentId } = useParams();
@@ -35,8 +35,7 @@ const DocumentPage = (): JSX.Element => {
               style={{ width: widthStr }}
               className="h-full w-full overflow-auto space-y-4 flex flex-col items-center p-4"
             >
-              {/* <DocumentEditor /> */}
-              <DocumentEditorV2 />
+              <DocumentEditor />
             </div>
           </div>
         </>

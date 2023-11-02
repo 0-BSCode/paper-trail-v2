@@ -2,7 +2,7 @@
 import type { RemirrorJSON } from 'remirror';
 import { useRemirrorContext, OnChangeJSON } from '@remirror/react';
 import { WysiwygEditor } from '@remirror/react-editors/wysiwyg';
-import React, { forwardRef, type Ref, useImperativeHandle, type MutableRefObject } from 'react';
+import React, { forwardRef, type Ref, useImperativeHandle, type MutableRefObject, useEffect } from 'react';
 import type { EditorRef } from '@src/types/interfaces/editor-ref';
 
 const ImperativeHandle = forwardRef((_: unknown, ref: Ref<EditorRef>) => {
@@ -20,6 +20,12 @@ interface Props {
 }
 
 const RichTextEditor: React.FC<Props> = ({ onChange, editorRef }: Props) => {
+  useEffect(() => {
+    setTimeout(() => {
+      return null;
+    });
+  }, []);
+
   return (
     <div>
       <WysiwygEditor placeholder="Enter text..." autoFocus>

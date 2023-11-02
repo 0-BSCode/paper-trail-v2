@@ -10,7 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { ToastProvider } from './context/ToastContext';
 import { DocumentProvider } from './context/DocumentContext';
 import DocumentPage from './pages/document';
-import { EditorProviderV2 } from './context/EditorContextV2';
+import { EditorProvider } from './context/EditorContext';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function App() {
@@ -28,11 +28,9 @@ function App() {
                   <ProtectedRoute
                     element={
                       <DocumentProvider>
-                        {/* <EditorProvider> */}
-                        <EditorProviderV2>
+                        <EditorProvider>
                           <DocumentPage />
-                        </EditorProviderV2>
-                        {/* </EditorProvider> */}
+                        </EditorProvider>
                       </DocumentProvider>
                     }
                   />
