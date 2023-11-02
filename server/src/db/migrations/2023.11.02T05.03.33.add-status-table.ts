@@ -6,6 +6,12 @@ export const up: Migration = async ({ context: sequelize }) => {
   const queryInterface = sequelize.getQueryInterface();
 
   await queryInterface.createTable("status", {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     name: {
       type: DataTypes.ENUM("DRAFT", "REVIEW_REQUESTED", "REVIEW", "CHANGES_REQUESTED", "RAISED", "RESOLVED"),
       allowNull: false,
@@ -14,6 +20,12 @@ export const up: Migration = async ({ context: sequelize }) => {
     description: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    document_id: {
+      type: DataTypes.INTEGER,
+      references: { model: "document", key: "id" },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE"
     }
   });
 
