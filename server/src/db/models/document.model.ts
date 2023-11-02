@@ -8,7 +8,8 @@ import {
   HasMany,
   DefaultScope,
   Default,
-  AllowNull
+  AllowNull,
+  HasOne
 } from "sequelize-typescript";
 import { DocumentUser } from "./document-user.model";
 import { User } from "./user.model";
@@ -41,8 +42,8 @@ class Document extends Model {
   @ForeignKey(() => User)
   userId!: number;
 
-  @ForeignKey(() => Status)
-  name!: string;
+  @HasOne(() => Status)
+  status!: Status;
 
   @BelongsTo(() => User)
   user!: User;
