@@ -13,6 +13,7 @@ import {
 import { DocumentUser } from "./document-user.model";
 import { User } from "./user.model";
 import { Comment } from "./comment.model";
+import { Status } from "./status.model";
 
 @DefaultScope(() => ({
   include: [
@@ -39,6 +40,9 @@ class Document extends Model {
 
   @ForeignKey(() => User)
   userId!: number;
+
+  @ForeignKey(() => Status)
+  name!: string;
 
   @BelongsTo(() => User)
   user!: User;
