@@ -78,6 +78,7 @@ export const EditorProviderV2 = ({ children }: EditorProviderInterface): JSX.Ele
   // Send changes
   const handleEditorChange = (content: RemirrorJSON): void => {
     if (JSON.stringify(content) === JSON.stringify(editorState)) return;
+
     setEditorState(content);
 
     if (socket === null || socket.current === null) return;
@@ -119,6 +120,9 @@ export const EditorProviderV2 = ({ children }: EditorProviderInterface): JSX.Ele
     try {
       const newEditorState = JSON.parse(document.content) as RemirrorJSON;
       setEditorState(newEditorState);
+      if (editorRef?.current) {
+        editorRef.current.setContent(newEditorState);
+      }
     } catch {
       error('Error when loading document.');
     } finally {
@@ -154,6 +158,9 @@ export const EditorProviderV2 = ({ children }: EditorProviderInterface): JSX.Ele
 
     const handler = (newEditorState: RemirrorJSON): void => {
       setEditorState(newEditorState);
+      if (editorRef?.current) {
+        editorRef.current.setContent(newEditorState);
+      }
     };
 
     socket.current.on(SocketEvent.RECEIVE_CHANGES, handler);
@@ -177,13 +184,6 @@ export const EditorProviderV2 = ({ children }: EditorProviderInterface): JSX.Ele
       socket.current.off(SocketEvent.CURRENT_USERS_UPDATE, handler);
     };
   }, [socket.current]);
-
-  // Update editor content on state change
-  useEffect(() => {
-    if (editorRef?.current) {
-      editorRef.current.setContent(editorState);
-    }
-  }, [editorState]);
 
   return (
     <EditorContextV2.Provider

@@ -1,33 +1,30 @@
+/* eslint-disable react/display-name */
 import type { RemirrorJSON } from 'remirror';
-import { OnChangeJSON } from '@remirror/react';
+import { useRemirrorContext, OnChangeJSON } from '@remirror/react';
 import { WysiwygEditor } from '@remirror/react-editors/wysiwyg';
+import React, { forwardRef, type Ref, useImperativeHandle, type MutableRefObject } from 'react';
+import type { EditorRef } from '@src/types/interfaces/editor-ref';
 
-const remirrorJsonFromStorage = {
-  type: 'doc',
-  content: [
-    { type: 'heading', attrs: { level: 1 }, content: [{ type: 'text', text: 'Hello world' }] },
-    {
-      type: 'paragraph',
-      content: [
-        { type: 'text', text: 'Hello ' },
-        { type: 'text', marks: [{ type: 'italic' }], text: 'word' },
-      ],
-    },
-  ],
-};
+const ImperativeHandle = forwardRef((_: unknown, ref: Ref<EditorRef>) => {
+  const { setContent } = useRemirrorContext();
+
+  // Expose content handling to outside
+  useImperativeHandle(ref, () => ({ setContent }));
+
+  return <></>;
+});
 
 interface Props {
   onChange: (content: RemirrorJSON) => void;
-  initialContent: RemirrorJSON;
+  editorRef: null | MutableRefObject<null | EditorRef>;
 }
 
-const RichTextEditor: React.FC<Props> = ({ onChange, initialContent }: Props) => {
-  // const {state, setState} = useRemirror()
-
+const RichTextEditor: React.FC<Props> = ({ onChange, editorRef }: Props) => {
   return (
     <div>
-      <WysiwygEditor placeholder="Enter text..." initialContent={initialContent}>
+      <WysiwygEditor placeholder="Enter text..." autoFocus>
         <OnChangeJSON onChange={onChange} />
+        <ImperativeHandle ref={editorRef} />
       </WysiwygEditor>
     </div>
   );
