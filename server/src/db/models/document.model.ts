@@ -55,6 +55,7 @@ class Document extends Model {
   comments!: Array<Comment>;
 
   @AllowNull(false)
+  @Default(StatusEnum.DRAFT)
   @Column(DataType.ENUM("DRAFT", "REVIEW_REQUESTED", "REVIEW", "CHANGES_REQUESTED", "RAISED", "RESOLVED"))
   status!: StatusEnum;
 

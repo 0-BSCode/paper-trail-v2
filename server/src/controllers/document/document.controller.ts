@@ -52,7 +52,7 @@ class DocumentController {
     if (!req.user) return res.sendStatus(401);
 
     const { id } = req.params;
-    const { title, content, isPublic } = req.body;
+    const { title, content, isPublic, status } = req.body;
 
     const document = await documentService.findDocumentById(parseInt(id), parseInt(req.user.id));
 
@@ -61,6 +61,7 @@ class DocumentController {
     if (title !== undefined && title !== null) document.title = title;
     if (content !== undefined && content !== null) document.content = content;
     if (isPublic !== undefined && isPublic !== null) document.isPublic = isPublic;
+    if (status !== undefined && status !== null) document.status = status;
     await document.save();
 
     return res.sendStatus(200);
