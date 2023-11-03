@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EditorState, type Editor, convertFromRaw, type RawDraftContentState, convertToRaw } from 'draft-js';
 import {
   createContext,
   type Dispatch,
@@ -11,38 +10,44 @@ import {
   useState,
 } from 'react';
 import { io } from 'socket.io-client';
-import { FONTS } from '@src/components/FontSelect';
 import useAuth from '@src/hooks/useAuth';
 import { BASE_URL } from '@src/services/api';
 import SocketEvent from '@src/types/enums/socket-events';
 import type DocumentInterface from '@src/types/interfaces/document';
 import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
+import type { RemirrorJSON } from 'remirror';
+import { type EditorRef } from '@src/types/interfaces/editor-ref';
 
 interface EditorContextInterface {
-  editorState: EditorState;
-  setEditorState: Dispatch<SetStateAction<EditorState>>;
+  editorState: RemirrorJSON;
+  setEditorState: Dispatch<SetStateAction<RemirrorJSON>>;
   socket: null | MutableRefObject<any>;
   documentRendered: boolean;
   setDocumentRendered: Dispatch<SetStateAction<boolean>>;
-  editorRef: null | MutableRefObject<null | Editor>;
-  handleEditorChange: (editorState: EditorState) => void;
-  focusEditor: () => void;
-  currentFont: string;
-  setCurrentFont: Dispatch<SetStateAction<string>>;
+  editorRef: null | MutableRefObject<null | EditorRef>;
+  handleEditorChange: (content: RemirrorJSON) => void;
 }
 
+const defaultEditorState: RemirrorJSON = {
+  type: 'doc',
+  content: [
+    {
+      type: 'paragraph',
+      attrs: { dir: null, ignoreBidiAutoUpdate: null },
+      content: [{ type: 'text', text: 'test' }],
+    },
+  ],
+};
+
 const defaultValues = {
-  editorState: EditorState.createEmpty(),
+  editorState: defaultEditorState,
   setEditorState: () => {},
   socket: null,
   documentRendered: false,
   setDocumentRendered: () => {},
   editorRef: null,
   handleEditorChange: () => {},
-  focusEditor: () => {},
-  currentFont: FONTS[0],
-  setCurrentFont: () => {},
 };
 
 export const EditorContext = createContext<EditorContextInterface>(defaultValues);
@@ -58,26 +63,20 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
   const [editorState, setEditorState] = useState(defaultValues.editorState);
   const socket = useRef<any>(defaultValues.socket);
   const [documentRendered, setDocumentRendered] = useState(defaultValues.documentRendered);
-  const editorRef = useRef<null | Editor>(defaultValues.editorRef);
-  const [currentFont, setCurrentFont] = useState(defaultValues.currentFont);
+  const editorRef = useRef<null | EditorRef>(defaultValues.editorRef);
 
   const { document, setCurrentUsers, setSaving, setDocument, saveDocument } = useContext(DocumentContext);
   const { error } = useContext(ToastContext);
   const { accessToken } = useAuth();
 
-  const focusEditor = (): void => {
-    if (editorRef?.current === null) return;
-
-    editorRef.current.focus();
-  };
-
   // Send changes
-  const handleEditorChange = (editorState: EditorState): void => {
-    setEditorState(editorState);
+  const handleEditorChange = (content: RemirrorJSON): void => {
+    if (JSON.stringify(content) === JSON.stringify(editorState)) return;
 
-    if (socket === null) return;
+    setEditorState(content);
 
-    const content = convertToRaw(editorState.getCurrentContent());
+    // Send changes to other clients
+    if (socket === null || socket.current === null) return;
 
     socket.current.emit(SocketEvent.SEND_CHANGES, content);
 
@@ -90,8 +89,11 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
       setDocument(updatedDocument);
     }
 
-    if (document === null || JSON.stringify(content) === document.content) return;
+    if (document === null || JSON.stringify(content) === document.content) {
+      return;
+    }
 
+    // Send changes to server
     setSaving(true);
 
     if (saveInterval) {
@@ -112,9 +114,11 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
     if (documentRendered || document === null || document.content === null) return;
 
     try {
-      const contentState = convertFromRaw(JSON.parse(document.content) as RawDraftContentState);
-      const newEditorState = EditorState.createWithContent(contentState);
+      const newEditorState = JSON.parse(document.content) as RemirrorJSON;
       setEditorState(newEditorState);
+      if (editorRef?.current) {
+        editorRef.current.setContent(newEditorState);
+      }
     } catch {
       error('Error when loading document.');
     } finally {
@@ -148,10 +152,14 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
   useEffect(() => {
     if (socket.current === null) return;
 
-    const handler = (rawDraftContentState: RawDraftContentState): void => {
-      const contentState = convertFromRaw(rawDraftContentState);
-      const newEditorState = EditorState.createWithContent(contentState);
+    const handler = (newEditorState: RemirrorJSON): void => {
+      // For some reason client receives change it just sent,
+      // so we prevent re-rendering for itself
+      if (JSON.stringify(newEditorState) === JSON.stringify(editorState)) return;
       setEditorState(newEditorState);
+      if (editorRef?.current) {
+        editorRef.current.setContent(newEditorState);
+      }
     };
 
     socket.current.on(SocketEvent.RECEIVE_CHANGES, handler);
@@ -183,12 +191,9 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
         socket,
         documentRendered,
         editorRef,
-        currentFont,
         setEditorState,
         setDocumentRendered,
         handleEditorChange,
-        focusEditor,
-        setCurrentFont,
       }}
     >
       {children}

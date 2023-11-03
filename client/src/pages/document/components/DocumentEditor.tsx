@@ -1,18 +1,13 @@
-// TODO: Migrate to Lexical (or recent RTE)
-import { Editor } from 'draft-js';
 import { useContext } from 'react';
 import { EditorContext } from '@src/context/EditorContext';
+import RichTextEditor from '@src/components/RichTextEditor';
 
 const DocumentEditor = (): JSX.Element => {
-  const { editorState, editorRef, handleEditorChange, focusEditor } = useContext(EditorContext);
+  const { handleEditorChange, editorRef } = useContext(EditorContext);
 
   return (
-    <div
-      style={{ height: '1100px', width: '850px' }}
-      className="bg-white shadow-md flex-shrink-0 cursor-text p-12"
-      onClick={focusEditor}
-    >
-      <Editor ref={editorRef} editorState={editorState} onChange={handleEditorChange} />
+    <div style={{ height: '1100px', width: '850px' }} className="bg-white shadow-md flex-shrink-0 cursor-text p-12">
+      <RichTextEditor onChange={handleEditorChange} editorRef={editorRef} />
     </div>
   );
 };

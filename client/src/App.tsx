@@ -9,8 +9,8 @@ import DashboardPage from './pages/dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import { ToastProvider } from './context/ToastContext';
 import { DocumentProvider } from './context/DocumentContext';
-import { EditorProvider } from './context/EditorContext';
 import DocumentPage from './pages/document';
+import { EditorProvider } from './context/EditorContext';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function App() {
