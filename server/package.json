@@ -16,7 +16,8 @@
     "db:seed-up": "node src/config/umzug/seed up --to \"0\"",
     "db:seed-down": "node src/config/umzug/seed down --to \"0\"",
     "db:up": "npm run db:migrate-up && npm run db:seed-up ",
-    "db:down": "npm run db:seed-down && npm run db:migrate-down"
+    "db:down": "npm run db:seed-down && npm run db:migrate-down",
+    "db:reset": "npm run db:down && npm run db:up"
   },
   "keywords": [],
   "author": "",
