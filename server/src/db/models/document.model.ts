@@ -13,6 +13,7 @@ import {
 import { DocumentUser } from "./document-user.model";
 import { User } from "./user.model";
 import { Comment } from "./comment.model";
+import StatusEnum from "../../types/enums/status-enum";
 
 @DefaultScope(() => ({
   include: [
@@ -52,6 +53,11 @@ class Document extends Model {
     onDelete: "CASCADE"
   })
   comments!: Array<Comment>;
+
+  @AllowNull(false)
+  @Default(StatusEnum.DRAFT)
+  @Column(DataType.ENUM("DRAFT", "REVIEW_REQUESTED", "REVIEW", "CHANGES_REQUESTED", "RAISED", "RESOLVED"))
+  status!: StatusEnum;
 
   @AllowNull(false)
   @Default(false)

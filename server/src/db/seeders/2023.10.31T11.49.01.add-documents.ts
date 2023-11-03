@@ -1,5 +1,6 @@
 import { Seeder } from "../../config/db.config";
 import PermissionEnum from "../../types/enums/permission-enum";
+import StatusEnum from "../../types/enums/status-enum";
 
 // TODO: Refactor to include proper documents
 const seedDocuments = [
@@ -9,7 +10,8 @@ const seedDocuments = [
     user_id: 1,
     content: "Dummy Content",
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
+    status: StatusEnum.DRAFT
   },
   {
     id: 2,
@@ -17,7 +19,8 @@ const seedDocuments = [
     user_id: 2,
     content: "Dummy Content",
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
+    status: StatusEnum.REVIEW
   }
 ];
 
