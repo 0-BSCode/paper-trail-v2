@@ -14,6 +14,7 @@ import { DocumentUser } from "./document-user.model";
 import { RefreshToken } from "./refresh-token.model";
 import { Role } from "./role.model";
 import { UserRole } from "./user-role.model";
+import { DocumentAssignee } from "./document-assignee.model";
 
 @Scopes(() => ({
   withRoles: {
@@ -69,6 +70,11 @@ class User extends Model {
     onDelete: "CASCADE"
   })
   sharedDocuments!: Array<DocumentUser>;
+
+  @HasMany(() => DocumentAssignee, {
+    onDelete: "CASCADE"
+  })
+  assignedDocuments?: Array<DocumentAssignee>;
 }
 
 export { User };
