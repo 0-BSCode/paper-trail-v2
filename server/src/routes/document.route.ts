@@ -5,6 +5,7 @@ import { commentController } from "../controllers/document/comment/comment.contr
 import { authenticate } from "../middleware/auth";
 import { documentValidator } from "../validators/document.validator";
 import { shareValidator } from "../validators/share.validator";
+import { statusController } from "../controllers/document/status/status.controller";
 
 const router = Router();
 router.get("/:id", authenticate, documentController.getOne);
@@ -16,5 +17,7 @@ router.post("/:id/share", authenticate, shareValidator.create, shareController.c
 router.delete("/:documentId/share/:userId", authenticate, shareController.delete);
 router.get("/:documentId/comment", authenticate, commentController.getDocumentComments);
 router.post("/:documentId/comment", authenticate, commentController.createComment);
-
+router.get("/status", authenticate, statusController.getAll);
+router.get("/:id/status", authenticate, statusController.getStatus);
+router.put("/:id/status", authenticate, statusController.updateStatus);
 export default router;
