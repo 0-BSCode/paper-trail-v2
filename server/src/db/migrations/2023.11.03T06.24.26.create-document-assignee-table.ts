@@ -5,7 +5,7 @@ export const up: Migration = async ({ context: sequelize }) => {
   const queryInterface = sequelize.getQueryInterface();
 
   await queryInterface.createTable("document_assignee", {
-    user_id: {
+    assignee_id: {
       type: DataTypes.INTEGER,
       references: { model: "user", key: "id" },
       onDelete: "CASCADE",
