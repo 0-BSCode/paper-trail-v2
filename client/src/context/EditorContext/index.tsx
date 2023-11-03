@@ -10,7 +10,6 @@ import {
   useState,
 } from 'react';
 import { io } from 'socket.io-client';
-import { FONTS } from '@src/components/FontSelect';
 import useAuth from '@src/hooks/useAuth';
 import { BASE_URL } from '@src/services/api';
 import SocketEvent from '@src/types/enums/socket-events';
@@ -28,8 +27,6 @@ interface EditorContextInterface {
   setDocumentRendered: Dispatch<SetStateAction<boolean>>;
   editorRef: null | MutableRefObject<null | EditorRef>;
   handleEditorChange: (content: RemirrorJSON) => void;
-  currentFont: string;
-  setCurrentFont: Dispatch<SetStateAction<string>>;
 }
 
 const defaultEditorState: RemirrorJSON = {
@@ -51,8 +48,6 @@ const defaultValues = {
   setDocumentRendered: () => {},
   editorRef: null,
   handleEditorChange: () => {},
-  currentFont: FONTS[0],
-  setCurrentFont: () => {},
 };
 
 export const EditorContext = createContext<EditorContextInterface>(defaultValues);
@@ -69,7 +64,6 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
   const socket = useRef<any>(defaultValues.socket);
   const [documentRendered, setDocumentRendered] = useState(defaultValues.documentRendered);
   const editorRef = useRef<null | EditorRef>(defaultValues.editorRef);
-  const [currentFont, setCurrentFont] = useState(defaultValues.currentFont);
 
   const { document, setCurrentUsers, setSaving, setDocument, saveDocument } = useContext(DocumentContext);
   const { error } = useContext(ToastContext);
@@ -197,11 +191,9 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
         socket,
         documentRendered,
         editorRef,
-        currentFont,
         setEditorState,
         setDocumentRendered,
         handleEditorChange,
-        setCurrentFont,
       }}
     >
       {children}
