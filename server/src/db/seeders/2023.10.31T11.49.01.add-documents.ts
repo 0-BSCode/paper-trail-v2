@@ -11,7 +11,8 @@ const seedDocuments = [
     content: "Dummy Content",
     created_at: new Date(),
     updated_at: new Date(),
-    status: StatusEnum.DRAFT
+    status: StatusEnum.DRAFT,
+    assignee_id: 2
   },
   {
     id: 2,
@@ -20,7 +21,8 @@ const seedDocuments = [
     content: "Dummy Content",
     created_at: new Date(),
     updated_at: new Date(),
-    status: StatusEnum.REVIEW
+    status: StatusEnum.REVIEW,
+    assignee_id: 3
   }
 ];
 
