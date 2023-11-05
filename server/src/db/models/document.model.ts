@@ -8,14 +8,12 @@ import {
   HasMany,
   DefaultScope,
   Default,
-  AllowNull,
-  HasOne
+  AllowNull
 } from "sequelize-typescript";
 import { DocumentUser } from "./document-user.model";
 import { User } from "./user.model";
 import { Comment } from "./comment.model";
 import StatusEnum from "../../types/enums/status-enum";
-import { DocumentAssignee } from "./document-assignee.model";
 
 @DefaultScope(() => ({
   include: [
@@ -51,10 +49,12 @@ class Document extends Model {
   })
   users!: Array<DocumentUser>;
 
-  @HasOne(() => DocumentAssignee, {
-    onDelete: "CASCADE"
-  })
-  assignee?: DocumentAssignee;
+  @BelongsTo(() => User)
+  assignee!: User;
+
+  @ForeignKey(() => User)
+  @Column({ primaryKey: true })
+  assigneeid!: number;
 
   @HasMany(() => Comment, {
     onDelete: "CASCADE"
