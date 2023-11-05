@@ -54,7 +54,7 @@ class Document extends Model {
 
   @ForeignKey(() => User)
   @Column({ primaryKey: true })
-  assigneeid!: number;
+  assigneeId!: number;
 
   @HasMany(() => Comment, {
     onDelete: "CASCADE"

@@ -1,12 +1,11 @@
 import { User } from "../db/models/user.model";
-import { DocumentAssignee } from "../db/models/document-assignee.model";
 import { Document } from "../db/models/document.model";
 import RoleEnum from "../types/enums/role-enum";
 import { Role } from "../db/models/role.model";
 import { DocumentUser } from "../db/models/document-user.model";
 
 class AssigneeService {
-  public updateAssignee = async (assigneeId: number, documentId: number): Promise<DocumentAssignee | null> => {
+  public updateAssignee = async (assigneeId: number, documentId: number) => {
     // Check if documentId and userId exist in database
     const targetDocument = await Document.findByPk(documentId);
     const targetUser = await User.findByPk(assigneeId, { include: [Role, DocumentUser] });
@@ -25,26 +24,24 @@ class AssigneeService {
       return null;
     }
 
-    const assignee: DocumentAssignee = await DocumentAssignee.create({
-      assigneeId,
-      documentId
-    });
-
-    return assignee;
+    if (status !== undefined && status !== null) targetDocument.assigneeId = assigneeId;
+    await targetDocument.save();
   };
 
   public findAssigneeById = async (documentId: number) => {
-    const document = await Document.findByPk(documentId, { include: [{ model: DocumentAssignee, as: "assignee" }] });
+    const document = await Document.findByPk(documentId);
 
     if (!document) {
       return null;
     }
 
-    return document.assignee;
+    const assignee = await User.findByPk(document?.assigneeId);
+
+    return assignee;
   };
 
   public getDocumentsOfAssignee = async (assigneeId: number) => {
-    const documents = await DocumentAssignee.findAll({ where: { assigneeId } });
+    const documents = await Document.findAll({ where: { assigneeId } });
 
     if (!documents) {
       return null;
