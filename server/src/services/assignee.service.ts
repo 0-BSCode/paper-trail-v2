@@ -7,7 +7,11 @@ import { DocumentUser } from "../db/models/document-user.model";
 class AssigneeService {
   public updateAssignee = async (assigneeId: number, documentId: number) => {
     // Check if documentId and userId exist in database
-    const targetDocument = await Document.findByPk(documentId);
+    const targetDocument = await Document.findOne({
+      where: {
+        id: documentId
+      }
+    });
     const targetUser = await User.findByPk(assigneeId, { include: [Role, DocumentUser] });
 
     console.log(targetDocument);
@@ -24,17 +28,20 @@ class AssigneeService {
       return null;
     }
 
-    if (status !== undefined && status !== null) targetDocument.assigneeId = assigneeId;
+    if (assigneeId !== undefined && assigneeId !== null) targetDocument.assigneeId = assigneeId;
     await targetDocument.save();
   };
 
   public findAssigneeById = async (documentId: number) => {
-    const document = await Document.findByPk(documentId);
+    const document = await Document.findOne({
+      where: {
+        id: documentId
+      }
+    });
 
     if (!document) {
       return null;
     }
-
     const assignee = await User.findByPk(document?.assigneeId);
 
     return assignee;

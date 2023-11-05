@@ -53,7 +53,7 @@ class Document extends Model {
   assignee!: User;
 
   @ForeignKey(() => User)
-  @Column({ primaryKey: true })
+  @Column(DataType.INTEGER)
   assigneeId!: number;
 
   @HasMany(() => Comment, {

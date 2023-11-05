@@ -23,6 +23,16 @@ const seedDocuments = [
     updated_at: new Date(),
     status: StatusEnum.REVIEW,
     assignee_id: 3
+  },
+  {
+    id: 3,
+    title: "Test Document 3",
+    user_id: 2,
+    content: "Dummy Content",
+    created_at: new Date(),
+    updated_at: new Date(),
+    status: StatusEnum.REVIEW,
+    assignee_id: 3
   }
 ];
 
