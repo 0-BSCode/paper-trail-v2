@@ -49,6 +49,13 @@ class Document extends Model {
   })
   users!: Array<DocumentUser>;
 
+  @BelongsTo(() => User)
+  assignee!: User;
+
+  @ForeignKey(() => User)
+  @Column(DataType.INTEGER)
+  assigneeId!: number;
+
   @HasMany(() => Comment, {
     onDelete: "CASCADE"
   })
