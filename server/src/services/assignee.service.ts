@@ -14,8 +14,6 @@ class AssigneeService {
     });
     const targetUser = await User.findByPk(assigneeId, { include: [Role, DocumentUser] });
 
-    console.log(targetDocument);
-
     if (targetDocument === null || targetUser === null) {
       // No user was assigned to document
       return null;
@@ -28,8 +26,10 @@ class AssigneeService {
       return null;
     }
 
-    if (assigneeId !== undefined && assigneeId !== null) targetDocument.assigneeId = assigneeId;
-    await targetDocument.save();
+    if (assigneeId !== undefined && assigneeId !== null) {
+      targetDocument.assigneeId = assigneeId;
+      await targetDocument.save();
+    }
   };
 
   public findAssigneeById = async (documentId: number) => {
@@ -42,7 +42,8 @@ class AssigneeService {
     if (!document) {
       return null;
     }
-    const assignee = await User.findByPk(document?.assigneeId);
+
+    const assignee = await User.findByPk(document.assigneeId);
 
     return assignee;
   };

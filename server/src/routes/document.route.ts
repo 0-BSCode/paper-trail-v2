@@ -17,7 +17,7 @@ router.post("/", authenticate, documentController.create);
 router.delete("/:id", authenticate, documentController.delete);
 router.post("/:id/share", authenticate, shareValidator.create, shareController.create);
 router.delete("/:documentId/share/:userId", authenticate, shareController.delete);
-router.get("/assignee/:id", authenticate, assigneeController.getDocumentsofAssignee);
+router.get("/assignee/:id", authenticate, assigneeController.getAssigneeDocuments);
 router.get("/:documentId/assignee", authenticate, assigneeController.getAssignee);
 router.put("/:documentId/assignee", authenticate, assigneeController.setAssignee);
 router.get("/:documentId/comment", authenticate, commentController.getDocumentComments);

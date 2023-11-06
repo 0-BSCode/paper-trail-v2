@@ -17,7 +17,7 @@ class AssigneeController {
   /**
    * Gets all documents assigned to a specific officer
    */
-  public getDocumentsofAssignee = catchAsync(async (req: Request, res: Response) => {
+  public getAssigneeDocuments = catchAsync(async (req: Request, res: Response) => {
     if (!req.user) return res.sendStatus(401);
 
     const { id } = req.params;
