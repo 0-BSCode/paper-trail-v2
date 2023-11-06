@@ -26,7 +26,7 @@ class AssigneeService {
       return null;
     }
 
-    if (!assigneeId) {
+    if (assigneeId) {
       targetDocument.assigneeId = assigneeId;
       await targetDocument.save();
     }
