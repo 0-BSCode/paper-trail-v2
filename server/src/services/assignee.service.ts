@@ -14,7 +14,7 @@ class AssigneeService {
     });
     const targetUser = await User.findByPk(assigneeId, { include: [Role, DocumentUser] });
 
-    if (targetDocument === null || targetUser === null) {
+    if (!targetDocument || !targetUser) {
       // No user was assigned to document
       return null;
     }
@@ -26,7 +26,7 @@ class AssigneeService {
       return null;
     }
 
-    if (assigneeId !== undefined && assigneeId !== null) {
+    if (!assigneeId) {
       targetDocument.assigneeId = assigneeId;
       await targetDocument.save();
     }
