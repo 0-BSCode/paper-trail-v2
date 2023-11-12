@@ -1,13 +1,16 @@
 import { useMutation } from 'convex/react';
 import { api } from '@src/_convex/_generated/api';
+import { type Id } from '@src/_convex/_generated/dataModel';
 
 interface FileHandlerHookType {
   uploadFile: (file: File) => Promise<string>;
   redirectToFile: (fileUrl: string) => void;
+  deleteFile: (documentFileId: Id<'documentFiles'>) => void;
 }
 
 const useFileHandler = (): FileHandlerHookType => {
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
+  const deleteFileById = useMutation(api.files.deleteFileById);
 
   const uploadFile = async (file: File): Promise<string> => {
     // Step 1: Get a short-lived upload URL
@@ -37,9 +40,14 @@ const useFileHandler = (): FileHandlerHookType => {
     document.body.removeChild(downloadLink);
   };
 
+  const deleteFile = (documentFileId: Id<'documentFiles'>): void => {
+    void deleteFileById({ documentFileId });
+  };
+
   return {
     uploadFile,
     redirectToFile,
+    deleteFile,
   };
 };
 

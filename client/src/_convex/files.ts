@@ -5,7 +5,7 @@ export const generateUploadUrl = mutation({
   args: {
     // ...
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     // use `args` and/or `ctx.auth` to authorize the user
     // ...
 
@@ -47,5 +47,17 @@ export const getFilesByDocumentId = query({
         metadata: await ctx.storage.getMetadata(documentFile.storageId),
       })),
     );
+  },
+});
+
+export const deleteFileById = mutation({
+  args: { documentFileId: v.id('documentFiles') },
+  handler: async (ctx, args) => {
+    const documentFile = await ctx.db.get(args.documentFileId);
+
+    if (documentFile) {
+      await ctx.storage.delete(documentFile.storageId);
+      await ctx.db.delete(args.documentFileId);
+    }
   },
 });

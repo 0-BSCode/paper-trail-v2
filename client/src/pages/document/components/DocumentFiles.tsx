@@ -4,7 +4,7 @@ import useFileHandler from '@src/hooks/useFileHandler';
 
 const DocumentFiles = ({ documentId }: { documentId: string }): JSX.Element => {
   const files = useQuery(api.files.getFilesByDocumentId, { documentId });
-  const { redirectToFile } = useFileHandler();
+  const { redirectToFile, deleteFile } = useFileHandler();
 
   if (!files?.length) {
     return <p>No files...</p>;
@@ -13,7 +13,7 @@ const DocumentFiles = ({ documentId }: { documentId: string }): JSX.Element => {
   return (
     <>
       {files.map((file, idx) => (
-        <div key={`file__${idx}`}>
+        <div key={`file__${idx}`} className="flex gap-2">
           <button
             onClick={() => {
               redirectToFile(file.url ?? '');
@@ -22,6 +22,13 @@ const DocumentFiles = ({ documentId }: { documentId: string }): JSX.Element => {
             Download
           </button>
           <p>{file.name}</p>
+          <button
+            onClick={() => {
+              deleteFile(file._id);
+            }}
+          >
+            Delete
+          </button>
         </div>
       ))}
     </>
