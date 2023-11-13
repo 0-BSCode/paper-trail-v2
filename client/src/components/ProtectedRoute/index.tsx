@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import useAuth from '@src/hooks/useAuth';
 import { Layout, Flex, Image, Typography, Button, Menu } from 'antd';
@@ -6,6 +6,7 @@ import LogoWhite from '@src/assets/logo-white.svg';
 import { BellOutlined, UserOutlined, ProfileOutlined, EditOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import TabsEnum from '@src/types/enums/tabs-enum';
+import useSidebarTab from '@src/hooks/useSidebarTab';
 
 const { Header, Sider, Content } = Layout;
 const { Title } = Typography;
@@ -37,7 +38,7 @@ interface AuthRouteProps {
 const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
   const isApiCalled = useRef(false);
   const { loadingAuth, isAuthenticated, refreshAccessToken, email, roles } = useAuth();
-  const [activeKey, setActiveKey] = useState<string>();
+  const { currentTab, setCurrentTab } = useSidebarTab();
 
   useEffect(() => {
     if (!isApiCalled.current) {
@@ -51,7 +52,7 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
   } else {
     if (isAuthenticated)
       return (
-        <Layout>
+        <Layout className="h-screen">
           <Header className="h-fit">
             <Flex className="items-center justify-between">
               <div className="flex gap-4 items-center">
@@ -81,11 +82,14 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
             <Sider>
               <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
-                defaultOpenKeys={['subnav_1']}
+                defaultSelectedKeys={[currentTab]}
+                defaultOpenKeys={['Tickets Tab']}
                 style={{ height: '100%' }}
                 items={items}
-                onSelect={(info) => {}}
+                onSelect={(info) => {
+                  const newTab = info.key as TabsEnum;
+                  setCurrentTab(newTab);
+                }}
               />
             </Sider>
             <Content>{element}</Content>
