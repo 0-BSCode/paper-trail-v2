@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect, useRef, useContext } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import useAuth from '@src/hooks/useAuth';
-import { Layout, Flex, Image, Typography, Button, Menu } from 'antd';
+import { Layout, Flex, Image, Typography, Button } from 'antd';
 import LogoWhite from '@src/assets/logo-white.svg';
 import { BellOutlined, UserOutlined, ProfileOutlined, EditOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import TabsEnum from '@src/types/enums/tabs-enum';
-import useSidebarTab from '@src/hooks/useSidebarTab';
+import { ToastContext } from '@src/context/ToastContext';
 
 const { Header, Sider, Content } = Layout;
 const { Title } = Typography;
@@ -22,7 +22,7 @@ function getItem(label: React.ReactNode, key: React.Key, icon?: React.ReactNode,
   } satisfies MenuItem;
 }
 
-// TODO (Bryan): Clean up by having function generate tabs
+// TODO (Bryan): Clean up by having function generate tabs (take into account user role)
 const items: MenuItem[] = [
   getItem('Tickets', 'Tickets Tab', <EditOutlined />, [
     getItem(TabsEnum.ALL_TICKETS, TabsEnum.ALL_TICKETS),
@@ -37,8 +37,15 @@ interface AuthRouteProps {
 
 const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
   const isApiCalled = useRef(false);
-  const { loadingAuth, isAuthenticated, refreshAccessToken, email, roles } = useAuth();
-  const { currentTab, setCurrentTab } = useSidebarTab();
+  const { success } = useContext(ToastContext);
+  const { loadingAuth, isAuthenticated, refreshAccessToken, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const logoutUser = async (): Promise<void> => {
+    await logout();
+    success('Successfully logged out!');
+    navigate('/login');
+  };
 
   useEffect(() => {
     if (!isApiCalled.current) {
@@ -60,6 +67,8 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
                 <Title
                   style={{
                     color: 'white',
+                    marginTop: 1,
+                    marginBottom: 5,
                   }}
                 >
                   Paper Trail
@@ -72,28 +81,19 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
                 <Button type="link" size="middle">
                   <UserOutlined />
                 </Button>
-                <Button type="primary" size="middle" className="text-white">
+                <Button
+                  type="primary"
+                  size="middle"
+                  className="text-white"
+                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                  onClick={logoutUser}
+                >
                   Log Out
                 </Button>
               </div>
             </Flex>
           </Header>
-          <Layout hasSider>
-            <Sider>
-              <Menu
-                mode="inline"
-                defaultSelectedKeys={[currentTab]}
-                defaultOpenKeys={['Tickets Tab']}
-                style={{ height: '100%' }}
-                items={items}
-                onSelect={(info) => {
-                  const newTab = info.key as TabsEnum;
-                  setCurrentTab(newTab);
-                }}
-              />
-            </Sider>
-            <Content>{element}</Content>
-          </Layout>
+          <Content>{element}</Content>
         </Layout>
       );
     else return <Navigate to="/login" />;
