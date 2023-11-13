@@ -14,6 +14,7 @@ interface AuthHookType {
   errors: string[];
   userId: number | null;
   email: string | null;
+  roles: string[] | null;
   login: (accessToken: string, refreshToken: string) => void;
   logout: () => Promise<void>;
   refreshAccessToken: () => Promise<void>;
@@ -33,14 +34,17 @@ const useAuth = (): AuthHookType => {
     setUserId,
     email,
     setEmail,
+    roles,
+    setRoles,
   } = useContext(AuthContext);
   const [refreshToken, setRefreshToken] = useLocalStorage<string | null>('refreshToken', null);
 
   const login = (accessToken: string, refreshToken: string): void => {
-    const { exp, id, email } = jwt_decode<Token>(accessToken);
+    const { exp, id, email, roles } = jwt_decode<Token>(accessToken);
     silentRefresh(exp);
     setUserId(id);
     setEmail(email);
+    setRoles(roles);
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setIsAuthenticated(true);
@@ -96,6 +100,7 @@ const useAuth = (): AuthHookType => {
     errors,
     userId,
     email,
+    roles,
     login,
     logout,
     refreshAccessToken,

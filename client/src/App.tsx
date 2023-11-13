@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
-import './App.css';
 import { AuthProvider } from './context/AuthContext';
 import Index from './pages/index';
 import RegisterPage from './pages/register';

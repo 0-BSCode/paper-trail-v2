@@ -11,12 +11,14 @@
     "pre-commit": "npx lint-staged"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@heroicons/react": "^2.0.18",
     "@remirror/pm": "^2.0.8",
     "@remirror/react": "^2.0.35",
     "@remirror/react-editors": "^1.0.38",
+    "antd": "^5.11.1",
     "axios": "^1.5.1",
     "convex": "^1.5.1",
     "inputmask": "^5.0.8",
