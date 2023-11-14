@@ -1,36 +1,13 @@
-import React, { useEffect, useRef, useContext } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import useAuth from '@src/hooks/useAuth';
 import { Layout, Flex, Image, Typography, Button } from 'antd';
 import LogoWhite from '@src/assets/logo-white.svg';
-import { BellOutlined, UserOutlined, ProfileOutlined, EditOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import TabsEnum from '@src/types/enums/tabs-enum';
+import { BellOutlined, UserOutlined } from '@ant-design/icons';
 import { ToastContext } from '@src/context/ToastContext';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 const { Title } = Typography;
-
-type MenuItem = Required<MenuProps>['items'][number];
-
-function getItem(label: React.ReactNode, key: React.Key, icon?: React.ReactNode, children?: MenuItem[]): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } satisfies MenuItem;
-}
-
-// TODO (Bryan): Clean up by having function generate tabs (take into account user role)
-const items: MenuItem[] = [
-  getItem('Tickets', 'Tickets Tab', <EditOutlined />, [
-    getItem(TabsEnum.ALL_TICKETS, TabsEnum.ALL_TICKETS),
-    getItem(TabsEnum.YOUR_TICKETS, TabsEnum.YOUR_TICKETS),
-  ]),
-  getItem(TabsEnum.MANAGE_USERS, TabsEnum.MANAGE_USERS, <ProfileOutlined />),
-];
-
 interface AuthRouteProps {
   element: JSX.Element;
 }
