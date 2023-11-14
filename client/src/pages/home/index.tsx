@@ -5,6 +5,9 @@ import YourTicketsPage from '../your-tickets';
 import AllTicketsPage from '../all-tickets';
 import UserManagementPage from '../user-management';
 import { useQueryState } from 'use-location-state';
+import { useContext } from 'react';
+import { AuthContext } from '@src/context/AuthContext';
+import RoleEnum from '@src/types/enums/role-enum';
 
 const { Sider, Content } = Layout;
 
@@ -19,17 +22,27 @@ function getItem(label: React.ReactNode, key: React.Key, icon?: React.ReactNode,
   } satisfies MenuItem;
 }
 
-// TODO (Bryan): Clean up by having function generate tabs (take into account user role)
-const items: MenuItem[] = [
-  getItem('Tickets', 'Tickets Tab', <EditOutlined />, [
-    getItem(TabsEnum.ALL_TICKETS, TabsEnum.ALL_TICKETS),
-    getItem(TabsEnum.YOUR_TICKETS, TabsEnum.YOUR_TICKETS),
-  ]),
-  getItem(TabsEnum.MANAGE_USERS, TabsEnum.MANAGE_USERS, <ProfileOutlined />),
-];
+// TODO (Bryan): Update tabs if role changed w/o having to log out
+const generateMenuItems = (roles: string[]): MenuItem[] => {
+  const menuItems: MenuItem[] = [];
+  const submenuItems = [getItem(TabsEnum.YOUR_TICKETS, TabsEnum.YOUR_TICKETS)];
+
+  if (roles.some((role) => role === RoleEnum.CISCO_MEMBER || role === RoleEnum.CISCO_ADMIN)) {
+    submenuItems.unshift(getItem(TabsEnum.ALL_TICKETS, TabsEnum.ALL_TICKETS));
+  }
+
+  menuItems.push(getItem('Tickets', 'Tickets Tab', <EditOutlined />, submenuItems));
+  if (roles.some((role) => role === RoleEnum.CISCO_ADMIN)) {
+    menuItems.push(getItem(TabsEnum.MANAGE_USERS, TabsEnum.MANAGE_USERS, <ProfileOutlined />));
+  }
+
+  return menuItems;
+};
 
 const HomePage = (): JSX.Element => {
   const [currentTab, setCurrentTab] = useQueryState('currentTab', TabsEnum.YOUR_TICKETS);
+  const { roles } = useContext(AuthContext);
+
   return (
     <Layout hasSider className="h-full">
       <Sider>
@@ -38,7 +51,7 @@ const HomePage = (): JSX.Element => {
           defaultSelectedKeys={[currentTab]}
           defaultOpenKeys={['Tickets Tab']}
           className="h-full"
-          items={items}
+          items={generateMenuItems(roles ?? [])}
           onSelect={(info) => {
             const newTab = info.key as TabsEnum;
             setCurrentTab(newTab);

@@ -9,9 +9,6 @@ import { ToastProvider } from './context/ToastContext';
 import { DocumentProvider } from './context/DocumentContext';
 import DocumentPage from './pages/document';
 import { EditorProvider } from './context/EditorContext';
-import YourTicketsPage from './pages/your-tickets';
-import AllTicketsPage from './pages/all-tickets';
-import UserManagementPage from './pages/user-management';
 import HomePage from './pages/home';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -42,9 +39,6 @@ function App() {
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/home" element={<ProtectedRoute element={<HomePage />} />} />
-              <Route path="/your-tickets" element={<ProtectedRoute element={<YourTicketsPage />} />} />
-              <Route path="/all-tickets" element={<ProtectedRoute element={<AllTicketsPage />} />} />
-              <Route path="/user-management" element={<ProtectedRoute element={<UserManagementPage />} />} />
             </Routes>
           </DocumentProvider>
         </ToastProvider>

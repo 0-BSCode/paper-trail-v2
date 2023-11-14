@@ -47,7 +47,7 @@ const LoginPage = (): JSX.Element => {
       const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
       login(newAccessToken, newRefreshToken);
       success('Successfully logged in!');
-      navigate('/document/create');
+      navigate('/home');
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const { response } = err as AxiosError;
