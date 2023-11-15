@@ -1,9 +1,9 @@
 import React from 'react';
-import { Space, Table, Tag } from 'antd';
+import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 interface DataType {
-  key: string;
+  id: number;
   name: string;
   age: number;
   address: string;
@@ -12,50 +12,27 @@ interface DataType {
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
+    id: 1,
+    title: 'Test Document 1',
+    owner: 'Dummy',
+    status: 'Resolved',
+    assignee_id: 2,
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
+    id: 2,
+    title: 'Test Document 2',
+    assignee: 'Sam',
+    owner: 'Dummy',
+    status: 'Draft',
+    assignee_id: 3,
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
+    id: 3,
+    title: 'Test Document 3',
+    assignee: 'Sam',
+    owner: 'Dummy',
+    status: 'Review',
+    assignee_id: 3,
   },
 ];
 
@@ -73,13 +50,6 @@ const data: DataType[] = [
     age: 42,
     address: 'London No. 1 Lake Park',
     tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
   },
 ];
 
