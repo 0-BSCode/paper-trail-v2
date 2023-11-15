@@ -5,7 +5,7 @@ import UnassignedTickets from './components/UnassignedTickets';
 // TODO (Sam): Fill in
 const AllTicketsPage = (): JSX.Element => {
   return (
-    <div className="h-full">
+    <div className="flex flex-col h-full">
       <Header />
       <div className="flex flex-col items-center justify-center h-full gap-5">
         <AssignedTickets />
