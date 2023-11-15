@@ -54,8 +54,38 @@ const data: DataType[] = [
     status: 'Draft',
     assignee: 'Sam',
   },
+  {
+    id: 2,
+    title: 'Test Document 2',
+    owner: 'Dummy',
+    status: 'Draft',
+    assignee: 'Sam',
+  },
+  {
+    id: 2,
+    title: 'Test Document 2',
+    owner: 'Dummy',
+    status: 'Draft',
+    assignee: 'Sam',
+  },
+  {
+    id: 2,
+    title: 'Test Document 2',
+    owner: 'Dummy',
+    status: 'Draft',
+    assignee: 'Sam',
+  },
 ];
 
-const TicketsTable: React.FC = () => <Table columns={columns} dataSource={data} />;
+const TicketsTable: React.FC = () => (
+  <Table
+    columns={columns}
+    dataSource={data}
+    pagination={{
+      pageSize: 2,
+      total: 5,
+    }}
+  />
+);
 
 export default TicketsTable;
