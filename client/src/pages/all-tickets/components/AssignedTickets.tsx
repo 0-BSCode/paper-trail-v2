@@ -7,13 +7,13 @@ const AssignedTickets = (): JSX.Element => (
     <div className="flex flex-col ">
       <div className="flex justify-between">
         <p>Search by Title</p>
-        <div className="flex w-[49%] justify-start">
+        <div className="flex w-[48%] justify-start">
           <p>Search by Status</p>
         </div>
       </div>
-      <div className="flex gap-8">
-        <Input />
-        <Input />
+      <div className="flex gap-8 mb-3">
+        <Input placeholder="Title" />
+        <Input placeholder="Status" />
       </div>
     </div>
     <TicketsTable />

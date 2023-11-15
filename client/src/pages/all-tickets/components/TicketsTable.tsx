@@ -4,52 +4,55 @@ import type { ColumnsType } from 'antd/es/table';
 
 interface DataType {
   id: number;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
+  title: string;
+  owner: string;
+  status: string;
+  assignee: string;
 }
 
 const columns: ColumnsType<DataType> = [
   {
-    id: 1,
-    title: 'Test Document 1',
-    owner: 'Dummy',
-    status: 'Resolved',
-    assignee_id: 2,
+    title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
+    render: (text) => <a>{text}</a>,
   },
   {
-    id: 2,
-    title: 'Test Document 2',
-    assignee: 'Sam',
-    owner: 'Dummy',
-    status: 'Draft',
-    assignee_id: 3,
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id',
   },
   {
-    id: 3,
-    title: 'Test Document 3',
-    assignee: 'Sam',
-    owner: 'Dummy',
-    status: 'Review',
-    assignee_id: 3,
+    title: 'Owner',
+    dataIndex: 'owner',
+    key: 'owner',
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+  },
+  {
+    title: 'Assignee',
+    dataIndex: 'assignee',
+    key: 'assignee',
   },
 ];
 
 const data: DataType[] = [
   {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
+    id: 1,
+    title: 'Test Document 1',
+    owner: 'Dummy',
+    status: 'Resolved',
+    assignee: 'Sam',
   },
   {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
+    id: 2,
+    title: 'Test Document 2',
+    owner: 'Dummy',
+    status: 'Draft',
+    assignee: 'Sam',
   },
 ];
 

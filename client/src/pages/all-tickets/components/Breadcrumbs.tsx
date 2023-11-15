@@ -8,7 +8,7 @@ const Breadcrumbs = (): JSX.Element => (
       },
       {
         title: (
-          <a className="text-black" href="">
+          <a style={{ color: 'black' }} className="font-bold" href="">
             All Tickets
           </a>
         ),
