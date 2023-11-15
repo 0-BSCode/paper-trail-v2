@@ -1,3 +1,4 @@
+import DropDown from './DropDown';
 import TicketsTable from './TicketsTable';
 import { Input } from 'antd';
 
@@ -6,14 +7,14 @@ const AssignedTickets = (): JSX.Element => (
     <h1 className="m-0 text-xl font-bold">Your Tickets</h1>
     <div className="flex flex-col ">
       <div className="flex justify-between">
-        <p>Search by Title</p>
-        <div className="flex w-[48%] justify-start">
-          <p>Search by Status</p>
+        <p className="font-semibold">Search by Title</p>
+        <div className="flex w-[49%] justify-start">
+          <p className="font-semibold">Status</p>
         </div>
       </div>
-      <div className="flex gap-8 mb-3">
-        <Input placeholder="Title" />
-        <Input placeholder="Status" />
+      <div className="flex gap-3 mb-3">
+        <Input placeholder="Title" style={{ width: '50%' }} />
+        <DropDown />
       </div>
     </div>
     <TicketsTable />
