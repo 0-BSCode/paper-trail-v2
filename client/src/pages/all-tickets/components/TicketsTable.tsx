@@ -1,16 +1,10 @@
 import React from 'react';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import useDocuments from '@src/hooks/useDocuments';
+import type DocumentInterface from '@src/types/interfaces/document';
 
-interface DataType {
-  id: number;
-  title: string;
-  owner: string;
-  status: string;
-  assignee: string;
-}
-
-const columns: ColumnsType<DataType> = [
+const columns: ColumnsType<DocumentInterface> = [
   {
     title: 'Title',
     dataIndex: 'title',
@@ -39,53 +33,19 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const data: DataType[] = [
-  {
-    id: 1,
-    title: 'Test Document 1',
-    owner: 'Dummy',
-    status: 'Resolved',
-    assignee: 'Sam',
-  },
-  {
-    id: 2,
-    title: 'Test Document 2',
-    owner: 'Dummy',
-    status: 'Draft',
-    assignee: 'Sam',
-  },
-  {
-    id: 2,
-    title: 'Test Document 2',
-    owner: 'Dummy',
-    status: 'Draft',
-    assignee: 'Sam',
-  },
-  {
-    id: 2,
-    title: 'Test Document 2',
-    owner: 'Dummy',
-    status: 'Draft',
-    assignee: 'Sam',
-  },
-  {
-    id: 2,
-    title: 'Test Document 2',
-    owner: 'Dummy',
-    status: 'Draft',
-    assignee: 'Sam',
-  },
-];
+const TicketsTable: React.FC = () => {
+  const { userDocuments } = useDocuments();
 
-const TicketsTable: React.FC = () => (
-  <Table
-    columns={columns}
-    dataSource={data}
-    pagination={{
-      pageSize: 2,
-      total: 5,
-    }}
-  />
-);
+  return (
+    <Table
+      columns={columns}
+      dataSource={userDocuments}
+      pagination={{
+        pageSize: 2,
+        total: 5,
+      }}
+    />
+  );
+};
 
 export default TicketsTable;

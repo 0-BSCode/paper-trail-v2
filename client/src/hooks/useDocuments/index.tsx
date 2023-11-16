@@ -5,15 +5,18 @@ import type DocumentInterface from '../../types/interfaces/document';
 import useAuth from '../useAuth';
 
 interface DocumentHookType {
-  documents: DocumentInterface[];
+  allDocuments: DocumentInterface[];
+  userDocuments: DocumentInterface[];
   loading: boolean;
-  setDocuments: Dispatch<SetStateAction<DocumentInterface[]>>;
+  setAllDocuments: Dispatch<SetStateAction<DocumentInterface[]>>;
+  setUserDocuments: Dispatch<SetStateAction<DocumentInterface[]>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const useDocuments = (): DocumentHookType => {
-  const { accessToken } = useAuth();
-  const [documents, setDocuments] = useState<DocumentInterface[]>([]);
+  const { accessToken, userId } = useAuth();
+  const [allDocuments, setAllDocuments] = useState<DocumentInterface[]>([]);
+  const [userDocuments, setUserDocuments] = useState<DocumentInterface[]>([]);
   const [loading, setLoading] = useState(false);
   const { error } = useContext(ToastContext);
 
@@ -22,7 +25,20 @@ const useDocuments = (): DocumentHookType => {
 
     try {
       const response = await DocumentService.list(accessToken);
-      setDocuments(response.data as DocumentInterface[]);
+      setAllDocuments(response.data as DocumentInterface[]);
+    } catch (err) {
+      error('Unable to load documents. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadUserDocuments = async (accessToken: string): Promise<void> => {
+    if (!userId) return;
+
+    try {
+      const response = await DocumentService.getAssigned(accessToken, userId);
+      setUserDocuments(response.data as DocumentInterface[]);
     } catch (err) {
       error('Unable to load documents. Please try again.');
     } finally {
@@ -34,12 +50,15 @@ const useDocuments = (): DocumentHookType => {
     if (accessToken === null) return;
 
     void loadDocuments(accessToken);
+    void loadUserDocuments(accessToken);
   }, [accessToken]);
 
   return {
-    documents,
+    allDocuments,
+    userDocuments,
     loading,
-    setDocuments,
+    setAllDocuments,
+    setUserDocuments,
     setLoading,
   };
 };
