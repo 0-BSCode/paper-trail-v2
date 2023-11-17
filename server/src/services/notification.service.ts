@@ -2,6 +2,9 @@ import { Notification } from "../db/models/notification.model";
 import { User } from "../db/models/user.model";
 import { Document } from "../db/models/document.model";
 import { Comment } from "../db/models/comment.model";
+import { Role } from "../db/models/role.model";
+import RoleEnum from "../types/enums/role-enum";
+import { Op } from "sequelize";
 
 class NotificationService {
   private createNotification = async (userId: number, documentId: number, message: string): Promise<Notification> => {
@@ -53,6 +56,9 @@ class NotificationService {
     return newNotification;
   };
 
+  /**
+   * Notifies a student when a new comment is created by other users on their ticket.
+   */
   public notifyNewCommentByAnotherUser = async (commentId: number): Promise<Notification | null> => {
     const newComment = await Comment.findByPk(commentId, { include: [Document, User] });
 
@@ -82,6 +88,40 @@ class NotificationService {
     );
 
     return newNotification;
+  };
+
+  /**
+   * Notifies every Cisco member about a newly created ticket.
+   */
+  public notifyCiscoNewlyCreatedTicket = async (newDocumentId: number): Promise<Notification | null> => {
+    const targetDocument = await Document.findByPk(newDocumentId);
+
+    if (targetDocument === undefined || targetDocument === null) {
+      return null;
+    }
+
+    // Get the Cisco Member userIds to send notifications to
+    const ciscoRolesRaw = await Role.findAll({
+      where: { [Op.or]: [{ name: RoleEnum.CISCO_MEMBER }, { name: RoleEnum.CISCO_ADMIN }] }
+    });
+    const ciscoRoleNumbers = ciscoRolesRaw.map((r) => r.id);
+    const rawMembers = await User.findAll({
+      include: [Role]
+    });
+    const members = rawMembers.map((m) => m.toJSON());
+    const ciscoMembers = members.filter((m) => m.roles.some((r: Role) => ciscoRoleNumbers.includes(r.id)));
+    const ciscoMemberUserIds = ciscoMembers.map((m) => m.id);
+
+    // Notify each Cisco member
+    ciscoMemberUserIds.forEach((userId) => {
+      this.createNotification(
+        userId,
+        targetDocument.id,
+        `A new Ticket #${targetDocument.id} was created: ${targetDocument.title}.`
+      );
+    });
+
+    return null;
   };
 }
 
