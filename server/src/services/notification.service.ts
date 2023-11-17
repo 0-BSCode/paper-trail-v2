@@ -93,7 +93,7 @@ class NotificationService {
   /**
    * Notifies every Cisco member about a newly created ticket.
    */
-  public notifyCiscoNewlyCreatedTicket = async (newDocumentId: number): Promise<Notification | null> => {
+  public notifyCiscoNewlyCreatedTicket = async (newDocumentId: number): Promise<Notification[] | null> => {
     const targetDocument = await Document.findByPk(newDocumentId);
 
     if (targetDocument === undefined || targetDocument === null) {
@@ -113,15 +113,17 @@ class NotificationService {
     const ciscoMemberUserIds = ciscoMembers.map((m) => m.id);
 
     // Notify each Cisco member
-    ciscoMemberUserIds.forEach((userId) => {
-      this.createNotification(
-        userId,
+    const newNotifications: Notification[] = [];
+    for (let i = 0; i < ciscoMemberUserIds.length; i++) {
+      const createdNotification = await this.createNotification(
+        ciscoMemberUserIds[i],
         targetDocument.id,
         `A new Ticket #${targetDocument.id} was created: ${targetDocument.title}.`
       );
-    });
+      newNotifications.push(createdNotification);
+    }
 
-    return null;
+    return newNotifications;
   };
 }
 
