@@ -1,6 +1,7 @@
 import catchAsync from "../../../middleware/catch-async";
 import { Request, Response } from "express";
 import commentService from "../../../services/comment.service";
+import notificationService from "../../../services/notification.service";
 
 class CommentController {
   /**
@@ -17,6 +18,8 @@ class CommentController {
       // Creating a new comment failed
       return res.sendStatus(401);
     }
+
+    await notificationService.notifyNewCommentByAnotherUser(newComment.id);
 
     return res.status(201).json(newComment);
   });
