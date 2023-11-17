@@ -20,6 +20,7 @@ class CommentController {
     }
 
     await notificationService.notifyNewCommentByAnotherUser(newComment.id);
+    await notificationService.notifyAssigneeTicketComment(newComment.id);
 
     return res.status(201).json(newComment);
   });

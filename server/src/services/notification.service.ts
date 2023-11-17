@@ -125,6 +125,34 @@ class NotificationService {
 
     return newNotifications;
   };
+
+  public notifyAssigneeTicketComment = async (commentId: number) => {
+    const newComment = await Comment.findByPk(commentId, { include: [Document, User] });
+
+    // No notification should be created about non-existed comments or documents.
+    if (newComment === undefined || newComment === null) {
+      return null;
+    }
+
+    const document = newComment.document;
+
+    if (document === undefined || document === null) {
+      return null;
+    }
+
+    // No notification should be created on documents with no assignee.
+    if (document.assigneeId === undefined || document.assigneeId === null) {
+      return null;
+    }
+
+    const newNotification = await this.createNotification(
+      document.assigneeId,
+      document.id,
+      `Ticket #${document.id}: "${document.title}" assigned to you has a new comment.`
+    );
+
+    return newNotification;
+  };
 }
 
 export default new NotificationService();
