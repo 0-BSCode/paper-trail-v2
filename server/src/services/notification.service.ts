@@ -126,6 +126,9 @@ class NotificationService {
     return newNotifications;
   };
 
+  /**
+   * Notifies the Cisco user assigned to a ticket about a new comment.
+   */
   public notifyAssigneeTicketComment = async (commentId: number) => {
     const newComment = await Comment.findByPk(commentId, { include: [Document, User] });
 
@@ -148,7 +151,7 @@ class NotificationService {
     const newNotification = await this.createNotification(
       document.assigneeId,
       document.id,
-      `Ticket #${document.id}: "${document.title}" assigned to you has a new comment.`
+      `Ticket #${document.id}: "${document.title}" assigned to you has a new comment: "${newComment.content}"`
     );
 
     return newNotification;
