@@ -4,6 +4,16 @@ import { Document } from "../db/models/document.model";
 import { Comment } from "../db/models/comment.model";
 
 class NotificationService {
+  private createNotification = async (userId: number, documentId: number, message: string): Promise<Notification> => {
+    const newNotification: Notification = await Notification.create({
+      userId,
+      documentId,
+      message
+    });
+
+    return newNotification;
+  };
+
   public getNotifications = async (userId: number): Promise<Notification[]> => {
     const notifications = await Notification.findAll({ where: { userId } });
 
@@ -34,12 +44,11 @@ class NotificationService {
       return null;
     }
 
-    const NOTIFICATION_MESSAGE = `Your ticket "${targetDocument.title}" had its status updated to ${targetDocument.status}`;
-    const newNotification: Notification = await Notification.create({
+    const newNotification: Notification = await this.createNotification(
       userId,
       documentId,
-      message: NOTIFICATION_MESSAGE
-    });
+      `Your ticket "${targetDocument.title}" had its status updated to ${targetDocument.status}`
+    );
 
     return newNotification;
   };
@@ -66,12 +75,11 @@ class NotificationService {
       return null;
     }
 
-    const NOTIFICATION_MESSAGE = `Your ticket "${newComment.document.title}" has a new comment from ${newComment.user.email}: "${newComment.content}".`;
-    const newNotification: Notification = await Notification.create({
-      userId: newComment.document.userId,
-      documentId: newComment.document.id,
-      message: NOTIFICATION_MESSAGE
-    });
+    const newNotification: Notification = await this.createNotification(
+      newComment.document.userId,
+      newComment.document.id,
+      `Your ticket "${newComment.document.title}" has a new comment from ${newComment.user.email}: "${newComment.content}".`
+    );
 
     return newNotification;
   };
