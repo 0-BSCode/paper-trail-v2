@@ -12,6 +12,7 @@ interface TicketInterface {
   isPublic: boolean;
   user: { email: string };
   assignee: { email: string };
+  status: string;
 }
 
 export default TicketInterface;

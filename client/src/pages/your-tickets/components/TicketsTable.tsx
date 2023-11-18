@@ -60,6 +60,7 @@ const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
         pageSize: 10,
         total: 5,
       }}
+      rowKey="id"
     />
   );
 };

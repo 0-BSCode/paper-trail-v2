@@ -1,43 +1,46 @@
-import React from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Button, Dropdown, message, Space } from 'antd';
+import { Button, Dropdown, Space } from 'antd';
+import { type Dispatch, type SetStateAction } from 'react';
 
-const DropDown = (): JSX.Element => {
-  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    message.info('Click on left button.');
-    console.log('click left button', e);
-  };
+interface DropDownProps {
+  dropDownFilter: string;
+  setDropDownFilter: Dispatch<SetStateAction<string>>;
+}
 
+const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Element => {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    message.info('Click on menu item.');
-    console.log('click', e);
+    setDropDownFilter(e.key);
   };
 
   const items: MenuProps['items'] = [
     {
+      label: 'ALL',
+      key: 'ALL',
+    },
+    {
       label: 'DRAFT',
-      key: '1',
+      key: 'DRAFT',
     },
     {
       label: 'REVIEW REQUESTED',
-      key: '2',
+      key: 'REVIEW_REQUESTED',
     },
     {
       label: 'REVIEW',
-      key: '3',
+      key: 'REVIEW',
     },
     {
       label: 'CHANGES REQUESTED',
-      key: '4',
+      key: 'CHANGES_REQUESTED',
     },
     {
       label: 'RAISED',
-      key: '5',
+      key: 'RAISED',
     },
     {
       label: 'RESOLVED',
-      key: '6',
+      key: 'RESOLVED',
     },
   ];
 
@@ -50,7 +53,7 @@ const DropDown = (): JSX.Element => {
     <Dropdown menu={menuProps}>
       <Button>
         <Space>
-          DRAFT
+          {!dropDownFilter ? 'Status' : dropDownFilter}
           <DownOutlined />
         </Space>
       </Button>
