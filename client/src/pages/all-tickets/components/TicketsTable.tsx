@@ -11,9 +11,13 @@ const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
   const columns: ColumnsType<TicketInterface> = [
     {
       title: 'Title',
-      dataIndex: 'title',
+      dataIndex: ['title', 'id'],
       key: 'title',
-      render: (text) => <Link to={`/document`}>{text}</Link>,
+      render: (_, record) => (
+        <Link to={`/document/${record.id}`}>
+          <p>{record.title}</p>
+        </Link>
+      ),
     },
     {
       title: 'Date Created',
