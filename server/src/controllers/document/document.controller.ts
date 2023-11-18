@@ -27,6 +27,9 @@ class DocumentController {
     const documentUsers = await DocumentUser.findAll({
       where: {
         userId: req.user?.id
+      },
+      include: {
+        model: Document
       }
     });
     const sharedDocuments = documentUsers.map((documentUser) => documentUser.document);

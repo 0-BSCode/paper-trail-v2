@@ -6,7 +6,9 @@ import DocumentHeader from './components/DocumentHeader';
 import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentEditor from './components/DocumentEditor';
 import { AuthContext } from '@src/context/AuthContext';
+import DocumentFiles from './components/DocumentFiles';
 import Spinner from '@src/components/Spinner';
+import FileDropZone from '@src/components/FileDropZone';
 
 const DocumentPage = (): JSX.Element => {
   const { id: documentId } = useParams();
@@ -39,8 +41,8 @@ const DocumentPage = (): JSX.Element => {
           <div className="flex flex-col">
             {userId && documentId && (
               <div className="ml-5">
-                {/* <FileDropZone userId={userId} documentId={documentId} /> */}
-                {/* <DocumentFiles documentId={documentId} /> */}
+                <FileDropZone userId={userId} documentId={documentId} />
+                <DocumentFiles documentId={documentId} />
               </div>
             )}
           </div>
