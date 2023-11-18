@@ -4,9 +4,7 @@ import DropDown from './DropDown';
 import useDocuments from '@src/hooks/useDocuments';
 
 const UnassignedTickets = (): JSX.Element => {
-  const { allDocuments } = useDocuments();
-
-  console.log(allDocuments);
+  const { allTickets } = useDocuments();
 
   return (
     <div className="w-[90%] h-[45%] bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -23,7 +21,7 @@ const UnassignedTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <TicketsTable documents={allDocuments.filter((doc) => !doc.assigneeId)} />
+      <TicketsTable documents={allTickets.filter((doc) => !doc.assigneeId)} />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import useAuth from '@src/hooks/useAuth';
 
 const AssignedTickets = (): JSX.Element => {
   const { userId } = useAuth();
-  const { allDocuments } = useDocuments();
+  const { allTickets } = useDocuments();
 
   return (
     <div className="w-[90%] h-full bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -23,7 +23,7 @@ const AssignedTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <TicketsTable documents={allDocuments.filter((doc) => doc.assigneeId === userId)} />
+      <TicketsTable documents={allTickets.filter((doc) => doc.assigneeId === userId)} />
     </div>
   );
 };
