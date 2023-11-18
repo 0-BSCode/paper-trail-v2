@@ -7,19 +7,30 @@ import { useEffect, useState } from 'react';
 import type TicketInterface from '@src/types/interfaces/ticket';
 
 const SharedTickets = (): JSX.Element => {
-  const [titleFilter, setTitleFilter] = useState<null | string>(null);
   const { allTickets } = useDocuments();
   const { userId } = useAuth();
-
-  let tickets: TicketInterface[] = allTickets.filter((doc) => doc.users.some((tic) => tic.userId === userId));
+  const [filtered, setFiltered] = useState<boolean>(false);
+  const [titleFilter, setTitleFilter] = useState<string>('');
+  const [dropDownFilter, setDropDownFilter] = useState<string>('ALL');
+  const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
 
   useEffect(() => {
-    if (!titleFilter) return;
+    if (titleFilter?.length > 3 || dropDownFilter !== 'ALL') {
+      setFiltered(true);
 
-    if (titleFilter.length > 3) {
-      tickets = tickets.filter((tic) => tic.title.includes(titleFilter));
+      setFilteredTickets(
+        allTickets.filter(
+          (tic) =>
+            (titleFilter?.length > 3 ? tic.title.toLowerCase().includes(titleFilter) : true) &&
+            (dropDownFilter === 'ALL' ? true : tic.status === dropDownFilter) &&
+            tic.users.some((t) => t.userId === userId),
+        ),
+      );
+    } else {
+      setFiltered(false);
+      setFilteredTickets(allTickets.filter((doc) => doc.assigneeId === userId));
     }
-  }, [titleFilter]);
+  }, [titleFilter, dropDownFilter]);
 
   return (
     <div className="w-[90%] h-[45%] bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -38,11 +49,15 @@ const SharedTickets = (): JSX.Element => {
           </div>
           <div className="flex flex-col mb-3">
             <p className="my-2 font-semibold ">Status</p>
-            <DropDown />
+            <DropDown dropDownFilter={dropDownFilter} setDropDownFilter={setDropDownFilter} />
           </div>
         </div>
       </div>
-      <TicketsTable documents={tickets} />
+      <TicketsTable
+        documents={
+          filtered ? filteredTickets : allTickets.filter((doc) => doc.users.some((tic) => tic.userId === userId))
+        }
+      />
     </div>
   );
 };

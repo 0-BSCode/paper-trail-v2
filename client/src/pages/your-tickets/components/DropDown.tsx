@@ -1,14 +1,23 @@
-import React from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
+import { type Dispatch, type SetStateAction } from 'react';
 
-const DropDown = (): JSX.Element => {
+interface DropDownProps {
+  dropDownFilter: string;
+  setDropDownFilter: Dispatch<SetStateAction<string>>;
+}
+
+const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Element => {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    console.log('click', e);
+    setDropDownFilter(e.key);
   };
 
   const items: MenuProps['items'] = [
+    {
+      label: 'ALL',
+      key: 'ALL',
+    },
     {
       label: 'DRAFT',
       key: 'DRAFT',
@@ -44,7 +53,7 @@ const DropDown = (): JSX.Element => {
     <Dropdown menu={menuProps}>
       <Button>
         <Space>
-          DRAFT
+          {!dropDownFilter ? 'Status' : dropDownFilter}
           <DownOutlined />
         </Space>
       </Button>
