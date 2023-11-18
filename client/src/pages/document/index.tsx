@@ -5,10 +5,8 @@ import useDocument from '@src/hooks/useDocument';
 import DocumentHeader from './components/DocumentHeader';
 import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentEditor from './components/DocumentEditor';
-import FileDropZone from '@src/components/FileDropZone';
 import { AuthContext } from '@src/context/AuthContext';
 import Spinner from '@src/components/Spinner';
-import DocumentFiles from './components/DocumentFiles';
 
 const DocumentPage = (): JSX.Element => {
   const { id: documentId } = useParams();
@@ -28,21 +26,21 @@ const DocumentPage = (): JSX.Element => {
   }
 
   return (
-    <div style={{ height: heightStr }} className="w-full h-full bg-gray-100 flex flex-col">
+    <div style={{ height: heightStr }} className="flex flex-col w-full h-full bg-gray-100">
       <DocumentHeader documentHeaderRef={documentHeaderRef} />
       <div
         style={{
           height: documentViewerHeight,
         }}
-        className="w-full flex flex-col justify-start items-center overflow-hidden"
+        className="flex flex-col items-center justify-start w-full overflow-hidden"
       >
-        <div style={{ width: widthStr }} className="h-full w-full overflow-auto space-y-4 flex items-start p-4">
+        <div style={{ width: widthStr }} className="flex items-start w-full h-full p-4 space-y-4 overflow-auto">
           <DocumentEditor />
           <div className="flex flex-col">
             {userId && documentId && (
               <div className="ml-5">
-                <FileDropZone userId={userId} documentId={documentId} />
-                <DocumentFiles documentId={documentId} />
+                {/* <FileDropZone userId={userId} documentId={documentId} /> */}
+                {/* <DocumentFiles documentId={documentId} /> */}
               </div>
             )}
           </div>

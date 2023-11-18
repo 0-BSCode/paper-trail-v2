@@ -17,15 +17,16 @@ const useDocuments = (): DocumentHookType => {
   const { accessToken, userId } = useAuth();
   const [allDocuments, setAllDocuments] = useState<DocumentInterface[]>([]);
   const [userDocuments, setUserDocuments] = useState<DocumentInterface[]>([]);
+
   const [loading, setLoading] = useState(false);
   const { error } = useContext(ToastContext);
 
-  const loadDocuments = async (accessToken: string): Promise<void> => {
+  const loadUserDocuments = async (accessToken: string): Promise<void> => {
     setLoading(true);
 
     try {
       const response = await DocumentService.list(accessToken);
-      setAllDocuments(response.data as DocumentInterface[]);
+      setUserDocuments(response.data as DocumentInterface[]);
     } catch (err) {
       error('Unable to load documents. Please try again.');
     } finally {
@@ -33,12 +34,12 @@ const useDocuments = (): DocumentHookType => {
     }
   };
 
-  const loadUserDocuments = async (accessToken: string): Promise<void> => {
+  const loadAllDocuments = async (accessToken: string): Promise<void> => {
     if (!userId) return;
 
     try {
-      const response = await DocumentService.getAssigned(accessToken, userId);
-      setUserDocuments(response.data as DocumentInterface[]);
+      const response = await DocumentService.getAllDocuments(accessToken);
+      setAllDocuments(response.data as DocumentInterface[]);
     } catch (err) {
       error('Unable to load documents. Please try again.');
     } finally {
@@ -49,7 +50,7 @@ const useDocuments = (): DocumentHookType => {
   useEffect(() => {
     if (accessToken === null) return;
 
-    void loadDocuments(accessToken);
+    void loadAllDocuments(accessToken);
     void loadUserDocuments(accessToken);
   }, [accessToken]);
 

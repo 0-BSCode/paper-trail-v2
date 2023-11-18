@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { Document } from "../../db/models/document.model";
 import { validationResult } from "express-validator";
 import { DocumentUser } from "../../db/models/document-user.model";
+import { User } from "../../db/models/user.model";
 import documentService from "../../services/document.service";
 
 class DocumentController {
@@ -17,7 +18,7 @@ class DocumentController {
     return res.status(200).json(document);
   });
 
-  public getAll = catchAsync(async (req: Request, res: Response) => {
+  public getAllUserDocuments = catchAsync(async (req: Request, res: Response) => {
     const documents = await Document.findAll({
       where: {
         userId: req.user?.id
@@ -33,6 +34,20 @@ class DocumentController {
     });
     const sharedDocuments = documentUsers.map((documentUser) => documentUser.document);
     documents.push(...sharedDocuments);
+
+    return res.status(200).json(documents);
+  });
+
+  public getAllDocuments = catchAsync(async (req: Request, res: Response) => {
+    const documents = await Document.findAll({
+      include: [
+        {
+          model: User
+        }
+      ]
+    });
+
+    if (!documents) return res.status(400).json({ message: "documents is empty bruh" });
 
     return res.status(200).json(documents);
   });

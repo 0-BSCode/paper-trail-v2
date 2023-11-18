@@ -1,8 +1,10 @@
-import React from 'react';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import useDocuments from '@src/hooks/useDocuments';
 import type DocumentInterface from '@src/types/interfaces/document';
+
+interface TicketsTableProps {
+  documents: DocumentInterface[];
+}
 
 const columns: ColumnsType<DocumentInterface> = [
   {
@@ -12,36 +14,35 @@ const columns: ColumnsType<DocumentInterface> = [
     render: (text) => <a>{text}</a>,
   },
   {
-    title: 'ID',
-    dataIndex: 'id',
+    title: 'Date Created',
+    dataIndex: 'createdAt',
     key: 'id',
+    render: (text) => <p>{text.split('T')[0]}</p>,
   },
   {
     title: 'Owner',
-    dataIndex: 'owner',
+    dataIndex: 'userId',
     key: 'owner',
+  },
+  {
+    title: 'Assigned To',
+    dataIndex: 'assigneeId',
+    key: 'assignee',
   },
   {
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
   },
-  {
-    title: 'Assignee',
-    dataIndex: 'assignee',
-    key: 'assignee',
-  },
 ];
 
-const TicketsTable: React.FC = () => {
-  const { userDocuments } = useDocuments();
-
+const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
   return (
     <Table
       columns={columns}
-      dataSource={userDocuments}
+      dataSource={documents}
       pagination={{
-        pageSize: 2,
+        pageSize: 10,
         total: 5,
       }}
     />

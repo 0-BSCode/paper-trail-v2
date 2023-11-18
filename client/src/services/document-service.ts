@@ -16,8 +16,8 @@ const DocumentService = {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
   },
-  getAssigned: async (accessToken: string, assigneeId: number) => {
-    return await API.get(`document/assignee/${assigneeId}`, {
+  getAllDocuments: async (accessToken: string) => {
+    return await API.get(`document/all`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
   },
