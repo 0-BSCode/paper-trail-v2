@@ -27,12 +27,10 @@ const RichTextEditor: React.FC<Props> = ({ onChange, editorRef }: Props) => {
   }, []);
 
   return (
-    <div>
-      <WysiwygEditor placeholder="Enter text..." autoFocus>
-        <OnChangeJSON onChange={onChange} />
-        <ImperativeHandle ref={editorRef} />
-      </WysiwygEditor>
-    </div>
+    <WysiwygEditor placeholder="Enter text..." autoFocus>
+      <OnChangeJSON onChange={onChange} />
+      <ImperativeHandle ref={editorRef} />
+    </WysiwygEditor>
   );
 };
 
