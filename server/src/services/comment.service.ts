@@ -38,11 +38,45 @@ class CommentService {
       content
     });
 
-    return newComment;
+    // TODO (Bryan): newComment doesn't fit data we need so we have to fetch it
+    // though this transaction can be unnecessary
+    const comment = await Comment.findByPk(newComment.id, {
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
+          }
+        }
+      ]
+    });
+
+    if (!comment) {
+      return null;
+    }
+
+    return comment;
   };
 
   public getComments = async (documentId: number): Promise<Comment[] | { error: string } | null> => {
-    const document = await Document.findByPk(documentId, { include: [Comment] });
+    const document = await Document.findByPk(documentId, {
+      include: [
+        {
+          model: Comment,
+          attributes: {
+            exclude: ["userId"]
+          },
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
+              }
+            }
+          ] // Include the User model associated with each Comment
+        }
+      ]
+    });
 
     if (!document) {
       return null;

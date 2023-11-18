@@ -45,7 +45,12 @@ const DocumentPage = (): JSX.Element => {
           </div>
           <div className="flex flex-col">
             {userId && documentId && (
-              <Space direction="vertical">
+              <Space
+                direction="vertical"
+                style={{
+                  height: '100%',
+                }}
+              >
                 <FileDropZone userId={userId} documentId={documentId} />
                 <DocumentComments />
               </Space>

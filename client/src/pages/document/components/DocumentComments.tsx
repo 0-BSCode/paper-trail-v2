@@ -1,9 +1,18 @@
-import React from 'react';
-import { Space, Typography } from 'antd';
+import React, { useState } from 'react';
+import { Button, Input, Space, Typography } from 'antd';
+import useComments from '@src/hooks/useComments';
+import { useParams } from 'react-router-dom';
+import Spinner from '@src/components/Spinner';
+import DocumentComment from './DocumentComment';
+import { ArrowRightOutlined } from '@ant-design/icons';
 
 const DocumentComments = (): JSX.Element => {
+  const { id: documentId } = useParams();
+  const { comments, loading: commentsLoading, createComment } = useComments(parseInt(documentId as string));
+  const [content, setContent] = useState('');
+
   return (
-    <div className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-2">
+    <div className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-3 w-full">
       <Typography.Title
         level={5}
         style={{
@@ -12,7 +21,43 @@ const DocumentComments = (): JSX.Element => {
       >
         Comments
       </Typography.Title>
-      <Space></Space>
+      <Space
+        direction="vertical"
+        style={{
+          overflowY: 'auto',
+          maxHeight: '250px',
+        }}
+      >
+        {commentsLoading && <Spinner size="lg" />}
+        {comments.map((comment) => (
+          <DocumentComment key={`comment_${comment.id}`} comment={comment} />
+        ))}
+      </Space>
+      <Space.Compact block style={{ alignItems: 'center', columnGap: 5 }}>
+        <Input.TextArea
+          rows={2}
+          style={{ width: '80%' }}
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+        />
+        <Button
+          icon={<ArrowRightOutlined />}
+          type="primary"
+          style={{
+            height: '100%',
+            flex: 1,
+          }}
+          onClick={() => {
+            if (!content.length) return;
+
+            void createComment(parseInt(documentId as string), content).then(() => {
+              setContent('');
+            });
+          }}
+        />
+      </Space.Compact>
     </div>
   );
 };
