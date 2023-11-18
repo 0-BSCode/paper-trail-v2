@@ -7,27 +7,27 @@ import type TicketInterface from '@src/types/interfaces/ticket';
 
 interface DocumentHookType {
   allTickets: TicketInterface[];
-  userDocuments: DocumentInterface[];
+  documents: DocumentInterface[];
   loading: boolean;
   setAllTickets: Dispatch<SetStateAction<TicketInterface[]>>;
-  setUserDocuments: Dispatch<SetStateAction<DocumentInterface[]>>;
+  setDocuments: Dispatch<SetStateAction<DocumentInterface[]>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const useDocuments = (): DocumentHookType => {
   const { accessToken, userId } = useAuth();
   const [allTickets, setAllTickets] = useState<TicketInterface[]>([]);
-  const [userDocuments, setUserDocuments] = useState<DocumentInterface[]>([]);
+  const [documents, setDocuments] = useState<DocumentInterface[]>([]);
 
   const [loading, setLoading] = useState(false);
   const { error } = useContext(ToastContext);
 
-  const loadUserDocuments = async (accessToken: string): Promise<void> => {
+  const loadDocuments = async (accessToken: string): Promise<void> => {
     setLoading(true);
 
     try {
       const response = await DocumentService.list(accessToken);
-      setUserDocuments(response.data as DocumentInterface[]);
+      setDocuments(response.data as DocumentInterface[]);
     } catch (err) {
       error('Unable to load documents. Please try again.');
     } finally {
@@ -52,15 +52,15 @@ const useDocuments = (): DocumentHookType => {
     if (accessToken === null) return;
 
     void loadAllDocuments(accessToken);
-    void loadUserDocuments(accessToken);
+    void loadDocuments(accessToken);
   }, [accessToken]);
 
   return {
     allTickets,
-    userDocuments,
+    documents,
     loading,
     setAllTickets,
-    setUserDocuments,
+    setDocuments,
     setLoading,
   };
 };
