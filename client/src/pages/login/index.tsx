@@ -2,7 +2,6 @@ import useWindowSize from '@src/hooks/useWindowSize';
 import TextField from '@src/components/TextField';
 import { type KeyboardEvent, useContext, useState } from 'react';
 import { ToastContext } from '@src/context/ToastContext';
-import Logo from '@src/components/Logo';
 import validator from 'validator';
 import Spinner from '@src/components/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
@@ -89,18 +88,29 @@ const LoginPage = (): JSX.Element => {
       <div className="w-full max-w-sm bg-white dark:bg-slate-800 rounded border-primary shadow-md border dark:border-0 dark:shadow-xl p-6">
         <div className="flex flex-col space-y-4">
           <div className="w-full text-center flex flex-col justify-center items-center">
-            <Logo />
-            <h1 className="font-medium text-2xl">Sign in</h1>
-            <p className="font-medium">to continue to Docs</p>
+            <svg width="61" height="85" viewBox="0 0 249 282" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M139.172 204.927V281.043H248.199L196.833 0H139.172V70.2607H109.897V0H52.084L0.354492 281.043H109.897V204.927H139.172ZM109.897 99.536H139.172V181.507H109.897V99.536Z"
+                fill="black"
+              />
+            </svg>
+            <h1>Paper Trail</h1>
+            <h3 className="font-medium">Login</h3>
           </div>
-          <TextField value={email} onInput={handleOnInputEmail} label="Email" color="secondary" errors={emailErrors} />
+          <TextField
+            value={email}
+            placeholder="Email"
+            onInput={handleOnInputEmail}
+            color="secondary"
+            errors={emailErrors}
+          />
           <Link tabIndex={-1} to="/register" className="text-sm hover:underline font-semibold text-blue-500 text-left">
             Need an account?
           </Link>
           <TextField
+            placeholder="Password"
             value={password}
             onInput={handleOnInputPassword}
-            label="Password"
             type="password"
             color="secondary"
             errors={passwordErrors}
