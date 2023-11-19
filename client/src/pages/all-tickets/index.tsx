@@ -2,7 +2,6 @@ import AssignedTickets from './components/AssignedTickets';
 import Header from './components/Header';
 import UnassignedTickets from './components/UnassignedTickets';
 
-// TODO (Sam): Fill in
 const AllTicketsPage = (): JSX.Element => {
   return (
     <div className="flex flex-col h-fit bg-[#f5f5f5]">

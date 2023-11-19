@@ -3,7 +3,6 @@ import YourTickets from './components/YourTickets';
 import Header from './components/Header';
 import SharedTickets from './components/SharedTickets';
 
-// TODO (Sam): Fill in
 const YourTicketsPage = (): JSX.Element => {
   return (
     <div className="flex flex-col h-fit bg-[#f5f5f5]">

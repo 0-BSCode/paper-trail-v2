@@ -15,13 +15,13 @@ const AssignedTickets = (): JSX.Element => {
   const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
 
   useEffect(() => {
-    if (titleFilter?.length > 3 || dropDownFilter !== 'ALL') {
+    if (titleFilter.length > 3 || dropDownFilter !== 'ALL') {
       setFiltered(true);
 
       setFilteredTickets(
         allTickets.filter(
           (tic) =>
-            (titleFilter?.length > 3 ? tic.title.toLowerCase().includes(titleFilter) : true) &&
+            (titleFilter.length > 3 ? tic.title.toLowerCase().includes(titleFilter) : true) &&
             (dropDownFilter === 'ALL' ? true : tic.status === dropDownFilter) &&
             tic.assigneeId === userId,
         ),
@@ -42,7 +42,6 @@ const AssignedTickets = (): JSX.Element => {
             <Input
               onChange={(e) => {
                 setTitleFilter(e.target.value);
-                console.log(titleFilter);
               }}
               placeholder="Title"
               style={{ width: '100%' }}
