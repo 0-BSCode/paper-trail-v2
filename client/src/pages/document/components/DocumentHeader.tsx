@@ -8,7 +8,7 @@ interface DocumentHeaderProps {
 // TODO (Bryan): Clean up since it only uses one component
 const DocumentHeader = ({ documentHeaderRef }: DocumentHeaderProps): JSX.Element => {
   return (
-    <div ref={documentHeaderRef} className="border-b w-full bg-white flex flex-col px-5 py-3">
+    <div ref={documentHeaderRef} className="border-b w-full bg-white flex flex-col px-5 py-3 shadow-md z-[999]">
       <DocumentMenuBar />
     </div>
   );

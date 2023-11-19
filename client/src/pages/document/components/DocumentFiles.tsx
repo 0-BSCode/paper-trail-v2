@@ -9,8 +9,10 @@ const DocumentFiles = ({ documentId }: { documentId: string }): JSX.Element => {
   const { redirectToFile, deleteFile } = useFileHandler();
 
   return (
-    <div>
-      <Typography.Title level={4}>Attached Files</Typography.Title>
+    <Space direction="vertical" className="px-5">
+      <Typography.Title level={4} className="mt-0">
+        Attached Files
+      </Typography.Title>
       {files && (
         <>
           {!files.length ? (
@@ -28,8 +30,12 @@ const DocumentFiles = ({ documentId }: { documentId: string }): JSX.Element => {
                     onClick={() => {
                       redirectToFile(file.url ?? '');
                     }}
-                  />
-                  <p>{file.name}</p>
+                    style={{
+                      borderRadius: '2px',
+                    }}
+                  >
+                    {file.name}
+                  </Button>
                   <Button
                     type="dashed"
                     danger
@@ -45,7 +51,7 @@ const DocumentFiles = ({ documentId }: { documentId: string }): JSX.Element => {
           )}
         </>
       )}
-    </div>
+    </Space>
   );
 };
 

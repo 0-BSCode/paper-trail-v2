@@ -83,7 +83,7 @@ const FileDropZone = ({ userId, documentId }: Props): JSX.Element => {
   };
 
   return (
-    <Space direction="vertical">
+    <Space direction="vertical" className="w-[40%]">
       <Button
         type="primary"
         className="w-full"
@@ -92,6 +92,9 @@ const FileDropZone = ({ userId, documentId }: Props): JSX.Element => {
         }}
         disabled={!selectedFiles.length}
         loading={isUploading}
+        style={{
+          borderRadius: '6px',
+        }}
       >
         {isUploading ? 'Uploading...' : 'Upload'}
       </Button>

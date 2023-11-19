@@ -11,6 +11,7 @@ import Spinner from '@src/components/Spinner';
 import DocumentFiles from './components/DocumentFiles';
 import { Space } from 'antd';
 import DocumentComments from './components/DocumentComments';
+import DocumentAssignee from './components/DocumentAssignee';
 
 const DocumentPage = (): JSX.Element => {
   const { id: documentId } = useParams();
@@ -38,23 +39,21 @@ const DocumentPage = (): JSX.Element => {
         }}
         className="w-full flex flex-col justify-start items-center overflow-hidden"
       >
-        <div style={{ width: widthStr }} className="h-full w-full overflow-auto space-y-4 flex items-start gap-x-3 p-4">
-          <div className="flex flex-col">
+        <div style={{ width: widthStr }} className="h-full w-full overflow-auto flex items-start gap-x-3 p-4">
+          <div className="flex flex-col gap-y-4">
             <DocumentEditor />
-            {documentId && <DocumentFiles documentId={documentId} />}
+            {userId && documentId && (
+              <Space.Compact className="bg-white px-10 py-5 w-[850px] h-fit">
+                <FileDropZone userId={userId} documentId={documentId} />
+                {documentId && <DocumentFiles documentId={documentId} />}
+              </Space.Compact>
+            )}
           </div>
           <div className="flex flex-col">
-            {userId && documentId && (
-              <Space
-                direction="vertical"
-                style={{
-                  height: '100%',
-                }}
-              >
-                <FileDropZone userId={userId} documentId={documentId} />
-                <DocumentComments />
-              </Space>
-            )}
+            <Space direction="vertical" className="h-fit">
+              <DocumentAssignee />
+              <DocumentComments />
+            </Space>
           </div>
         </div>
       </div>

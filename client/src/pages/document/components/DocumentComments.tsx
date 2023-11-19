@@ -12,7 +12,7 @@ const DocumentComments = (): JSX.Element => {
   const [content, setContent] = useState('');
 
   return (
-    <div className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-3 w-full">
+    <div className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-3">
       <Typography.Title
         level={5}
         style={{
@@ -26,6 +26,8 @@ const DocumentComments = (): JSX.Element => {
         style={{
           overflowY: 'auto',
           maxHeight: '250px',
+          rowGap: '8px',
+          paddingBlock: '10px',
         }}
       >
         {commentsLoading && <Spinner size="lg" />}
@@ -33,9 +35,9 @@ const DocumentComments = (): JSX.Element => {
           <DocumentComment key={`comment_${comment.id}`} comment={comment} />
         ))}
       </Space>
-      <Space.Compact block style={{ alignItems: 'center', columnGap: 5 }}>
+      <Space.Compact style={{ alignItems: 'stretch', columnGap: 5 }}>
         <Input.TextArea
-          rows={2}
+          rows={1}
           style={{ width: '80%' }}
           value={content}
           onChange={(e) => {
@@ -46,7 +48,6 @@ const DocumentComments = (): JSX.Element => {
           icon={<ArrowRightOutlined />}
           type="primary"
           style={{
-            height: '100%',
             flex: 1,
           }}
           onClick={() => {
