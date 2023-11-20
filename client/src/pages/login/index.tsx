@@ -82,10 +82,15 @@ const LoginPage = (): JSX.Element => {
   return (
     <div
       onKeyPress={handleOnKeyPress}
-      className="w-full flex flex-col sm:justify-center items-center p-6 sm:pb-96 bg-gray-100 dark:bg-slate-900 text-primary"
-      style={{ width: widthStr, height: heightStr }}
+      className="w-full flex flex-col sm:justify-center items-center p-6 sm:pb-96 bg-gray-100 dark:bg-slate-900 text-primary font-sans"
+      style={{
+        width: widthStr,
+        height: heightStr,
+        backgroundImage: `url('src/assets/login-background.png')`,
+        backgroundSize: 'cover',
+      }}
     >
-      <div className="w-full max-w-sm bg-white dark:bg-slate-800 rounded border-primary shadow-md border dark:border-0 dark:shadow-xl p-6">
+      <div className="w-full max-w-sm dark:bg-slate-800 border-primary border dark:border-0 dark:shadow-xl p-6">
         <div className="flex flex-col space-y-4">
           <div className="w-full text-center flex flex-col justify-center items-center">
             <svg width="61" height="85" viewBox="0 0 249 282" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -94,44 +99,46 @@ const LoginPage = (): JSX.Element => {
                 fill="black"
               />
             </svg>
-            <h1>Paper Trail</h1>
-            <h3 className="font-medium">Login</h3>
+            <h1 className="text-6xl">Paper Trail</h1>
           </div>
-          <TextField
-            value={email}
-            placeholder="Email"
-            onInput={handleOnInputEmail}
-            color="secondary"
-            errors={emailErrors}
-          />
-          <Link tabIndex={-1} to="/register" className="text-sm hover:underline font-semibold text-blue-500 text-left">
-            Need an account?
-          </Link>
-          <TextField
-            placeholder="Password"
-            value={password}
-            onInput={handleOnInputPassword}
-            type="password"
-            color="secondary"
-            errors={passwordErrors}
-          />
-          <button tabIndex={-1} className="text-sm hover:underline font-semibold text-blue-500 text-left">
-            Forgot Password?
-          </button>
-          <button
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            onClick={loginUser}
-            disabled={loading}
-            className="bg-blue-600 text-white text-sm font-semibold px-3 py-2 rounded hover:bg-blue-500 flex justify-center items-center space-x-1 active:ring-1"
-          >
-            <span className={`${loading && 'opacity-0'}`}>Login</span>
-            {loading && <Spinner size="sm" />}
-          </button>
+          <div className="w-full flex flex-col gap-4">
+            <h3 className="font-medium">Login</h3>
+            <TextField
+              value={email}
+              placeholder="Email"
+              onInput={handleOnInputEmail}
+              color="secondary"
+              errors={emailErrors}
+            />
+            <TextField
+              placeholder="Password (8 digits at least, case sensitive)"
+              value={password}
+              onInput={handleOnInputPassword}
+              type="password"
+              color="secondary"
+              errors={passwordErrors}
+            />
+            <button
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onClick={loginUser}
+              disabled={loading}
+              className="bg-blue-500 text-white text-sm px-3 py-2 rounded hover:bg-blue-600 hover:cursor-pointer flex justify-center items-center space-x-1 active:ring-1"
+            >
+              <span className={`${loading && 'opacity-0'}`}>Log In</span>
+              {loading && <Spinner size="sm" />}
+            </button>
+            <button className="bg-white text-sm px-3 py-2 rounded hover:cursor-pointer hover:bg-slate-100 flex justify-center items-center space-x-1 active:ring-1 gap-2">
+              <img className="h-4 w-4" src="/src/assets/icons/google-logo.png" alt="" />
+              Continue with Google
+            </button>
+            <div className="text-center items-center">
+              <span>or </span>
+              <Link to="/register" className="text-sm hover:underline font-semibold text-blue-500">
+                Register
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="flex justify-center space-x-4 text-sm p-4">
-        <button className="hover:underline font-semibold text-blue-500">Terms</button>
-        <button className="hover:underline font-semibold text-blue-500">Privacy Policy</button>
       </div>
     </div>
   );
