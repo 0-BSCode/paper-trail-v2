@@ -6,7 +6,7 @@ import LandingFooter from './components/LandingFooter';
 
 const LandingPage = (): JSX.Element => {
   return (
-    <div>
+    <div className="font-sans">
       <LandingHeader />
       <main className="my-8">
         <HeroSection />
