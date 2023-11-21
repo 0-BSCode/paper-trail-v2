@@ -1,8 +1,9 @@
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import type TicketInterface from '@src/types/interfaces/ticket';
 import convertToTitleCase from '@src/utils/convertToTitleCase';
+import type TicketInterface from '@src/types/interfaces/ticket';
 import { Link } from 'react-router-dom';
+import getStatusColor from '@src/utils/getStatusColor';
 
 interface TicketsTableProps {
   documents: TicketInterface[];
@@ -50,7 +51,14 @@ const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (text) => <p>{convertToTitleCase(text)}</p>,
+      render: (_, record) => {
+        return (
+          <div className="flex items-center gap-2">
+            <div className={'w-[5.5px] h-[5.5px] rounded-full' + ' ' + getStatusColor(record.status)}></div>
+            {convertToTitleCase(record.status)}
+          </div>
+        );
+      },
     },
   ];
 
