@@ -25,7 +25,7 @@ function HeroSection(): JSX.Element {
           <OutlinedButton onClick={handleLogInClick}>Log In</OutlinedButton>
         </div>
       </div>
-      <img src={Illustration} alt="Girl Riding a Rocket Ship with a Thumbs-up" />
+      <img className="place-self-center " src={Illustration} alt="Girl Riding a Rocket Ship with a Thumbs-up" />
     </section>
   );
 }

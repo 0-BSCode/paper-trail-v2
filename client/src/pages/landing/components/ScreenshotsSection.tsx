@@ -18,7 +18,7 @@ function ScreenshotsSection(): JSX.Element {
           </p>
         </div>
       </div>
-      <div className="flex items-center justify-between gap-16">
+      <div className="flex items-center justify-center gap-40">
         <div className="flex flex-col">
           <h2 className="mb-4 text-5xl font-bold">Email notifications</h2>
           <p className="justify-start leading-8">
