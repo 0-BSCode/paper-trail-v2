@@ -9,7 +9,7 @@ import FileDropZone from '@src/components/FileDropZone';
 import { AuthContext } from '@src/context/AuthContext';
 import Spinner from '@src/components/Spinner';
 import DocumentFiles from './components/DocumentFiles';
-import { Space } from 'antd';
+import { Space, Typography } from 'antd';
 import DocumentComments from './components/DocumentComments';
 import DocumentAssignee from './components/DocumentAssignee';
 
@@ -30,6 +30,10 @@ const DocumentPage = (): JSX.Element => {
     return <Spinner size="lg" />;
   }
 
+  if (!documentId) {
+    return <Typography.Text>Document not found</Typography.Text>;
+  }
+
   return (
     <div style={{ height: heightStr }} className="w-full h-full bg-gray-100 flex flex-col">
       <DocumentHeader documentHeaderRef={documentHeaderRef} />
@@ -42,16 +46,16 @@ const DocumentPage = (): JSX.Element => {
         <div style={{ width: widthStr }} className="h-full w-full overflow-auto flex items-start gap-x-3 p-4">
           <div className="flex flex-col gap-y-4">
             <DocumentEditor />
-            {userId && documentId && (
+            {userId && (
               <Space.Compact className="bg-white px-10 py-5 w-[850px] h-fit">
                 <FileDropZone userId={userId} documentId={documentId} />
-                {documentId && <DocumentFiles documentId={documentId} />}
+                <DocumentFiles documentId={documentId} />
               </Space.Compact>
             )}
           </div>
           <div className="flex flex-col">
             <Space direction="vertical" className="h-fit">
-              <DocumentAssignee />
+              <DocumentAssignee documentId={documentId} />
               <DocumentComments />
             </Space>
           </div>

@@ -1,5 +1,6 @@
 import { createContext, type Dispatch, type SetStateAction, useState } from 'react';
 
+// TODO: Pack user info under an interface
 export interface AuthContextInterface {
   accessToken: string | null;
   setAccessToken: Dispatch<SetStateAction<string | null>>;

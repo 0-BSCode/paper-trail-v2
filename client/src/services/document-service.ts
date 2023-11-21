@@ -36,6 +36,22 @@ const DocumentService = {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
   },
+  getAssignee: async (accessToken: string, documentId: number) => {
+    return await API.get(`document/${documentId}/assignee`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  },
+  setAssignee: async (accessToken: string, documentId: number, assigneeId: number) => {
+    return await API.put(
+      `document/${documentId}/assignee`,
+      { userId: assigneeId },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  },
 };
 
 export default DocumentService;
