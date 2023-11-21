@@ -1,3 +1,4 @@
+import type StatusEnum from '@src/types/enums/status-enum';
 import type DocumentInterface from '../types/interfaces/document';
 import API from './api';
 
@@ -45,6 +46,22 @@ const DocumentService = {
     return await API.put(
       `document/${documentId}/assignee`,
       { userId: assigneeId },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  },
+  getStatus: async (accessToken: string, documentId: number) => {
+    return await API.get(`document/${documentId}/status`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  },
+  setStatus: async (accessToken: string, documentId: number, status: StatusEnum) => {
+    return await API.put(
+      `document/${documentId}/status`,
+      { status },
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

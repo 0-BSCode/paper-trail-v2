@@ -52,9 +52,7 @@ class StatusController {
     if (status !== undefined && status !== null) document.status = status;
     await document.save();
 
-    await notificationService.notifyStatusChange(document.userId, document.id);
-
-    return res.status(200).end();
+    return res.status(200).json(status);
   });
 }
 const statusController = new StatusController();

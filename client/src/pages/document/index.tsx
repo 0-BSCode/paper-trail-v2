@@ -12,6 +12,7 @@ import DocumentFiles from './components/DocumentFiles';
 import { Space, Typography } from 'antd';
 import DocumentComments from './components/DocumentComments';
 import DocumentAssignee from './components/DocumentAssignee';
+import DocumentStatus from './components/DocumentStatus';
 
 const DocumentPage = (): JSX.Element => {
   const { id: documentId } = useParams();
@@ -55,6 +56,7 @@ const DocumentPage = (): JSX.Element => {
           </div>
           <div className="flex flex-col">
             <Space direction="vertical" className="h-fit">
+              <DocumentStatus documentId={documentId} />
               <DocumentAssignee documentId={documentId} />
               <DocumentComments />
             </Space>

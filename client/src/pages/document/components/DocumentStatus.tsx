@@ -1,66 +1,85 @@
+import { AuthContext } from '@src/context/AuthContext';
+import { ToastContext } from '@src/context/ToastContext';
+import DocumentService from '@src/services/document-service';
 import StatusEnum from '@src/types/enums/status-enum';
-import { Button, Form, Select, Space } from 'antd';
-import { useState } from 'react';
+import { Typography, Button, Select } from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
 
-const { Option } = Select;
+// Filter `option.label` match the user type `input`
+const filterOption = (input: string, option?: { label: string; value: string }): boolean =>
+  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const onFinish = (values: any): void => {
-  console.log('Received values of form: ', values);
+const statusToOptionMapping = {
+  [StatusEnum.CHANGES_REQUESTED]: 'Changes Requested',
+  [StatusEnum.DRAFT]: 'Draft',
+  [StatusEnum.RAISED]: 'Raised',
+  [StatusEnum.RESOLVED]: 'Resolved',
+  [StatusEnum.REVIEW]: 'Review',
+  [StatusEnum.REVIEW_REQUESTED]: 'Review Requested',
 };
 
-const getSelectOptionLabel = (status: StatusEnum): string => {
-  let res = '';
-  const statusSplit = status.split('_');
+const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => {
+  const { accessToken } = useContext(AuthContext);
+  const { success } = useContext(ToastContext);
+  const [status, setStatus] = useState<StatusEnum>(StatusEnum.DRAFT);
+  const [isSaving, setIsSaving] = useState(false);
 
-  for (const s of statusSplit) {
-    res = s.charAt(0).toUpperCase() + s.slice(1);
-  }
+  const onChange = (newStatus: StatusEnum): void => {
+    setStatus(newStatus);
+  };
 
-  return res;
-};
+  const saveStatus = (): void => {
+    // TODO: Consolidate API calls that require accessToken under one check
+    // so we don't need to keep checking this
+    if (accessToken === null) return;
 
-const optionToStatusMapping = {
-  'Changes Requested': StatusEnum.CHANGES_REQUESTED,
-  Draft: StatusEnum.DRAFT,
-  Raised: StatusEnum.RAISED,
-  Resolved: StatusEnum.RESOLVED,
-  Review: StatusEnum.REVIEW,
-  'Review Requested': StatusEnum.REVIEW_REQUESTED,
-};
+    setIsSaving(true);
+    void DocumentService.setStatus(accessToken, parseInt(documentId), status)
+      .then(() => {
+        success('Successfully saved status!');
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsSaving(false);
+      });
+  };
 
-const DocumentStatus = (): JSX.Element => {
-  const [currentStatus, setCurrentStatus] = useState('Draft');
+  useEffect(() => {
+    if (accessToken === null) return;
+
+    void DocumentService.getStatus(accessToken, parseInt(documentId)).then((res) => {
+      const statusData = res.data as StatusEnum;
+      setStatus(statusData);
+    });
+  }, []);
 
   return (
-    <Form name="complex-form" onFinish={onFinish} className="w-full h-9 flex">
-      <Form.Item>
-        <Space>
-          <Form.Item name={['status']} rules={[{ required: true, message: 'Status is required' }]}>
-            <Select
-              placeholder="Select status"
-              allowClear={false}
-              style={{
-                width: '11rem',
-              }}
-              value={currentStatus}
-              onSelect={setCurrentStatus}
-            >
-              {Object.keys(optionToStatusMapping).map((status, idx) => (
-                <Option key={`status_${idx}`} value={status}>
-                  {status}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Space>
-      </Form.Item>
-      <Form.Item label=" " colon={false}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+    <div className="flex flex-col border-r-4 gap-y-3 bg-white shadow-md p-3">
+      <Typography.Title
+        level={5}
+        style={{
+          margin: 0,
+        }}
+      >
+        Status
+      </Typography.Title>
+      <Select
+        showSearch
+        placeholder="Select a status"
+        optionFilterProp="children"
+        onChange={onChange}
+        filterOption={filterOption}
+        value={status}
+        options={Object.keys(StatusEnum).map((s) => {
+          return { value: s, label: statusToOptionMapping[s as keyof typeof StatusEnum] };
+        })}
+      />
+      <Button disabled={isSaving} onClick={saveStatus}>
+        Save Status
+      </Button>
+    </div>
   );
 };
 

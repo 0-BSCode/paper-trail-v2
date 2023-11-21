@@ -7,8 +7,7 @@ import useAuth from '@src/hooks/useAuth';
 import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
-import { Anchor, Space } from 'antd';
-import DocumentStatus from './DocumentStatus';
+import { Anchor, Input, Space } from 'antd';
 
 const { Link } = Anchor;
 
@@ -70,7 +69,7 @@ const DocumentMenuBar = (): JSX.Element => {
       <div className="w-full flex flex-col justify-start items-start overflow-x-hidden md:overflow-visible gap-y-1">
         <Link href="/home" title="Go Back" />
         <Space>
-          <input
+          <Input
             maxLength={25}
             type="text"
             onBlur={(event) => {
@@ -80,14 +79,12 @@ const DocumentMenuBar = (): JSX.Element => {
               handleTitleInputChange(event);
             }}
             value={document?.title ? document?.title : ''}
-            className="font-medium text-sm px-1"
             name=""
             id=""
             placeholder="Untitled Document"
           />
           <p className={`text-sm text-gray-500 px-2 ${saving ? 'visible' : 'invisible'}`}>Saving...</p>
         </Space>
-        <DocumentStatus />
       </div>
       <div className="flex items-center flex-shrink-0 pl-3 gap-x-4">
         <div className="flex items-center gap-x-2">
