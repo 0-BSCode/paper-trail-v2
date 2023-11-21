@@ -30,6 +30,8 @@ class AssigneeService {
       targetDocument.assigneeId = assigneeId;
       await targetDocument.save();
     }
+
+    return assigneeId;
   };
 
   public findAssigneeById = async (documentId: number) => {
