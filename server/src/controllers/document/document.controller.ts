@@ -5,6 +5,7 @@ import { validationResult } from "express-validator";
 import { DocumentUser } from "../../db/models/document-user.model";
 import { User } from "../../db/models/user.model";
 import documentService from "../../services/document.service";
+import notificationService from "../../services/notification.service";
 
 class DocumentController {
   public getOne = catchAsync(async (req: Request, res: Response) => {
@@ -56,6 +57,9 @@ class DocumentController {
     const document = await Document.create({
       userId: req.user?.id
     });
+
+    await notificationService.notifyCiscoNewlyCreatedTicket(document.id);
+
     return res.status(201).json(document);
   });
 

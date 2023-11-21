@@ -2,6 +2,7 @@ import catchAsync from "../../../middleware/catch-async";
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import documentService from "../../../services/document.service";
+import notificationService from "../../../services/notification.service";
 import { Document } from "../../../db/models/document.model";
 
 class StatusController {
@@ -51,7 +52,9 @@ class StatusController {
     if (status !== undefined && status !== null) document.status = status;
     await document.save();
 
-    return res.status(200);
+    await notificationService.notifyStatusChange(document.userId, document.id);
+
+    return res.status(200).end();
   });
 }
 const statusController = new StatusController();

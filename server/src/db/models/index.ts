@@ -6,7 +6,8 @@ import { UserRole } from "./user-role.model";
 import { Document } from "./document.model";
 import { DocumentUser } from "./document-user.model";
 import { Comment } from "./comment.model";
+import { Notification } from "./notification.model";
 
 export const setupDb = (): void => {
-  sequelize.addModels([User, RefreshToken, Role, UserRole, Document, DocumentUser, Comment]);
+  sequelize.addModels([User, RefreshToken, Role, UserRole, Document, DocumentUser, Comment, Notification]);
 };
