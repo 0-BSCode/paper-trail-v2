@@ -20,13 +20,6 @@ const AuthService = {
   verifyEmail: async (token: string) => {
     return await API.put(`auth/verify-email/${token}`);
   },
-  getUser: async (accessToken: string, userId: number) => {
-    return await API.get(`user/{${userId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-  },
 };
 
 export default AuthService;

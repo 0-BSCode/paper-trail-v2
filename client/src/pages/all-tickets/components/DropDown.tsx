@@ -1,46 +1,49 @@
 import { DownOutlined } from '@ant-design/icons';
+import StatusEnum from '@src/types/enums/status-enum';
+import convertToTitleCase from '@src/utils/convertToTitleCase';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
 import { type Dispatch, type SetStateAction } from 'react';
 
 interface DropDownProps {
   dropDownFilter: string;
-  setDropDownFilter: Dispatch<SetStateAction<string>>;
+  setDropDownFilter: Dispatch<SetStateAction<StatusEnum>>;
 }
 
 const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Element => {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     setDropDownFilter(e.key);
+    console.log(e.key, typeof e.key);
   };
 
   const items: MenuProps['items'] = [
     {
-      label: 'ALL',
-      key: 'ALL',
+      label: 'All',
+      key: StatusEnum.ALL,
     },
     {
-      label: 'DRAFT',
-      key: 'DRAFT',
+      label: 'Draft',
+      key: StatusEnum.DRAFT,
     },
     {
-      label: 'REVIEW REQUESTED',
-      key: 'REVIEW_REQUESTED',
+      label: 'Review Requested',
+      key: StatusEnum.REVIEW_REQUESTED,
     },
     {
-      label: 'REVIEW',
-      key: 'REVIEW',
+      label: 'Review',
+      key: StatusEnum.REVIEW,
     },
     {
-      label: 'CHANGES REQUESTED',
-      key: 'CHANGES_REQUESTED',
+      label: 'Changes Requested',
+      key: StatusEnum.CHANGES_REQUESTED,
     },
     {
-      label: 'RAISED',
-      key: 'RAISED',
+      label: 'Raised',
+      key: StatusEnum.RAISED,
     },
     {
-      label: 'RESOLVED',
-      key: 'RESOLVED',
+      label: 'Resolved',
+      key: StatusEnum.RESOLVED,
     },
   ];
 
@@ -53,7 +56,7 @@ const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Ele
     <Dropdown menu={menuProps}>
       <Button>
         <Space>
-          {!dropDownFilter ? 'Status' : dropDownFilter}
+          {!dropDownFilter ? 'Status' : convertToTitleCase(dropDownFilter)}
           <DownOutlined />
         </Space>
       </Button>

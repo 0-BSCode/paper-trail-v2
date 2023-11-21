@@ -5,13 +5,14 @@ import useDocuments from '@src/hooks/useDocuments';
 import useAuth from '@src/hooks/useAuth';
 import { useEffect, useState } from 'react';
 import type TicketInterface from '@src/types/interfaces/ticket';
+import StatusEnum from '@src/types/enums/status-enum';
 
 const AssignedTickets = (): JSX.Element => {
   const { allTickets } = useDocuments();
   const { userId } = useAuth();
   const [filtered, setFiltered] = useState<boolean>(false);
   const [titleFilter, setTitleFilter] = useState<string>('');
-  const [dropDownFilter, setDropDownFilter] = useState<string>('ALL');
+  const [dropDownFilter, setDropDownFilter] = useState<StatusEnum>(StatusEnum.ALL);
   const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
 
   useEffect(() => {

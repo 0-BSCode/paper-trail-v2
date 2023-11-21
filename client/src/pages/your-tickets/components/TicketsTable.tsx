@@ -1,5 +1,6 @@
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import convertToTitleCase from '@src/utils/convertToTitleCase';
 import type TicketInterface from '@src/types/interfaces/ticket';
 import { Link } from 'react-router-dom';
 
@@ -49,6 +50,7 @@ const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      render: (text) => <p>{convertToTitleCase(text)}</p>,
     },
   ];
 
