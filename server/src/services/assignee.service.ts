@@ -43,7 +43,11 @@ class AssigneeService {
       return null;
     }
 
-    const assignee = await User.findByPk(document.assigneeId);
+    const assignee = await User.findByPk(document.assigneeId, {
+      attributes: {
+        exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
+      }
+    });
 
     return assignee;
   };
