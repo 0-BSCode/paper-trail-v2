@@ -48,7 +48,7 @@ class DocumentController {
       ]
     });
 
-    if (!documents) return res.status(400).json({ message: "documents is empty bruh" });
+    if (!documents) return res.status(400).json({ message: "No documents were found" });
 
     return res.status(200).json(documents);
   });
