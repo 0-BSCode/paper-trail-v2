@@ -55,7 +55,7 @@ const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Ele
     <Dropdown menu={menuProps}>
       <Button>
         <Space>
-          {!dropDownFilter ? 'Status' : convertToTitleCase(dropDownFilter)}
+          {convertToTitleCase(dropDownFilter)}
           <DownOutlined />
         </Space>
       </Button>

@@ -13,7 +13,6 @@ interface DropDownProps {
 const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Element => {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     setDropDownFilter(e.key);
-    console.log(e.key, typeof e.key);
   };
 
   const items: MenuProps['items'] = [
@@ -56,7 +55,7 @@ const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Ele
     <Dropdown menu={menuProps}>
       <Button>
         <Space>
-          {!dropDownFilter ? 'Status' : convertToTitleCase(dropDownFilter)}
+          {convertToTitleCase(dropDownFilter)}
           <DownOutlined />
         </Space>
       </Button>

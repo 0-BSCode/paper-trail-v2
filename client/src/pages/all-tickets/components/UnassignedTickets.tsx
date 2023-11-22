@@ -14,13 +14,13 @@ const UnassignedTickets = (): JSX.Element => {
   const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
 
   useEffect(() => {
-    if (titleFilter?.length > 3 || dropDownFilter !== StatusEnum.ALL) {
+    if (titleFilter.length > 3 || dropDownFilter !== StatusEnum.ALL) {
       setFiltered(true);
 
       setFilteredTickets(
         allTickets.filter(
           (tic) =>
-            (titleFilter?.length > 3 ? tic.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
+            (titleFilter.length > 3 ? tic.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
             (dropDownFilter === StatusEnum.ALL ? true : tic.status === dropDownFilter) &&
             !tic.assigneeId,
         ),
