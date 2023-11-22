@@ -54,7 +54,7 @@ const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
       render: (_, record) => {
         return (
           <div className="flex items-center gap-2">
-            <div className={'w-[5.5px] h-[5.5px] rounded-full' + ' ' + getStatusColor(record.status)}></div>
+            <div className={`w-[5.5px] h-[5.5px] rounded-full ${getStatusColor(record.status)}`}></div>
             {convertToTitleCase(record.status)}
           </div>
         );

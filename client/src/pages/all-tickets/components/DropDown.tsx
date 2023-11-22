@@ -13,6 +13,7 @@ interface DropDownProps {
 const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Element => {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     setDropDownFilter(e.key);
+    console.log(e.key, typeof e.key);
   };
 
   const items: MenuProps['items'] = [
