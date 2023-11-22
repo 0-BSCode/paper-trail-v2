@@ -16,6 +16,11 @@ const DocumentService = {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
   },
+  getAllDocuments: async (accessToken: string) => {
+    return await API.get(`document/all`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  },
   list: async (accessToken: string) => {
     return await API.get('document', {
       headers: { Authorization: `Bearer ${accessToken}` },
