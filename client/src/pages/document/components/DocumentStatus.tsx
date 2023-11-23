@@ -21,7 +21,7 @@ const statusToOptionMapping = {
 const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => {
   const { accessToken } = useContext(AuthContext);
   const { success } = useContext(ToastContext);
-  const [status, setStatus] = useState<StatusEnum>(StatusEnum.DRAFT);
+  const [status, setStatus] = useState<StatusEnum | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const onChange = (newStatus: StatusEnum): void => {
@@ -31,7 +31,7 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
   const saveStatus = (): void => {
     // TODO: Consolidate API calls that require accessToken under one check
     // so we don't need to keep checking this
-    if (accessToken === null) return;
+    if (accessToken === null || status === null) return;
 
     setIsSaving(true);
     void DocumentService.setStatus(accessToken, parseInt(documentId), status)
