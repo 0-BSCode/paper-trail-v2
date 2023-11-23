@@ -39,9 +39,7 @@ class AssigneeController {
     const { documentId } = req.params;
     const { userId } = req.body;
 
-    const assigneeId = await assigneeService.updateAssignee(parseInt(userId), parseInt(documentId));
-
-    if (assigneeId === null) return res.sendStatus(404);
+    const assigneeId = await assigneeService.updateAssignee(userId ? parseInt(userId) : null, parseInt(documentId));
 
     return res.status(200).json({ assigneeId });
   });

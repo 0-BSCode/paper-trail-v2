@@ -42,7 +42,7 @@ const DocumentService = {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
   },
-  setAssignee: async (accessToken: string, documentId: number, assigneeId: number) => {
+  setAssignee: async (accessToken: string, documentId: number, assigneeId: number | null) => {
     return await API.put(
       `document/${documentId}/assignee`,
       { userId: assigneeId },

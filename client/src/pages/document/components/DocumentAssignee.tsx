@@ -14,12 +14,12 @@ const filterOption = (input: string, option?: { label: string; value: string }):
 const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element => {
   const { accessToken } = useContext(AuthContext);
   const { success } = useContext(ToastContext);
-  const [assigneeId, setAssigneeId] = useState<number>(0);
+  const [assigneeId, setAssigneeId] = useState<number | null>(null);
   const [assigneeList, setAssigneeList] = useState<UserInterface[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
-  const onChange = (id: string): void => {
-    setAssigneeId(parseInt(id));
+  const onChange = (id: string | undefined): void => {
+    setAssigneeId(id ? parseInt(id) : null);
   };
 
   const saveAssignee = (): void => {
@@ -64,11 +64,12 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
       </Typography.Title>
       <Select
         showSearch
+        allowClear
         placeholder="Select a person"
         optionFilterProp="children"
         onChange={onChange}
         filterOption={filterOption}
-        value={assigneeList.find((assignee) => assignee.id === assigneeId)?.email}
+        value={assigneeList.find((assignee) => assignee.id === assigneeId)?.email ?? ''}
         options={assigneeList.map((assignee) => {
           return { value: assignee.id.toString(), label: assignee.email };
         })}

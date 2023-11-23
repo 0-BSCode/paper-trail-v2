@@ -5,31 +5,36 @@ import { Role } from "../db/models/role.model";
 import { DocumentUser } from "../db/models/document-user.model";
 
 class AssigneeService {
-  public updateAssignee = async (assigneeId: number, documentId: number) => {
+  public updateAssignee = async (assigneeId: number | null, documentId: number) => {
     // Check if documentId and userId exist in database
     const targetDocument = await Document.findOne({
       where: {
         id: documentId
       }
     });
-    const targetUser = await User.findByPk(assigneeId, { include: [Role, DocumentUser] });
 
-    if (!targetDocument || !targetUser) {
-      // No user was assigned to document
-      return null;
-    }
-
-    const isCisco = targetUser.roles.some((r) => r.name === RoleEnum.CISCO_MEMBER || r.name === RoleEnum.CISCO_ADMIN);
-
-    if (!isCisco) {
-      // Disallows non-Cisco users from being assigned to document
+    if (!targetDocument) {
+      // No document found
       return null;
     }
 
     if (assigneeId) {
-      targetDocument.assigneeId = assigneeId;
-      await targetDocument.save();
+      const targetUser = await User.findByPk(assigneeId, { include: [Role, DocumentUser] });
+
+      if (!targetUser) {
+        // No user found
+        return null;
+      }
+
+      const isCisco = targetUser.roles.some((r) => r.name === RoleEnum.CISCO_MEMBER || r.name === RoleEnum.CISCO_ADMIN);
+
+      if (!isCisco) {
+        // Disallows non-Cisco users from being assigned to document
+        return null;
+      }
     }
+
+    await targetDocument.update({ assigneeId });
 
     return assigneeId;
   };
