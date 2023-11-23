@@ -52,7 +52,6 @@ const useComments = (documentId: number): CommentHookType => {
 
     try {
       const response = await CommentService.create(accessToken, documentId, content);
-      console.log(response.data);
       const newComment = response.data as CommentInterface;
       setComments([...comments, newComment]);
     } catch (error: unknown) {
