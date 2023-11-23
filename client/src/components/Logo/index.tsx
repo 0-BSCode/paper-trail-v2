@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const Logo = (): JSX.Element => {
   return (
     <Link
-      to="/document/create"
+      to="/home"
       className="flex flex-shrink-0 justify-center items-center w-14 h-14 hover:bg-gray-100 rounded-full"
     >
       <svg
