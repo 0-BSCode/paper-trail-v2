@@ -20,7 +20,7 @@ function App() {
           <DocumentProvider>
             <Routes>
               <Route path="/landing" element={<Landing />} />
-              <Route path="/" element={<Navigate replace to="/document/create" />} />
+              <Route path="/" element={<Navigate replace to="/home" />} />
               <Route path="/document/create" element={<ProtectedRoute element={<DashboardPage />} />} />
               <Route
                 path="/document/:id"

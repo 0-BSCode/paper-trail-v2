@@ -3,7 +3,10 @@ import jwt from "jsonwebtoken";
 import { User } from "../db/models/user.model";
 import { RefreshToken } from "../db/models/refresh-token.model";
 import env from "../config/env.config";
+import { UserRole } from "../db/models/user-role.model";
+import { Role } from "../db/models/role.model";
 
+// TODO: Clean up unused service methods
 class UserService {
   public findUserByEmail = async (email: string): Promise<User | null> => {
     const user = await User.findOne({ where: { email } });
@@ -37,6 +40,26 @@ class UserService {
     });
 
     return user;
+  };
+
+  public findUsersByRole = async (role: UserRole): Promise<User[]> => {
+    return await User.findAll({
+      include: [
+        {
+          model: Role,
+          attributes: [],
+          where: {
+            name: role
+          },
+          through: {
+            attributes: []
+          }
+        }
+      ],
+      attributes: {
+        exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
+      }
+    });
   };
 
   public createUser = async (email: string, password: string) => {

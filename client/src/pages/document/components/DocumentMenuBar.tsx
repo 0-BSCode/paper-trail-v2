@@ -1,6 +1,5 @@
 // TODO: Remove unneeded buttons
 import { type ChangeEvent, type FocusEvent, useContext } from 'react';
-import Logo from '@src/components/Logo';
 import UserDropdown from '@src/components/UserDropdown';
 import ShareDocumentModal from './ShareDocumentModal';
 import useRandomBackground from '@src/hooks/useRandomBackground';
@@ -8,6 +7,9 @@ import useAuth from '@src/hooks/useAuth';
 import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
+import { Anchor, Button, Input, Space } from 'antd';
+
+const { Link } = Anchor;
 
 const CurrentUsers = (): JSX.Element => {
   const { backgroundColor } = useRandomBackground();
@@ -63,12 +65,11 @@ const DocumentMenuBar = (): JSX.Element => {
   };
 
   return (
-    <div className="w-full flex justify-between items-center px-3 pb-1 border-b">
-      {/* Left */}
-      <div className="w-full flex justify-start items-center overflow-x-hidden md:overflow-visible">
-        <Logo />
-        <div className="flex flex-col">
-          <input
+    <div className="w-full flex justify-between items-center border-b">
+      <div className="w-full flex flex-col justify-start items-start overflow-x-hidden md:overflow-visible gap-y-1">
+        <Link href="/home" title="Go Back" />
+        <Space>
+          <Input
             maxLength={25}
             type="text"
             onBlur={(event) => {
@@ -78,47 +79,29 @@ const DocumentMenuBar = (): JSX.Element => {
               handleTitleInputChange(event);
             }}
             value={document?.title ? document?.title : ''}
-            className="font-medium text-lg px-2 pt-2"
             name=""
             id=""
             placeholder="Untitled Document"
           />
-          <div className="flex items-center">
-            <button className="text-sm whitespace-nowrap px-2 py-1 font-medium hover:bg-gray-100 rounded-md">
-              File
-            </button>
-            <button className="text-sm whitespace-nowrap px-2 py-1 font-medium hover:bg-gray-100 rounded-md">
-              Edit
-            </button>
-            <button className="text-sm whitespace-nowrap px-2 py-1 font-medium hover:bg-gray-100 rounded-md">
-              View
-            </button>
-            <button className="text-sm whitespace-nowrap px-2 py-1 font-medium hover:bg-gray-100 rounded-md">
-              Insert
-            </button>
-            <button className="text-sm whitespace-nowrap px-2 py-1 font-medium hover:bg-gray-100 rounded-md">
-              Format
-            </button>
-            <button className="text-sm whitespace-nowrap px-2 py-1 font-medium hover:bg-gray-100 rounded-md">
-              Tools
-            </button>
-            <button className="text-sm whitespace-nowrap px-2 py-1 font-medium hover:bg-gray-100 rounded-md">
-              Add-ons
-            </button>
-            <button className="text-sm whitespace-nowrap px-2 py-1 font-medium hover:bg-gray-100 rounded-md">
-              Help
-            </button>
-            {saving && <p className="text-sm text-gray-500 px-2">Saving...</p>}
-          </div>
-        </div>
+          <p className={`text-sm text-gray-500 px-2 ${saving ? 'visible' : 'invisible'}`}>Saving...</p>
+        </Space>
       </div>
-      {/* Right */}
       <div className="flex items-center flex-shrink-0 pl-3 gap-x-4">
-        {document !== null && document.userId === userId && <ShareDocumentModal />}
-        <div className="flex items-center gap-x-2">
+        <Space>
           <CurrentUsers />
           <UserDropdown />
-        </div>
+        </Space>
+        <Space>
+          {document !== null && document.userId === userId && <ShareDocumentModal />}
+          <Button
+            type="primary"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            Submit
+          </Button>
+        </Space>
       </div>
     </div>
   );

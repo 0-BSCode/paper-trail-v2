@@ -49,6 +49,7 @@ class Document extends Model {
   })
   users!: Array<DocumentUser>;
 
+  @AllowNull(true)
   @ForeignKey(() => User)
   @Column(DataType.INTEGER)
   assigneeId!: number;
