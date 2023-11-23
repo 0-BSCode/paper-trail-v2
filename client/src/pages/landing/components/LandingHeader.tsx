@@ -7,7 +7,7 @@ function LandingHeader(): JSX.Element {
   };
 
   return (
-    <header className="h-[64px] bg-black px-5 text-white flex justify-between shadow-md z-50 sticky top-0 w-full">
+    <header className="h-[64px] bg-black px-5 text-white flex justify-between shadow-md z-50 sticky top-0 ">
       <h1 className="flex">
         <WordmarkLogo />
       </h1>

@@ -6,7 +6,7 @@ import ViewDashboardIcon from '@src/assets/icons/view-dashboard.svg';
 
 function FeaturesSection(): JSX.Element {
   return (
-    <section className="relative flex flex-col items-center w-full gap-8 px-32 py-20 text-white bg-blue-500">
+    <section className="relative flex flex-col items-center gap-8 px-32 py-20 text-white bg-blue-500">
       <div className="text-center">
         <h2 className="text-5xl font-bold leading-[4rem] mb-4">No more endless emails</h2>
         <p className="leading-8">
