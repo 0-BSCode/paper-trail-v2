@@ -1,6 +1,6 @@
 import type DocumentUser from './document-user';
 
-interface DocumentInterface {
+interface TicketInterface {
   id: number;
   title: string;
   content: string | null;
@@ -10,6 +10,9 @@ interface DocumentInterface {
   users: DocumentUser[];
   assigneeId: number;
   isPublic: boolean;
+  user: { email: string };
+  assignee: { email: string };
+  status: string;
 }
 
-export default DocumentInterface;
+export default TicketInterface;

@@ -1,0 +1,11 @@
+enum StatusEnum {
+  ALL = 'ALL',
+  DRAFT = 'DRAFT',
+  REVIEW_REQUESTED = 'REVIEW_REQUESTED',
+  REVIEW = 'REVIEW',
+  CHANGES_REQUESTED = 'CHANGES_REQUESTED',
+  RAISED = 'RAISED',
+  RESOLVED = 'RESOLVED',
+}
+
+export default StatusEnum;
