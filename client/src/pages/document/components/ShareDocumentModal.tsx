@@ -130,7 +130,6 @@ const ShareDocumentModal = (): JSX.Element => {
       button={
         <Space>
           <Button>Share</Button>
-          <Button type="primary">Submit</Button>
         </Space>
       }
       content={

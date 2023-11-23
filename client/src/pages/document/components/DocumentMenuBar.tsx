@@ -7,7 +7,7 @@ import useAuth from '@src/hooks/useAuth';
 import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
-import { Anchor, Input, Space } from 'antd';
+import { Anchor, Button, Input, Space } from 'antd';
 
 const { Link } = Anchor;
 
@@ -87,11 +87,21 @@ const DocumentMenuBar = (): JSX.Element => {
         </Space>
       </div>
       <div className="flex items-center flex-shrink-0 pl-3 gap-x-4">
-        <div className="flex items-center gap-x-2">
+        <Space>
           <CurrentUsers />
           <UserDropdown />
-        </div>
-        {document !== null && document.userId === userId && <ShareDocumentModal />}
+        </Space>
+        <Space>
+          {document !== null && document.userId === userId && <ShareDocumentModal />}
+          <Button
+            type="primary"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            Submit
+          </Button>
+        </Space>
       </div>
     </div>
   );
