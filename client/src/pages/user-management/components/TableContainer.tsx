@@ -3,6 +3,7 @@ import { Input } from 'antd';
 import { useState } from 'react';
 import DropDown from './DropDown';
 import StatusEnum from '@src/types/enums/status-enum';
+import UsersTable from './UsersTable';
 
 const TableContainer = (): JSX.Element => {
   const [filtered, setFiltered] = useState<boolean>(false);
@@ -25,11 +26,16 @@ const TableContainer = (): JSX.Element => {
             />
           </div>
           <div className="flex flex-col mb-3">
-            <p className="my-2 font-semibold ">Status</p>
-            <DropDown dropDownFilter={dropDownFilter} setDropDownFilter={setDropDownFilter} />
+            <p className="my-2 font-semibold ">Role</p>
+            <DropDown
+              style={{ width: '100px' }}
+              dropDownFilter={dropDownFilter}
+              setDropDownFilter={setDropDownFilter}
+            />
           </div>
         </div>
       </div>
+      <UsersTable />
     </div>
   );
 };
