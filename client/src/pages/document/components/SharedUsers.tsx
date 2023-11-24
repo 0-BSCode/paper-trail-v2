@@ -8,6 +8,8 @@ import type DocumentInterface from '@src/types/interfaces/document';
 import type DocumentUser from '@src/types/interfaces/document-user';
 import PermissionEnum from '@src/types/enums/permission-enum';
 import validator from 'validator';
+import { Space, Switch } from 'antd';
+import { EyeIcon, PencilIcon } from '@heroicons/react/24/outline';
 
 interface SharedUsersProps {
   documentUsers: DocumentUser[];
@@ -40,6 +42,10 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
       if (documentUser) {
         documentUser.permission = updatedDocumentUser.permission;
         success(`Successfully updated permissions of ${email}!`);
+        setDocument({
+          ...document,
+          users: document.users.map((d) => (d.userId === documentUser.userId ? documentUser : d)),
+        } satisfies DocumentInterface);
       } else {
         throw new Error("Shared user doesn't exist.");
       }
@@ -101,23 +107,25 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
               >
                 {documentUser.user.email[0]}
               </div>
-              <p className="font-medium">{documentUser.user.email}</p>
+              <p className="font-medium">
+                {documentUser.user.email} ({documentUser.permission})
+              </p>
             </div>
-            <div>
-              <button
-                onClick={() => {
+            <Space>
+              <Switch
+                disabled={loading}
+                checkedChildren={<EyeIcon />}
+                unCheckedChildren={<PencilIcon />}
+                checked={documentUser.permission === PermissionEnum.EDIT}
+                onChange={(checked) => {
                   void updateDocumentUser({
                     documentId: documentUser.documentId,
                     userId: documentUser.userId,
-                    permission:
-                      documentUser.permission === PermissionEnum.EDIT ? PermissionEnum.VIEW : PermissionEnum.EDIT,
+                    permission: checked ? PermissionEnum.EDIT : PermissionEnum.VIEW,
                   });
                 }}
-                disabled={loading}
-                className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
-              >
-                {documentUser.permission}
-              </button>
+              />
+
               <button
                 onClick={() => {
                   void removeDocumentUser({
@@ -130,7 +138,7 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
               >
                 Remove
               </button>
-            </div>
+            </Space>
           </div>
         );
       })}
