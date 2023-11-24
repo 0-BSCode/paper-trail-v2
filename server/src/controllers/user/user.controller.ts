@@ -65,7 +65,7 @@ class UserController {
   });
 
   // TODO: Add guards
-  public getUserByRole = catchAsync(async (req: Request, res: Response) => {
+  public getUsersByRole = catchAsync(async (req: Request, res: Response) => {
     const { name } = req.params;
 
     const users = await userService.findUsersByRole(name as unknown as UserRole);
