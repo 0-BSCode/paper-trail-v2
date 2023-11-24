@@ -6,6 +6,8 @@ import useRandomBackground from '@src/hooks/useRandomBackground';
 import DocumentUserService from '@src/services/document-user-service';
 import type DocumentInterface from '@src/types/interfaces/document';
 import type DocumentUser from '@src/types/interfaces/document-user';
+import PermissionEnum from '@src/types/enums/permission-enum';
+import validator from 'validator';
 
 interface SharedUsersProps {
   documentUsers: DocumentUser[];
@@ -17,8 +19,36 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
   const { backgroundColor: sharedUserBackgroundColor } = useRandomBackground();
   const { accessToken, email } = useAuth();
   const [loading, setLoading] = useState(false);
-  const { addToast } = useContext(ToastContext);
+  const { addToast, success, error } = useContext(ToastContext);
   const { document } = useContext(DocumentContext);
+
+  const updateDocumentUser = async (payload: {
+    documentId: number;
+    userId: number;
+    permission: PermissionEnum;
+  }): Promise<void> => {
+    if (email === null || !validator.isEmail(email) || accessToken === null || document === null) return;
+    setLoading(true);
+
+    try {
+      const response = await DocumentUserService.update(accessToken, payload);
+      const updatedDocumentUser = response.data as DocumentUser;
+      updatedDocumentUser.user = { email };
+
+      const documentUser = document.users.find((user) => user.userId === updatedDocumentUser.userId);
+
+      if (documentUser) {
+        documentUser.permission = updatedDocumentUser.permission;
+        success(`Successfully updated permissions of ${email}!`);
+      } else {
+        throw new Error("Shared user doesn't exist.");
+      }
+    } catch (err) {
+      error(`Unable to update permissions of ${email}. Please try again`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const removeDocumentUser = async (payload: { documentId: number; userId: number }): Promise<void> => {
     if (!accessToken) return;
@@ -73,18 +103,34 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
               </div>
               <p className="font-medium">{documentUser.user.email}</p>
             </div>
-            <button
-              onClick={() => {
-                void removeDocumentUser({
-                  documentId: documentUser.documentId,
-                  userId: documentUser.userId,
-                });
-              }}
-              disabled={loading}
-              className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
-            >
-              Remove
-            </button>
+            <div>
+              <button
+                onClick={() => {
+                  void updateDocumentUser({
+                    documentId: documentUser.documentId,
+                    userId: documentUser.userId,
+                    permission:
+                      documentUser.permission === PermissionEnum.EDIT ? PermissionEnum.VIEW : PermissionEnum.EDIT,
+                  });
+                }}
+                disabled={loading}
+                className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
+              >
+                {documentUser.permission}
+              </button>
+              <button
+                onClick={() => {
+                  void removeDocumentUser({
+                    documentId: documentUser.documentId,
+                    userId: documentUser.userId,
+                  });
+                }}
+                disabled={loading}
+                className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
+              >
+                Remove
+              </button>
+            </div>
           </div>
         );
       })}
