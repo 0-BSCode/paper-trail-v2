@@ -66,10 +66,15 @@ class UserService {
     const salt = await genSalt();
     const hashedPassword = await hash(password, salt);
     const verificationToken = jwt.sign({ email }, env.VERIFY_EMAIL_SECRET);
-    await User.create({
+    const newUser = await User.create({
       email: email,
       password: hashedPassword,
       verificationToken: verificationToken
+    });
+
+    await UserRole.create({
+      userId: newUser.id,
+      roleId: 1 // ID of STUDENT role
     });
   };
 
