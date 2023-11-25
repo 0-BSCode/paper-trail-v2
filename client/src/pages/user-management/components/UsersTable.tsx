@@ -1,25 +1,11 @@
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import type UserInterface from '@src/types/interfaces/user';
+import convertToTitleCase from '@src/utils/convertToTitleCase';
 
 interface UsersTableProps {
   users: UserInterface[];
 }
-
-const data: UserInterface[] = [
-  {
-    roles: { id: 1, name: 'Admin' },
-    email: 'John Brown',
-  },
-  {
-    roles: { id: 1, name: 'Admin' },
-    email: 'Jim Green',
-  },
-  {
-    roles: { id: 1, name: 'Admin' },
-    email: 'Joe Black',
-  },
-];
 
 const UsersTable = ({ users }: UsersTableProps): JSX.Element => {
   const columns: ColumnsType<UserInterface> = [
@@ -33,19 +19,23 @@ const UsersTable = ({ users }: UsersTableProps): JSX.Element => {
       title: 'Roles',
       dataIndex: 'roles',
       key: 'roles',
-      render: (_, record) => <p>Role</p>,
+      render: (_, record) => {
+        if (record.roles.length === 0) return <p>No roles</p>;
+
+        return <p>{convertToTitleCase(record.roles[0].name)}</p>;
+      },
     },
   ];
 
   return (
     <Table
       columns={columns}
-      dataSource={data}
+      dataSource={users}
       pagination={{
         pageSize: 10,
-        total: 22,
+        total: users.length,
       }}
-      rowKey="id"
+      rowKey="email"
     />
   );
 };
