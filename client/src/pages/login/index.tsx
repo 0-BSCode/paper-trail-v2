@@ -1,5 +1,4 @@
 import useWindowSize from '@src/hooks/useWindowSize';
-import TextField from '@src/components/TextField';
 import { type KeyboardEvent, useContext, useState } from 'react';
 import { ToastContext } from '@src/context/ToastContext';
 import validator from 'validator';
@@ -8,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '@src/hooks/useAuth';
 import AuthService from '@src/services/auth-service';
 import axios, { type AxiosError } from 'axios';
+import { Input, Button } from 'antd';
 
 const LoginPage = (): JSX.Element => {
   const { widthStr, heightStr } = useWindowSize();
@@ -29,8 +29,12 @@ const LoginPage = (): JSX.Element => {
       setEmailErrors(['Must enter a valid email.']);
       isValid = false;
     }
+
     if (!password.length) {
       setPasswordErrors(['Must enter a password.']);
+      isValid = false;
+    } else if (password.length < 8) {
+      setPasswordErrors(['Password must be at least 8 characters.']);
       isValid = false;
     }
 
@@ -58,7 +62,7 @@ const LoginPage = (): JSX.Element => {
           error('Incorrect username or password.');
         }
       } else {
-        error('An unknown error has occured. Please try again.');
+        error('An unknown error has occurred. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -82,7 +86,7 @@ const LoginPage = (): JSX.Element => {
   return (
     <div
       onKeyPress={handleOnKeyPress}
-      className="w-full flex flex-col sm:justify-center items-center p-6 sm:pb-96 bg-gray-100 dark:bg-slate-900 text-primary font-sans"
+      className="w-full flex flex-col sm:justify-center items-center bg-gray-100 dark:bg-slate-900 text-primary font-sans"
       style={{
         width: widthStr,
         height: heightStr,
@@ -102,38 +106,53 @@ const LoginPage = (): JSX.Element => {
             <h1 className="text-6xl">Paper Trail</h1>
           </div>
           <div className="w-full flex flex-col gap-4">
-            <h3 className="font-medium">Login</h3>
-            <TextField
-              value={email}
-              placeholder="Email"
-              onInput={handleOnInputEmail}
-              color="secondary"
-              errors={emailErrors}
-            />
-            <TextField
-              placeholder="Password (8 digits at least, case sensitive)"
-              value={password}
-              onInput={handleOnInputPassword}
-              type="password"
-              color="secondary"
-              errors={passwordErrors}
-            />
-            <button
-              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            <div>
+              <Input
+                style={{ fontFamily: 'roboto' }}
+                className="p-2"
+                placeholder="Email"
+                color="secondary"
+                onChange={(e) => handleOnInputEmail(e.target.value)}
+              />
+              {emailErrors.length > 0 && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
+            </div>
+
+            <div>
+              <Input.Password
+                className="p-2"
+                placeholder="Password (8 characters at least, case sensitive)"
+                type="password"
+                color="secondary"
+                style={{ fontFamily: 'roboto' }}
+                onChange={(e) => {
+                  handleOnInputPassword(e.target.value);
+                }}
+              />
+              {passwordErrors.length > 0 && <div className="text-red-500 text-sm">{passwordErrors.join(', ')}</div>}
+            </div>
+
+            <Button
+              style={{ borderRadius: '6px', fontFamily: 'roboto' }}
+              size="large"
+              type="primary"
               onClick={loginUser}
               disabled={loading}
-              className="bg-blue-500 text-white text-sm px-3 py-2 rounded hover:bg-blue-600 hover:cursor-pointer flex justify-center items-center space-x-1 active:ring-1"
             >
               <span className={`${loading && 'opacity-0'}`}>Log In</span>
               {loading && <Spinner size="sm" />}
-            </button>
-            <button className="bg-white text-sm px-3 py-2 rounded hover:cursor-pointer hover:bg-slate-100 flex justify-center items-center space-x-1 active:ring-1 gap-2">
+            </Button>
+            <Button
+              style={{ borderRadius: '6px', fontFamily: 'roboto' }}
+              size="large"
+              type="default"
+              className="flex justify-center items-center gap-3 text-gray-500"
+            >
               <img className="h-4 w-4" src="/src/assets/icons/google-logo.png" alt="" />
               Continue with Google
-            </button>
+            </Button>
             <div className="text-center items-center">
               <span>or </span>
-              <Link to="/register" className="text-sm hover:underline font-semibold text-blue-500">
+              <Link to="/register" className=" no-underline hover:underline text-blue-500">
                 Register
               </Link>
             </div>

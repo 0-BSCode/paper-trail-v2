@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import useWindowSize from '@src/hooks/useWindowSize';
-import TextField from '@src/components/TextField';
 import { type KeyboardEvent, useContext, useState } from 'react';
 import { ToastContext } from '@src/context/ToastContext';
 import validator from 'validator';
@@ -8,6 +7,7 @@ import Spinner from '@src/components/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
 import axios, { type AxiosError } from 'axios';
 import AuthService from '@src/services/auth-service';
+import { Input, Button } from 'antd';
 
 const RegisterPage = (): JSX.Element => {
   const { widthStr, heightStr } = useWindowSize();
@@ -91,7 +91,9 @@ const RegisterPage = (): JSX.Element => {
   };
 
   const handleOnKeyPress = (event: KeyboardEvent): void => {
-    if (event.key === 'Enter') void register();
+    if (event.key === 'Enter') {
+      register();
+    }
   };
 
   const handleOnInputEmail = (value: string): void => {
@@ -112,7 +114,7 @@ const RegisterPage = (): JSX.Element => {
   return (
     <div
       onKeyPress={handleOnKeyPress}
-      className="w-full flex flex-col sm:justify-center items-center p-6 sm:pb-96 bg-gray-100 dark:bg-slate-900 text-primary font-sans"
+      className="w-full flex flex-col sm:justify-center items-center bg-gray-100 dark:bg-slate-900 text-primary font-sans"
       style={{
         width: widthStr,
         height: heightStr,
@@ -131,45 +133,66 @@ const RegisterPage = (): JSX.Element => {
             </svg>
             <h1 className="text-6xl">Paper Trail</h1>
           </div>
-          <TextField
-            value={email}
-            onInput={handleOnInputEmail}
-            color="secondary"
-            errors={emailErrors}
-            placeholder="Email"
-          />
-          <TextField
-            placeholder="Password (8 digits at least, case sensitive)"
-            value={password1}
-            onInput={handleOnInputPassword1}
-            type="password"
-            color="secondary"
-            errors={password1Errors}
-          />
-          <TextField
-            placeholder="Confirm Password"
-            value={password2}
-            onInput={handleOnInputPassword2}
-            type="password"
-            color="secondary"
-            errors={password2Errors}
-          />
-          <button
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          <div>
+            <Input
+              style={{ fontFamily: 'roboto' }}
+              className="p-2"
+              placeholder="Email"
+              color="secondary"
+              value={email}
+              onChange={(e) => handleOnInputEmail(e.target.value)}
+            />
+            {emailErrors.length > 0 && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
+          </div>
+
+          <div>
+            <Input.Password
+              className="p-2"
+              placeholder="Password (8 characters at least, case sensitive)"
+              type="password"
+              color="secondary"
+              style={{ fontFamily: 'roboto' }}
+              value={password1}
+              onChange={(e) => handleOnInputPassword1(e.target.value)}
+            />
+            {password1Errors.length > 0 && <div className="text-red-500 text-sm">{password1Errors.join(', ')}</div>}
+          </div>
+
+          <div>
+            <Input.Password
+              style={{ fontFamily: 'roboto' }}
+              className="p-2"
+              placeholder="Confirm Password"
+              type="password"
+              color="secondary"
+              value={password2}
+              onChange={(e) => handleOnInputPassword2(e.target.value)}
+            />
+            {password2Errors.length > 0 && <div className="text-red-500 text-sm">{password2Errors.join(', ')}</div>}
+          </div>
+
+          <Button
+            style={{ borderRadius: '6px', fontFamily: 'roboto' }}
+            size="large"
+            type="primary"
             onClick={register}
             disabled={loading}
-            className="bg-blue-600 text-white text-sm font-semibold px-3 py-2 rounded hover:bg-blue-500 flex justify-center items-center space-x-1 active:ring-1"
           >
             <span className={`${loading && 'opacity-0'}`}>Register</span>
             {loading && <Spinner size="sm" />}
-          </button>
-          <button className="bg-white text-sm px-3 py-2 rounded hover:cursor-pointer hover:bg-slate-100 flex justify-center items-center space-x-1 active:ring-1 gap-2">
+          </Button>
+          <Button
+            style={{ borderRadius: '6px', fontFamily: 'roboto' }}
+            size="large"
+            type="default"
+            className="flex justify-center items-center gap-3 text-gray-500"
+          >
             <img className="h-4 w-4" src="/src/assets/icons/google-logo.png" alt="" />
             Continue with Google
-          </button>
+          </Button>
           <div className="text-center items-center">
             <span>or </span>
-            <Link to="/login" className="text-sm hover:underline font-semibold text-blue-500">
+            <Link to="/login" className="no-underline hover:underline text-blue-500">
               Log In
             </Link>
           </div>
