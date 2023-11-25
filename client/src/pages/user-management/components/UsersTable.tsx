@@ -7,13 +7,14 @@ interface UsersTableProps {
   users: UserInterface[];
 }
 
+// TODO: SAM - MAKE EMAIL ROW OPEN MODAL FOR EACH USER
 const UsersTable = ({ users }: UsersTableProps): JSX.Element => {
   const columns: ColumnsType<UserInterface> = [
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      render: (_, record) => <p>{record.email}</p>,
+      render: (_, record) => <a>{record.email}</a>,
     },
     {
       title: 'Roles',

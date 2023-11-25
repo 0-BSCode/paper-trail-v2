@@ -1,16 +1,35 @@
 import { Input } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DropDown from './DropDown';
-import StatusEnum from '@src/types/enums/status-enum';
 import UsersTable from './UsersTable';
 import useUsers from '@src/hooks/useUsers';
+import type UserInterface from '@src/types/interfaces/user';
+import RoleEnum from '@src/types/enums/role-enum';
 
 const TableContainer = (): JSX.Element => {
   const { allUsers } = useUsers();
 
   const [filtered, setFiltered] = useState<boolean>(false);
   const [emailFilter, setEmailFilter] = useState<string>('');
-  const [dropDownFilter, setDropDownFilter] = useState<StatusEnum>(StatusEnum.ALL);
+  const [dropDownFilter, setDropDownFilter] = useState<RoleEnum>(RoleEnum.STUDENT);
+  const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>(allUsers);
+
+  useEffect(() => {
+    if (emailFilter.length > 3 || dropDownFilter !== RoleEnum.STUDENT) {
+      setFiltered(true);
+
+      setFilteredUsers(
+        allUsers.filter(
+          (user) =>
+            (emailFilter.length > 3 ? user.email.toLowerCase().includes(emailFilter.toLowerCase()) : true) &&
+            (dropDownFilter === RoleEnum.STUDENT ? true : user.roles?.some((role) => role.name === dropDownFilter)),
+        ),
+      );
+    } else {
+      setFiltered(false);
+      setFilteredUsers(allUsers);
+    }
+  }, [emailFilter, dropDownFilter]);
 
   return (
     <div className="w-[70%] h-[45%] bg-white-100 ml-[4%] flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -33,7 +52,7 @@ const TableContainer = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <UsersTable users={allUsers} />
+      <UsersTable users={filtered ? filteredUsers : allUsers} />
     </div>
   );
 };
