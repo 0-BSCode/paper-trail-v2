@@ -17,6 +17,10 @@ const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Ele
 
   const items: MenuProps['items'] = [
     {
+      label: 'All',
+      key: RoleEnum.ALL,
+    },
+    {
       label: 'Student',
       key: RoleEnum.STUDENT,
     },

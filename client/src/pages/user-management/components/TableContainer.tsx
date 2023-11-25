@@ -11,18 +11,18 @@ const TableContainer = (): JSX.Element => {
 
   const [filtered, setFiltered] = useState<boolean>(false);
   const [emailFilter, setEmailFilter] = useState<string>('');
-  const [dropDownFilter, setDropDownFilter] = useState<RoleEnum>(RoleEnum.STUDENT);
+  const [dropDownFilter, setDropDownFilter] = useState<RoleEnum>(RoleEnum.ALL);
   const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>(allUsers);
 
   useEffect(() => {
-    if (emailFilter.length > 3 || dropDownFilter !== RoleEnum.STUDENT) {
+    if (emailFilter.length > 3 || dropDownFilter !== RoleEnum.ALL) {
       setFiltered(true);
 
       setFilteredUsers(
         allUsers.filter(
           (user) =>
             (emailFilter.length > 3 ? user.email.toLowerCase().includes(emailFilter.toLowerCase()) : true) &&
-            (dropDownFilter === RoleEnum.STUDENT ? true : user.roles?.some((role) => role.name === dropDownFilter)),
+            (dropDownFilter === RoleEnum.ALL ? true : user.roles?.some((role) => role.name === dropDownFilter)),
         ),
       );
     } else {
