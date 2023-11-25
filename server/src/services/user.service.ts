@@ -42,6 +42,23 @@ class UserService {
     return user;
   };
 
+  public getAllUsers = async (): Promise<User[]> => {
+    return await User.findAll({
+      include: [
+        {
+          model: Role,
+          attributes: ["name"],
+          through: {
+            attributes: []
+          }
+        }
+      ],
+      attributes: {
+        exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
+      }
+    });
+  };
+
   public findUsersByRole = async (role: UserRole): Promise<User[]> => {
     return await User.findAll({
       include: [

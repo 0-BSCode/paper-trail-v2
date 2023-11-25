@@ -64,6 +64,14 @@ class UserController {
     return res.status(200).json(user);
   });
 
+  public getAllUsers = catchAsync(async (req: Request, res: Response) => {
+    const users = await userService.getAllUsers();
+
+    if (users === null) return res.sendStatus(400);
+
+    return res.status(200).json(users);
+  });
+
   // TODO: Add guards
   public getUserByRole = catchAsync(async (req: Request, res: Response) => {
     const { name } = req.params;
