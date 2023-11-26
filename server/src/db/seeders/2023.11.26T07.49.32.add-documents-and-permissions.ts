@@ -1,4 +1,5 @@
 import { Seeder } from "../../config/db.config";
+import PermissionEnum from "../../types/enums/permission-enum";
 import StatusEnum from "../../types/enums/status-enum";
 
 const seedDocuments = [
@@ -260,23 +261,67 @@ const seedDocuments = [
     updated_at: new Date(),
     status: StatusEnum.REVIEW,
     assignee_id: 4
+  },
+  {
+    id: 28,
+    title: "Professor Overextending Class Hours",
+    user_id: 4,
+    content:
+      '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
+    created_at: new Date(),
+    updated_at: new Date(),
+    status: StatusEnum.RESOLVED,
+    assignee_id: 2
   }
 ];
 
-// const seedDocumentUsers = [
-//   { permission: PermissionEnum.EDIT, user_id: 1, document_id: 2, created_at: new Date(), updated_at: new Date() },
-//   { permission: PermissionEnum.VIEW, user_id: 2, document_id: 1, created_at: new Date(), updated_at: new Date() }
-// ];
+const seedDocumentUsers = [
+  { permission: PermissionEnum.EDIT, user_id: 2, document_id: 4, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 3, document_id: 4, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 4, document_id: 5, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 2, document_id: 6, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 3, document_id: 7, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 4, document_id: 7, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 3, document_id: 8, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 2, document_id: 8, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 1, document_id: 9, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 4, document_id: 9, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 1, document_id: 10, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 3, document_id: 10, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 4, document_id: 11, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 1, document_id: 13, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 2, document_id: 13, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 4, document_id: 14, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 1, document_id: 14, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 2, document_id: 14, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 2, document_id: 15, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 1, document_id: 15, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 1, document_id: 16, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 3, document_id: 18, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 1, document_id: 18, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 3, document_id: 19, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 2, document_id: 19, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 2, document_id: 21, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 1, document_id: 23, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 2, document_id: 23, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 3, document_id: 23, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 2, document_id: 24, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 3, document_id: 24, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 4, document_id: 24, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 2, document_id: 25, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 3, document_id: 25, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 4, document_id: 25, created_at: new Date(), updated_at: new Date() }
+];
 
 export const up: Seeder = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().bulkInsert("document", seedDocuments);
-  // await sequelize.getQueryInterface().bulkInsert("document_user", seedDocumentUsers);
+  await sequelize.getQueryInterface().bulkInsert("document_user", seedDocumentUsers);
 };
 
 export const down: Seeder = async ({ context: sequelize }) => {
   await sequelize.getQueryInterface().bulkDelete("document", { id: seedDocuments.map((u) => u.id) });
-  // await sequelize.getQueryInterface().bulkDelete("document_user", {
-  //   document_id: seedDocumentUsers.map((d) => d.document_id),
-  //   user_id: seedDocumentUsers.map((u) => u.user_id)
-  // });
+  await sequelize.getQueryInterface().bulkDelete("document_user", {
+    document_id: seedDocumentUsers.map((d) => d.document_id),
+    user_id: seedDocumentUsers.map((u) => u.user_id)
+  });
 };
