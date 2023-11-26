@@ -47,7 +47,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
       const assigneeData = res.data as UserInterface;
       setAssigneeId(assigneeData.id);
     });
-    void UserService.fetchByRole(accessToken, RoleEnum.CISCO_MEMBER).then((res) => {
+    void UserService.fetchByRole(accessToken, [RoleEnum.CISCO_MEMBER, RoleEnum.CISCO_ADMIN]).then((res) => {
       setAssigneeList(res.data as UserInterface[]);
     });
   }, []);

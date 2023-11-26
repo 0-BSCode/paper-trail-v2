@@ -13,6 +13,7 @@ import { Space, Typography } from 'antd';
 import DocumentComments from './components/DocumentComments';
 import DocumentAssignee from './components/DocumentAssignee';
 import DocumentStatus from './components/DocumentStatus';
+import PermissionEnum from '@src/types/enums/permission-enum';
 
 const DocumentPage = (): JSX.Element => {
   const { id: documentId } = useParams();
@@ -22,6 +23,9 @@ const DocumentPage = (): JSX.Element => {
   const documentViewerHeight = `calc(${heightStr} - ${documentHeaderRef.current?.clientHeight}px)`;
   const { setDocument } = useContext(DocumentContext);
   const { document, loading: documentLoading } = useDocument(parseInt(documentId as string));
+  const documentUser = document?.users.find((user) => user.userId === userId);
+
+  const hasEditPermission = userId === document?.userId || documentUser?.permission === PermissionEnum.EDIT;
 
   useEffect(() => {
     if (document !== null) setDocument(document);
@@ -49,8 +53,8 @@ const DocumentPage = (): JSX.Element => {
             <DocumentEditor />
             {userId && (
               <Space.Compact className="bg-white px-10 py-5 w-[850px] h-fit">
-                <FileDropZone userId={userId} documentId={documentId} />
-                <DocumentFiles documentId={documentId} />
+                <FileDropZone userId={userId} documentId={documentId} canUpload={hasEditPermission} />
+                <DocumentFiles documentId={documentId} canDelete={hasEditPermission} />
               </Space.Compact>
             )}
           </div>

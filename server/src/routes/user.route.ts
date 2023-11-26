@@ -12,8 +12,6 @@ router.patch("/notification/:id", authenticate, notificationController.markNotif
 router.get("/:id", authenticate, userController.getUser);
 router.post("/reset-password", userValidator.resetPassword, userController.resetPassword);
 router.put("/password/:token", userValidator.confirmResetPassword, userController.confirmResetPassword);
-// TODO (Bryan): Pass array for CISCO_MEMBER and CISCO_ADMIN
-router.get("/role/:name", authenticate, userController.getUserByRole);
-router.get("/role/:id", authenticate, userController.getUser);
+router.get("/role/:names", authenticate, userController.getUsersByRole);
 
 export default router;

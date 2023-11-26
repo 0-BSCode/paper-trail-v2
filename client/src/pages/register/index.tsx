@@ -9,6 +9,7 @@ import Spinner from '@src/components/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
 import axios, { type AxiosError } from 'axios';
 import AuthService from '@src/services/auth-service';
+import useAuth from '@src/hooks/useAuth';
 
 const RegisterPage = (): JSX.Element => {
   const { widthStr, heightStr } = useWindowSize();
@@ -20,7 +21,8 @@ const RegisterPage = (): JSX.Element => {
   const [password2, setPassword2] = useState('');
   const [password2Errors, setPassword2Errors] = useState<string[]>([]);
   const navigate = useNavigate();
-  const { addToast, error } = useContext(ToastContext);
+  const { success, error } = useContext(ToastContext);
+  const { login } = useAuth();
 
   const validate = (): boolean => {
     setEmailErrors([]);
@@ -58,12 +60,11 @@ const RegisterPage = (): JSX.Element => {
         password2,
       });
 
-      addToast({
-        title: `Successfully registered ${email}!`,
-        body: 'Please check your inbox to verify your email address',
-        color: 'success',
-      });
-      navigate('/login');
+      const response = await AuthService.login({ email, password: password1 });
+      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
+      login(newAccessToken, newRefreshToken);
+      success(`Successfully registered ${email}`);
+      navigate('/home');
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const { response } = err as AxiosError;

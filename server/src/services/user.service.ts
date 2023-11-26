@@ -5,6 +5,7 @@ import { RefreshToken } from "../db/models/refresh-token.model";
 import env from "../config/env.config";
 import { UserRole } from "../db/models/user-role.model";
 import { Role } from "../db/models/role.model";
+import { Op } from "sequelize";
 
 // TODO: Clean up unused service methods
 class UserService {
@@ -42,14 +43,16 @@ class UserService {
     return user;
   };
 
-  public findUsersByRole = async (role: UserRole): Promise<User[]> => {
+  public findUsersByRole = async (roles: UserRole[]): Promise<User[]> => {
     return await User.findAll({
       include: [
         {
           model: Role,
           attributes: [],
           where: {
-            name: role
+            name: {
+              [Op.in]: roles
+            }
           },
           through: {
             attributes: []
@@ -66,10 +69,15 @@ class UserService {
     const salt = await genSalt();
     const hashedPassword = await hash(password, salt);
     const verificationToken = jwt.sign({ email }, env.VERIFY_EMAIL_SECRET);
-    await User.create({
+    const newUser = await User.create({
       email: email,
       password: hashedPassword,
       verificationToken: verificationToken
+    });
+
+    await UserRole.create({
+      userId: newUser.id,
+      roleId: 1 // ID of STUDENT role
     });
   };
 

@@ -4,7 +4,7 @@ import useFileHandler from '@src/hooks/useFileHandler';
 import { Button, Space, Typography } from 'antd';
 import { DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const DocumentFiles = ({ documentId }: { documentId: string }): JSX.Element => {
+const DocumentFiles = ({ documentId, canDelete }: { documentId: string; canDelete: boolean }): JSX.Element => {
   const files = useQuery(api.files.getFilesByDocumentId, { documentId });
   const { redirectToFile, deleteFile } = useFileHandler();
 
@@ -39,6 +39,7 @@ const DocumentFiles = ({ documentId }: { documentId: string }): JSX.Element => {
                   <Button
                     type="dashed"
                     danger
+                    disabled={!canDelete}
                     icon={<DeleteOutlined />}
                     size="small"
                     onClick={() => {
