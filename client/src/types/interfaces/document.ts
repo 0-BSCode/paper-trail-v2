@@ -1,3 +1,4 @@
+import type StatusEnum from '../enums/status-enum';
 import type DocumentUser from './document-user';
 
 interface DocumentInterface {
@@ -9,6 +10,7 @@ interface DocumentInterface {
   userId: number;
   users: DocumentUser[];
   assigneeId: number;
+  status: StatusEnum;
   isPublic: boolean;
 }
 

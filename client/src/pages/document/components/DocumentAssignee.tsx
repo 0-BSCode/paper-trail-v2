@@ -4,6 +4,7 @@ import useDocument from '@src/hooks/useDocument';
 import DocumentService from '@src/services/document-service';
 import UserService from '@src/services/user-service';
 import RoleEnum from '@src/types/enums/role-enum';
+import StatusEnum from '@src/types/enums/status-enum';
 import type UserInterface from '@src/types/interfaces/user';
 import { Typography, Select, Button } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
@@ -20,7 +21,9 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
   const [isSaving, setIsSaving] = useState(false);
   const { document } = useDocument(parseInt(documentId));
 
-  const hasEditPermissions = document?.userId !== userId && roles?.every((r) => r !== RoleEnum.STUDENT);
+  console.log(document);
+  const hasEditPermissions =
+    document?.userId !== userId && roles?.every((r) => r !== RoleEnum.STUDENT) && document?.status !== StatusEnum.DRAFT;
 
   const onChange = (id: string | undefined): void => {
     setAssigneeId(id ? parseInt(id) : null);
