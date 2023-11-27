@@ -2,7 +2,6 @@ import { AuthContext } from '@src/context/AuthContext';
 import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
 import DocumentService from '@src/services/document-service';
-import RoleEnum from '@src/types/enums/role-enum';
 import StatusEnum from '@src/types/enums/status-enum';
 import { Typography, Button, Select } from 'antd';
 import { useContext, useEffect, useState } from 'react';
@@ -24,14 +23,14 @@ const statusToOptionMapping = {
 const disabledOptions = [StatusEnum.DRAFT, StatusEnum.REVIEW, StatusEnum.REVIEW_REQUESTED];
 
 const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => {
-  const { accessToken, userId, roles } = useContext(AuthContext);
+  const { accessToken, userId } = useContext(AuthContext);
   const { document, setDocument } = useContext(DocumentContext);
   const { success } = useContext(ToastContext);
   const [status, setStatus] = useState<StatusEnum | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const hasEditPermission =
-    userId !== document?.userId && roles?.every((r) => r !== RoleEnum.STUDENT) && document?.status !== StatusEnum.DRAFT;
+    userId !== document?.userId && userId === document?.assigneeId && document?.status !== StatusEnum.DRAFT;
 
   const onChange = (newStatus: StatusEnum): void => {
     setStatus(newStatus);
