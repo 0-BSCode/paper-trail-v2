@@ -112,7 +112,9 @@ const LoginPage = (): JSX.Element => {
                 className="p-2"
                 placeholder="Email"
                 color="secondary"
-                onChange={(e) => handleOnInputEmail(e.target.value)}
+                onChange={(e) => {
+                  handleOnInputEmail(e.target.value);
+                }}
               />
               {emailErrors.length > 0 && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
             </div>
@@ -135,10 +137,11 @@ const LoginPage = (): JSX.Element => {
               style={{ borderRadius: '6px', fontFamily: 'roboto' }}
               size="large"
               type="primary"
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onClick={loginUser}
               disabled={loading}
             >
-              <span className={loading && opacity-0}>Log In</span>
+              <span className={`${loading && 'opacity-0'}`}>Log In</span>
               {loading && <Spinner size="sm" />}
             </Button>
             <div className="text-center items-center">
