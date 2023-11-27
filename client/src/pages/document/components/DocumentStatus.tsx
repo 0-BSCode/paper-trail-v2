@@ -11,6 +11,7 @@ import React, { useContext, useEffect, useState } from 'react';
 const filterOption = (input: string, option?: { label: string; value: string }): boolean =>
   (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
+// TODO: Limit options but all of them should render properly (even those not listed)
 const statusToOptionMapping = {
   [StatusEnum.CHANGES_REQUESTED]: 'Changes Requested',
   [StatusEnum.DRAFT]: 'Draft',
@@ -19,6 +20,8 @@ const statusToOptionMapping = {
   [StatusEnum.REVIEW]: 'Review',
   [StatusEnum.REVIEW_REQUESTED]: 'Review Requested',
 };
+
+const disabledOptions = [StatusEnum.DRAFT, StatusEnum.REVIEW, StatusEnum.REVIEW_REQUESTED];
 
 const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => {
   const { accessToken, userId, roles } = useContext(AuthContext);
@@ -80,9 +83,13 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
         onChange={onChange}
         filterOption={filterOption}
         value={status}
-        options={Object.keys(StatusEnum).map((s) => {
+        options={Object.keys(statusToOptionMapping).map((s) => {
           // TODO: Fix type error with s
-          return { value: s, label: statusToOptionMapping[s as keyof typeof statusToOptionMapping] };
+          return {
+            value: s,
+            label: statusToOptionMapping[s as keyof typeof statusToOptionMapping],
+            disabled: disabledOptions.includes(s as unknown as StatusEnum),
+          };
         })}
       />
       <Button disabled={!hasEditPermission || isSaving} onClick={saveStatus}>
