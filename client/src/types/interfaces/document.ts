@@ -9,7 +9,7 @@ interface DocumentInterface {
   updatedAt: Date;
   userId: number;
   users: DocumentUser[];
-  assigneeId: number;
+  assigneeId: number | null;
   status: StatusEnum;
   isPublic: boolean;
 }

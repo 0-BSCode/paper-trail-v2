@@ -1,6 +1,6 @@
 import { AuthContext } from '@src/context/AuthContext';
+import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
-import useDocument from '@src/hooks/useDocument';
 import DocumentService from '@src/services/document-service';
 import RoleEnum from '@src/types/enums/role-enum';
 import StatusEnum from '@src/types/enums/status-enum';
@@ -22,12 +22,13 @@ const statusToOptionMapping = {
 
 const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => {
   const { accessToken, userId, roles } = useContext(AuthContext);
+  const { document, setDocument } = useContext(DocumentContext);
   const { success } = useContext(ToastContext);
   const [status, setStatus] = useState<StatusEnum | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const { document } = useDocument(parseInt(documentId));
 
-  const hasEditPermission = userId !== document?.userId && roles?.every((r) => r !== RoleEnum.STUDENT);
+  const hasEditPermission =
+    userId !== document?.userId && roles?.every((r) => r !== RoleEnum.STUDENT) && document?.status !== StatusEnum.DRAFT;
 
   const onChange = (newStatus: StatusEnum): void => {
     setStatus(newStatus);
@@ -36,12 +37,13 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
   const saveStatus = (): void => {
     // TODO: Consolidate API calls that require accessToken under one check
     // so we don't need to keep checking this
-    if (accessToken === null || status === null) return;
+    if (document === null || accessToken === null || status === null) return;
 
     setIsSaving(true);
     void DocumentService.setStatus(accessToken, parseInt(documentId), status)
       .then(() => {
         success('Successfully saved status!');
+        setDocument({ ...document, status });
       })
       .catch((err) => {
         console.log(err);

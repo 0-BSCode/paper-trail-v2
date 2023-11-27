@@ -34,6 +34,10 @@ class AssigneeService {
         // Disallows non-Cisco users from being assigned to document
         return null;
       }
+
+      await targetDocument.update({ status: StatusEnum.REVIEW });
+    } else {
+      await targetDocument.update({ status: StatusEnum.REVIEW_REQUESTED });
     }
 
     await targetDocument.update({ assigneeId });

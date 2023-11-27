@@ -1,5 +1,5 @@
 // TODO: Remove unneeded buttons
-import { type ChangeEvent, type FocusEvent, useContext } from 'react';
+import { type ChangeEvent, type FocusEvent, useContext, useState } from 'react';
 import UserDropdown from '@src/components/UserDropdown';
 import ShareDocumentModal from './ShareDocumentModal';
 import useRandomBackground from '@src/hooks/useRandomBackground';
@@ -8,6 +8,8 @@ import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
 import { Anchor, Button, Input, Space } from 'antd';
+import StatusEnum from '@src/types/enums/status-enum';
+import { ToastContext } from '@src/context/ToastContext';
 
 const { Link } = Anchor;
 
@@ -36,7 +38,12 @@ const CurrentUsers = (): JSX.Element => {
 
 const DocumentMenuBar = (): JSX.Element => {
   const { accessToken, userId } = useAuth();
+  const { success } = useContext(ToastContext);
   const { document, saving, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
+  const [isStatusSaving, setIsStatusSaving] = useState(false);
+
+  const canSubmit =
+    !isStatusSaving && (document?.status === StatusEnum.DRAFT || document?.status === StatusEnum.CHANGES_REQUESTED);
 
   const handleTitleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const title = event.target.value;
@@ -62,6 +69,39 @@ const DocumentMenuBar = (): JSX.Element => {
       setDocument(updatedDocument);
       setSaving(false);
     }
+  };
+
+  const saveStatus = (status: StatusEnum | undefined): void => {
+    // TODO: Consolidate API calls that require accessToken under one check
+    // so we don't need to keep checking this
+    if (accessToken === null || document === null || status === undefined) return;
+
+    let newStatus = status;
+
+    switch (status) {
+      case StatusEnum.DRAFT:
+      case StatusEnum.CHANGES_REQUESTED:
+        newStatus = StatusEnum.REVIEW_REQUESTED;
+        break;
+      default:
+        newStatus = status;
+        break;
+    }
+
+    if (newStatus === status) return;
+
+    setIsStatusSaving(true);
+    void DocumentService.setStatus(accessToken, document.id, newStatus)
+      .then(() => {
+        success('Successfully saved status!');
+        setDocument({ ...document, status: newStatus });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsStatusSaving(false);
+      });
   };
 
   return (
@@ -94,12 +134,13 @@ const DocumentMenuBar = (): JSX.Element => {
         <Space>
           {document !== null && document.userId === userId && <ShareDocumentModal />}
           <Button
+            disabled={!canSubmit}
             type="primary"
-            onClick={(e) => {
-              e.preventDefault();
+            onClick={() => {
+              saveStatus(document?.status);
             }}
           >
-            Submit
+            {document?.status === StatusEnum.CHANGES_REQUESTED ? 'Resubmit' : 'Submit'}
           </Button>
         </Space>
       </div>

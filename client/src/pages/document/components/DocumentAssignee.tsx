@@ -1,6 +1,6 @@
 import { AuthContext } from '@src/context/AuthContext';
+import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
-import useDocument from '@src/hooks/useDocument';
 import DocumentService from '@src/services/document-service';
 import UserService from '@src/services/user-service';
 import RoleEnum from '@src/types/enums/role-enum';
@@ -15,13 +15,12 @@ const filterOption = (input: string, option?: { label: string; value: string }):
 
 const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element => {
   const { accessToken, userId, roles } = useContext(AuthContext);
+  const { document, setDocument } = useContext(DocumentContext);
   const { success } = useContext(ToastContext);
   const [assigneeId, setAssigneeId] = useState<number | null>(null);
   const [assigneeList, setAssigneeList] = useState<UserInterface[]>([]);
   const [isSaving, setIsSaving] = useState(false);
-  const { document } = useDocument(parseInt(documentId));
 
-  console.log(document);
   const hasEditPermissions =
     document?.userId !== userId && roles?.every((r) => r !== RoleEnum.STUDENT) && document?.status !== StatusEnum.DRAFT;
 
@@ -32,12 +31,13 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
   const saveAssignee = (): void => {
     // TODO: Consolidate API calls that require accessToken under one check
     // so we don't need to keep checking this
-    if (accessToken === null) return;
+    if (document === null || accessToken === null) return;
 
     setIsSaving(true);
     void DocumentService.setAssignee(accessToken, parseInt(documentId), assigneeId)
       .then(() => {
         success('Successfully saved assignee!');
+        setDocument({ ...document, assigneeId });
       })
       .catch((err) => {
         console.log(err);
