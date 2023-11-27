@@ -1,13 +1,14 @@
-import { Table } from 'antd';
+import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import type UserInterface from '@src/types/interfaces/user';
 import convertToTitleCase from '@src/utils/convertToTitleCase';
+import RoleEnum from '@src/types/enums/role-enum';
 
 interface UsersTableProps {
   users: UserInterface[];
 }
 
-// TODO: SAM - MAKE EMAIL ROW OPEN MODAL FOR EACH USER
+// TODO: IAN - MAKE EMAIL ROW OPEN MODAL FOR EACH USER
 const UsersTable = ({ users }: UsersTableProps): JSX.Element => {
   const columns: ColumnsType<UserInterface> = [
     {
@@ -21,9 +22,26 @@ const UsersTable = ({ users }: UsersTableProps): JSX.Element => {
       dataIndex: 'roles',
       key: 'roles',
       render: (_, record) => {
-        if (record.roles.length === 0) return <p>No roles</p>;
+        if (!record.roles.length) return <p>No roles</p>;
 
-        return <p>{convertToTitleCase(record.roles[0].name)}</p>;
+        return (
+          <p>
+            {record.roles.map((role) => (
+              <Tag
+                key={role.name}
+                color={
+                  role.name === RoleEnum.CISCO_ADMIN
+                    ? 'error'
+                    : role.name === RoleEnum.CISCO_MEMBER
+                    ? 'processing'
+                    : 'success'
+                }
+              >
+                {convertToTitleCase(role.name)}
+              </Tag>
+            ))}
+          </p>
+        );
       },
     },
   ];
