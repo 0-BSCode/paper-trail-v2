@@ -57,13 +57,10 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
   };
 
   useEffect(() => {
-    if (accessToken === null) return;
-
-    void DocumentService.getStatus(accessToken, parseInt(documentId)).then((res) => {
-      const statusData = res.data as StatusEnum;
-      setStatus(statusData);
-    });
-  }, []);
+    if (document) {
+      setStatus(document.status);
+    }
+  }, [document]);
 
   return (
     <div className="flex flex-col border-r-4 gap-y-3 bg-white shadow-md p-3">

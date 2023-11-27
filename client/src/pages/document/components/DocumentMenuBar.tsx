@@ -43,7 +43,9 @@ const DocumentMenuBar = (): JSX.Element => {
   const [isStatusSaving, setIsStatusSaving] = useState(false);
 
   const canSubmit =
-    !isStatusSaving && (document?.status === StatusEnum.DRAFT || document?.status === StatusEnum.CHANGES_REQUESTED);
+    !isStatusSaving &&
+    document?.userId === userId &&
+    (document?.status === StatusEnum.DRAFT || document?.status === StatusEnum.CHANGES_REQUESTED);
 
   const handleTitleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const title = event.target.value;
