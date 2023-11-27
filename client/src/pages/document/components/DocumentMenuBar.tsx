@@ -95,7 +95,7 @@ const DocumentMenuBar = (): JSX.Element => {
     setIsStatusSaving(true);
     void DocumentService.setStatus(accessToken, document.id, newStatus)
       .then(() => {
-        success('Successfully saved status!');
+        success(`Successfully changed status to ${newStatus}`);
         setDocument({ ...document, status: newStatus });
       })
       .catch((err) => {

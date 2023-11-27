@@ -5,7 +5,7 @@ import DocumentService from '@src/services/document-service';
 import RoleEnum from '@src/types/enums/role-enum';
 import StatusEnum from '@src/types/enums/status-enum';
 import { Typography, Button, Select } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // Filter `option.label` match the user type `input`
 const filterOption = (input: string, option?: { label: string; value: string }): boolean =>

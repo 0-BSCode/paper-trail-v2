@@ -36,7 +36,9 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
     setIsSaving(true);
     void DocumentService.setAssignee(accessToken, parseInt(documentId), assigneeId)
       .then(() => {
-        success('Successfully saved assignee!');
+        const newAssignee = assigneeList.find((a) => a.id === assigneeId);
+        // TODO: Deal with undefined state (should be guaranteed though)
+        success(`Successfully set assignee to ${newAssignee?.email}`);
         setDocument({ ...document, assigneeId });
       })
       .catch((err) => {
