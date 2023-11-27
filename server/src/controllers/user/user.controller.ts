@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import { resetPassword } from "../../responses";
 import jwt, { VerifyErrors } from "jsonwebtoken";
 import env from "../../config/env.config";
+import { UserRole } from "../../db/models/user-role.model";
 
 class UserController {
   public register = catchAsync(async (req: Request, res: Response) => {
@@ -61,6 +62,13 @@ class UserController {
     if (user === null) return res.sendStatus(400);
 
     return res.status(200).json(user);
+  });
+
+  // TODO: Add guards
+  public getUsersByRole = catchAsync(async (req: Request, res: Response) => {
+    const { names } = req.params;
+    const users = await userService.findUsersByRole(names.split(",") as unknown as UserRole[]);
+    return res.status(200).json(users);
   });
 
   public resetPassword = catchAsync(async (req: Request, res: Response) => {

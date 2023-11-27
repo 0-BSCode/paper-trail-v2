@@ -8,6 +8,7 @@ interface DocumentInterface {
   updatedAt: Date;
   userId: number;
   users: DocumentUser[];
+  assigneeId: number;
   isPublic: boolean;
 }
 

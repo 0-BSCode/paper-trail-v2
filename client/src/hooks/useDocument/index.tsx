@@ -4,6 +4,7 @@ import { ToastContext } from '@src/context/ToastContext';
 import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
 import useAuth from '@src/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 interface DocumentHookType {
   document: DocumentInterface | null;
@@ -17,6 +18,7 @@ const useDocument = (documentId: number): DocumentHookType => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [document, setDocument] = useState<null | DocumentInterface>(null);
+  const navigate = useNavigate();
 
   const loadDocument = async (accessToken: string, documentId: number): Promise<void> => {
     setLoading(true);
@@ -35,6 +37,7 @@ const useDocument = (documentId: number): DocumentHookType => {
       } else {
         setErrors((prev) => [...prev, 'An unknown error has occured. Please try again.']);
       }
+      navigate('/home');
     } finally {
       setLoading(false);
     }

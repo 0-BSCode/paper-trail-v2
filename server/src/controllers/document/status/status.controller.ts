@@ -54,7 +54,7 @@ class StatusController {
 
     await notificationService.notifyStatusChange(document.userId, document.id);
 
-    return res.status(200).end();
+    return res.status(200).json(status);
   });
 }
 const statusController = new StatusController();

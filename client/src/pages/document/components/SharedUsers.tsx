@@ -6,6 +6,10 @@ import useRandomBackground from '@src/hooks/useRandomBackground';
 import DocumentUserService from '@src/services/document-user-service';
 import type DocumentInterface from '@src/types/interfaces/document';
 import type DocumentUser from '@src/types/interfaces/document-user';
+import PermissionEnum from '@src/types/enums/permission-enum';
+import validator from 'validator';
+import { Space, Switch } from 'antd';
+import { EyeIcon, PencilIcon } from '@heroicons/react/24/outline';
 
 interface SharedUsersProps {
   documentUsers: DocumentUser[];
@@ -17,8 +21,40 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
   const { backgroundColor: sharedUserBackgroundColor } = useRandomBackground();
   const { accessToken, email } = useAuth();
   const [loading, setLoading] = useState(false);
-  const { addToast } = useContext(ToastContext);
+  const { addToast, success, error } = useContext(ToastContext);
   const { document } = useContext(DocumentContext);
+
+  const updateDocumentUser = async (payload: {
+    documentId: number;
+    userId: number;
+    permission: PermissionEnum;
+  }): Promise<void> => {
+    if (email === null || !validator.isEmail(email) || accessToken === null || document === null) return;
+    setLoading(true);
+
+    try {
+      const response = await DocumentUserService.update(accessToken, payload);
+      const updatedDocumentUser = response.data as DocumentUser;
+      updatedDocumentUser.user = { email };
+
+      const documentUser = document.users.find((user) => user.userId === updatedDocumentUser.userId);
+
+      if (documentUser) {
+        documentUser.permission = updatedDocumentUser.permission;
+        success(`Successfully updated permissions of ${email}!`);
+        setDocument({
+          ...document,
+          users: document.users.map((d) => (d.userId === documentUser.userId ? documentUser : d)),
+        } satisfies DocumentInterface);
+      } else {
+        throw new Error("Shared user doesn't exist.");
+      }
+    } catch (err) {
+      error(`Unable to update permissions of ${email}. Please try again`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const removeDocumentUser = async (payload: { documentId: number; userId: number }): Promise<void> => {
     if (!accessToken) return;
@@ -71,20 +107,38 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
               >
                 {documentUser.user.email[0]}
               </div>
-              <p className="font-medium">{documentUser.user.email}</p>
+              <p className="font-medium">
+                {documentUser.user.email} ({documentUser.permission})
+              </p>
             </div>
-            <button
-              onClick={() => {
-                void removeDocumentUser({
-                  documentId: documentUser.documentId,
-                  userId: documentUser.userId,
-                });
-              }}
-              disabled={loading}
-              className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
-            >
-              Remove
-            </button>
+            <Space>
+              <Switch
+                disabled={loading}
+                checkedChildren={<EyeIcon />}
+                unCheckedChildren={<PencilIcon />}
+                checked={documentUser.permission === PermissionEnum.EDIT}
+                onChange={(checked) => {
+                  void updateDocumentUser({
+                    documentId: documentUser.documentId,
+                    userId: documentUser.userId,
+                    permission: checked ? PermissionEnum.EDIT : PermissionEnum.VIEW,
+                  });
+                }}
+              />
+
+              <button
+                onClick={() => {
+                  void removeDocumentUser({
+                    documentId: documentUser.documentId,
+                    userId: documentUser.userId,
+                  });
+                }}
+                disabled={loading}
+                className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
+              >
+                Remove
+              </button>
+            </Space>
           </div>
         );
       })}

@@ -3,7 +3,6 @@ import { AuthProvider } from './context/AuthContext';
 import Landing from './pages/landing';
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
-import DashboardPage from './pages/dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import { ToastProvider } from './context/ToastContext';
 import { DocumentProvider } from './context/DocumentContext';
@@ -20,8 +19,7 @@ function App() {
           <DocumentProvider>
             <Routes>
               <Route path="/landing" element={<Landing />} />
-              <Route path="/" element={<Navigate replace to="/document/create" />} />
-              <Route path="/document/create" element={<ProtectedRoute element={<DashboardPage />} />} />
+              <Route path="/" element={<Navigate replace to="/home" />} />
               <Route
                 path="/document/:id"
                 element={

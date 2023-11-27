@@ -7,6 +7,11 @@ const DocumentUserService = {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
   },
+  update: async (accessToken: string, payload: { documentId: number; userId: number; permission: PermissionEnum }) => {
+    return await API.put(`document/${payload.documentId}/share`, payload, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  },
   delete: async (accessToken: string, payload: { documentId: number; userId: number }) => {
     return await API.delete(`document/${payload.documentId}/share/${payload.userId}`, {
       headers: { Authorization: `Bearer ${accessToken}` },

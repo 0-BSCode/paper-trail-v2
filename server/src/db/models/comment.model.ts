@@ -4,21 +4,21 @@ import { User } from "./user.model";
 
 @Table({ tableName: "comment", underscored: true })
 class Comment extends Model {
+  @BelongsTo(() => User)
+  user!: User;
+
   @ForeignKey(() => User)
   @AllowNull(false)
   @Column(DataType.NUMBER)
   userId!: number;
 
-  @BelongsTo(() => User)
-  user!: User;
+  @BelongsTo(() => Document)
+  document!: Document;
 
   @ForeignKey(() => Document)
   @AllowNull(false)
   @Column(DataType.NUMBER)
   documentId!: number;
-
-  @BelongsTo(() => Document)
-  document!: Document;
 
   @AllowNull(false)
   @Column(DataType.STRING)

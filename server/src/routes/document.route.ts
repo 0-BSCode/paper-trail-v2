@@ -9,13 +9,16 @@ import { statusController } from "../controllers/document/status/status.controll
 import { assigneeController } from "../controllers/document/assignee/assignee.controller";
 
 const router = Router();
+
+router.get("/all", authenticate, documentController.getAllDocuments);
 router.get("/status", authenticate, statusController.getAll);
 router.get("/:id", authenticate, documentController.getOne);
-router.get("/", authenticate, documentController.getAll);
+router.get("/", authenticate, documentController.getAllUserDocuments);
 router.put("/:id", authenticate, documentValidator.update, documentController.update);
 router.post("/", authenticate, documentController.create);
 router.delete("/:id", authenticate, documentController.delete);
 router.post("/:id/share", authenticate, shareValidator.create, shareController.create);
+router.put("/:id/share", authenticate, shareController.update);
 router.delete("/:documentId/share/:userId", authenticate, shareController.delete);
 router.get("/assignee/:id", authenticate, assigneeController.getAssigneeDocuments);
 router.get("/:documentId/assignee", authenticate, assigneeController.getAssignee);
@@ -24,4 +27,5 @@ router.get("/:documentId/comment", authenticate, commentController.getDocumentCo
 router.post("/:documentId/comment", authenticate, commentController.createComment);
 router.get("/:id/status", authenticate, statusController.getStatus);
 router.put("/:id/status", authenticate, statusController.updateStatus);
+
 export default router;

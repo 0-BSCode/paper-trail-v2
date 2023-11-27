@@ -17,9 +17,10 @@ const ImperativeHandle = forwardRef((_: unknown, ref: Ref<EditorRef>) => {
 interface Props {
   onChange: (content: RemirrorJSON) => void;
   editorRef: null | MutableRefObject<null | EditorRef>;
+  editable: boolean;
 }
 
-const RichTextEditor: React.FC<Props> = ({ onChange, editorRef }: Props) => {
+const RichTextEditor: React.FC<Props> = ({ onChange, editorRef, editable }: Props) => {
   useEffect(() => {
     setTimeout(() => {
       return null;
@@ -27,12 +28,10 @@ const RichTextEditor: React.FC<Props> = ({ onChange, editorRef }: Props) => {
   }, []);
 
   return (
-    <div>
-      <WysiwygEditor placeholder="Enter text..." autoFocus>
-        <OnChangeJSON onChange={onChange} />
-        <ImperativeHandle ref={editorRef} />
-      </WysiwygEditor>
-    </div>
+    <WysiwygEditor placeholder="Enter text..." autoFocus editable={editable}>
+      <OnChangeJSON onChange={onChange} />
+      <ImperativeHandle ref={editorRef} />
+    </WysiwygEditor>
   );
 };
 

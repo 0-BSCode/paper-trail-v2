@@ -140,7 +140,9 @@ const RegisterPage = (): JSX.Element => {
               placeholder="Email"
               color="secondary"
               value={email}
-              onChange={(e) => handleOnInputEmail(e.target.value)}
+              onChange={(e) => {
+                handleOnInputEmail(e.target.value);
+              }}
             />
             {!!emailErrors.length && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
           </div>
@@ -153,7 +155,9 @@ const RegisterPage = (): JSX.Element => {
               color="secondary"
               style={{ fontFamily: 'roboto' }}
               value={password1}
-              onChange={(e) => handleOnInputPassword1(e.target.value)}
+              onChange={(e) => {
+                handleOnInputPassword1(e.target.value);
+              }}
             />
             {!!password1Errors.length && <div className="text-red-500 text-sm">{password1Errors.join(', ')}</div>}
           </div>
@@ -166,7 +170,9 @@ const RegisterPage = (): JSX.Element => {
               type="password"
               color="secondary"
               value={password2}
-              onChange={(e) => handleOnInputPassword2(e.target.value)}
+              onChange={(e) => {
+                handleOnInputPassword2(e.target.value);
+              }}
             />
             {!!password2Errors.length && <div className="text-red-500 text-sm">{password2Errors.join(', ')}</div>}
           </div>
@@ -175,6 +181,7 @@ const RegisterPage = (): JSX.Element => {
             style={{ borderRadius: '6px', fontFamily: 'roboto' }}
             size="large"
             type="primary"
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={register}
             disabled={loading}
           >

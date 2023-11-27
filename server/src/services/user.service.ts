@@ -3,7 +3,11 @@ import jwt from "jsonwebtoken";
 import { User } from "../db/models/user.model";
 import { RefreshToken } from "../db/models/refresh-token.model";
 import env from "../config/env.config";
+import { UserRole } from "../db/models/user-role.model";
+import { Role } from "../db/models/role.model";
+import { Op } from "sequelize";
 
+// TODO: Clean up unused service methods
 class UserService {
   public findUserByEmail = async (email: string): Promise<User | null> => {
     const user = await User.findOne({ where: { email } });
@@ -39,14 +43,41 @@ class UserService {
     return user;
   };
 
+  public findUsersByRole = async (roles: UserRole[]): Promise<User[]> => {
+    return await User.findAll({
+      include: [
+        {
+          model: Role,
+          attributes: [],
+          where: {
+            name: {
+              [Op.in]: roles
+            }
+          },
+          through: {
+            attributes: []
+          }
+        }
+      ],
+      attributes: {
+        exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
+      }
+    });
+  };
+
   public createUser = async (email: string, password: string) => {
     const salt = await genSalt();
     const hashedPassword = await hash(password, salt);
     const verificationToken = jwt.sign({ email }, env.VERIFY_EMAIL_SECRET);
-    await User.create({
+    const newUser = await User.create({
       email: email,
       password: hashedPassword,
       verificationToken: verificationToken
+    });
+
+    await UserRole.create({
+      userId: newUser.id,
+      roleId: 1 // ID of STUDENT role
     });
   };
 

@@ -41,7 +41,7 @@ class Document extends Model {
   @ForeignKey(() => User)
   userId!: number;
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, "userId")
   user!: User;
 
   @HasMany(() => DocumentUser, {
@@ -49,12 +49,13 @@ class Document extends Model {
   })
   users!: Array<DocumentUser>;
 
-  @BelongsTo(() => User)
-  assignee!: User;
-
+  @AllowNull(true)
   @ForeignKey(() => User)
   @Column(DataType.INTEGER)
   assigneeId!: number;
+
+  @BelongsTo(() => User, "assigneeId")
+  assignee!: User;
 
   @HasMany(() => Comment, {
     onDelete: "CASCADE"
