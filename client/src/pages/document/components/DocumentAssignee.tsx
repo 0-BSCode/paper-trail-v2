@@ -50,14 +50,17 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
   useEffect(() => {
     if (accessToken === null) return;
 
-    void DocumentService.getAssignee(accessToken, parseInt(documentId)).then((res) => {
-      const assigneeData = res.data as UserInterface;
-      setAssigneeId(assigneeData.id);
-    });
     void UserService.fetchByRole(accessToken, [RoleEnum.CISCO_MEMBER, RoleEnum.CISCO_ADMIN]).then((res) => {
-      setAssigneeList(res.data as UserInterface[]);
+      const assigneeOptions = res.data as UserInterface[];
+      setAssigneeList(assigneeOptions);
     });
   }, []);
+
+  useEffect(() => {
+    if (document) {
+      setAssigneeId(document.assigneeId);
+    }
+  }, [document]);
 
   return (
     <div className="flex flex-col border-r-4 gap-y-3 bg-white shadow-md p-3">
