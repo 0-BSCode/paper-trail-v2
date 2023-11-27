@@ -118,7 +118,6 @@ const LoginPage = (): JSX.Element => {
               />
               {emailErrors.length > 0 && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
             </div>
-
             <div>
               <Input.Password
                 className="p-2"
@@ -132,7 +131,6 @@ const LoginPage = (): JSX.Element => {
               />
               {passwordErrors.length > 0 && <div className="text-red-500 text-sm">{passwordErrors.join(', ')}</div>}
             </div>
-
             <Button
               style={{ borderRadius: '6px', fontFamily: 'roboto' }}
               size="large"

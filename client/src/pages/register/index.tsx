@@ -146,7 +146,6 @@ const RegisterPage = (): JSX.Element => {
             />
             {!!emailErrors.length && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
           </div>
-
           <div>
             <Input.Password
               className="p-2"
@@ -161,7 +160,6 @@ const RegisterPage = (): JSX.Element => {
             />
             {!!password1Errors.length && <div className="text-red-500 text-sm">{password1Errors.join(', ')}</div>}
           </div>
-
           <div>
             <Input.Password
               style={{ fontFamily: 'roboto' }}
@@ -176,7 +174,6 @@ const RegisterPage = (): JSX.Element => {
             />
             {!!password2Errors.length && <div className="text-red-500 text-sm">{password2Errors.join(', ')}</div>}
           </div>
-
           <Button
             style={{ borderRadius: '6px', fontFamily: 'roboto' }}
             size="large"
