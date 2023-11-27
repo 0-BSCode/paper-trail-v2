@@ -26,6 +26,6 @@ router.put("/:documentId/assignee", authenticate, assigneeController.setAssignee
 router.get("/:documentId/comment", authenticate, commentController.getDocumentComments);
 router.post("/:documentId/comment", authenticate, commentController.createComment);
 router.get("/:id/status", authenticate, statusController.getStatus);
-router.put("/:id/status", authenticate, statusController.updateStatus);
+router.put("/:id/status", authenticate, statusController.setStatus);
 
 export default router;

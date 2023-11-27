@@ -35,7 +35,7 @@ class StatusController {
     return res.status(200).json(documents);
   });
 
-  public updateStatus = catchAsync(async (req: Request, res: Response) => {
+  public setStatus = catchAsync(async (req: Request, res: Response) => {
     const err = validationResult(req);
     if (!err.isEmpty()) {
       return res.status(400).json(err);
@@ -49,7 +49,9 @@ class StatusController {
 
     if (document === null) return res.sendStatus(404);
 
-    if (status !== undefined && status !== null) document.status = status;
+    if (!status) return res.sendStatus(400);
+
+    document.status = status;
     await document.save();
 
     await notificationService.notifyStatusChange(document.userId, document.id);
