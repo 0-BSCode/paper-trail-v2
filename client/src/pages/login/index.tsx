@@ -138,17 +138,8 @@ const LoginPage = (): JSX.Element => {
               onClick={loginUser}
               disabled={loading}
             >
-              <span className={`${loading && 'opacity-0'}`}>Log In</span>
+              <span className={loading && opacity-0}>Log In</span>
               {loading && <Spinner size="sm" />}
-            </Button>
-            <Button
-              style={{ borderRadius: '6px', fontFamily: 'roboto' }}
-              size="large"
-              type="default"
-              className="flex justify-center items-center gap-3 text-gray-500"
-            >
-              <img className="h-4 w-4" src="/src/assets/icons/google-logo.png" alt="" />
-              Continue with Google
             </Button>
             <div className="text-center items-center">
               <span>or </span>

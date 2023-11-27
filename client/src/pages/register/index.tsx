@@ -142,7 +142,7 @@ const RegisterPage = (): JSX.Element => {
               value={email}
               onChange={(e) => handleOnInputEmail(e.target.value)}
             />
-            {emailErrors.length > 0 && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
+            {!!emailErrors.length && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
           </div>
 
           <div>
@@ -155,7 +155,7 @@ const RegisterPage = (): JSX.Element => {
               value={password1}
               onChange={(e) => handleOnInputPassword1(e.target.value)}
             />
-            {password1Errors.length > 0 && <div className="text-red-500 text-sm">{password1Errors.join(', ')}</div>}
+            {!!password1Errors.length && <div className="text-red-500 text-sm">{password1Errors.join(', ')}</div>}
           </div>
 
           <div>
@@ -168,7 +168,7 @@ const RegisterPage = (): JSX.Element => {
               value={password2}
               onChange={(e) => handleOnInputPassword2(e.target.value)}
             />
-            {password2Errors.length > 0 && <div className="text-red-500 text-sm">{password2Errors.join(', ')}</div>}
+            {!!password2Errors.length && <div className="text-red-500 text-sm">{password2Errors.join(', ')}</div>}
           </div>
 
           <Button
@@ -180,15 +180,6 @@ const RegisterPage = (): JSX.Element => {
           >
             <span className={`${loading && 'opacity-0'}`}>Register</span>
             {loading && <Spinner size="sm" />}
-          </Button>
-          <Button
-            style={{ borderRadius: '6px', fontFamily: 'roboto' }}
-            size="large"
-            type="default"
-            className="flex justify-center items-center gap-3 text-gray-500"
-          >
-            <img className="h-4 w-4" src="/src/assets/icons/google-logo.png" alt="" />
-            Continue with Google
           </Button>
           <div className="text-center items-center">
             <span>or </span>
