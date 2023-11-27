@@ -4,16 +4,6 @@ import { validationResult } from "express-validator";
 import assigneeService from "../../../services/assignee.service";
 
 class AssigneeController {
-  public getAssignee = catchAsync(async (req: Request, res: Response) => {
-    if (!req.user) return res.sendStatus(401);
-
-    const { documentId } = req.params;
-    const assignee = await assigneeService.findAssigneeById(parseInt(documentId));
-
-    if (assignee === null) return res.sendStatus(404);
-
-    return res.status(200).json(assignee);
-  });
   /**
    * Gets all documents assigned to a specific officer
    */

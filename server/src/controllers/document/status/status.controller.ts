@@ -6,16 +6,6 @@ import notificationService from "../../../services/notification.service";
 import { Document } from "../../../db/models/document.model";
 
 class StatusController {
-  public getStatus = catchAsync(async (req: Request, res: Response) => {
-    if (!req.user) return res.sendStatus(401);
-
-    const { id } = req.params;
-    const document = await documentService.findDocumentById(parseInt(id), parseInt(req.user.id));
-
-    if (document === null) return res.sendStatus(404);
-
-    return res.status(200).json(document.status);
-  });
   /**
    * Gets all documents of a specific status
    */
