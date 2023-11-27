@@ -1,0 +1,8 @@
+.ant-col.ant-form-item-label {
+  font-weight: 600;
+  padding-bottom: 2px !important;
+}
+
+.ant-input {
+  min-width: 24rem !important;
+}
