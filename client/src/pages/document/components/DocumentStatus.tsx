@@ -1,6 +1,8 @@
 import { AuthContext } from '@src/context/AuthContext';
 import { ToastContext } from '@src/context/ToastContext';
+import useDocument from '@src/hooks/useDocument';
 import DocumentService from '@src/services/document-service';
+import RoleEnum from '@src/types/enums/role-enum';
 import StatusEnum from '@src/types/enums/status-enum';
 import { Typography, Button, Select } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
@@ -19,10 +21,13 @@ const statusToOptionMapping = {
 };
 
 const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => {
-  const { accessToken } = useContext(AuthContext);
+  const { accessToken, userId, roles } = useContext(AuthContext);
   const { success } = useContext(ToastContext);
   const [status, setStatus] = useState<StatusEnum | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const { document } = useDocument(parseInt(documentId));
+
+  const hasEditPermission = userId !== document?.userId && roles?.every((r) => r !== RoleEnum.STUDENT);
 
   const onChange = (newStatus: StatusEnum): void => {
     setStatus(newStatus);
@@ -66,6 +71,7 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
         Status
       </Typography.Title>
       <Select
+        disabled={!hasEditPermission}
         showSearch
         placeholder="Select a status"
         optionFilterProp="children"
@@ -73,10 +79,11 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
         filterOption={filterOption}
         value={status}
         options={Object.keys(StatusEnum).map((s) => {
-          return { value: s, label: statusToOptionMapping[s as keyof typeof StatusEnum] };
+          // TODO: Fix type error with s
+          return { value: s, label: statusToOptionMapping[s as keyof typeof statusToOptionMapping] };
         })}
       />
-      <Button disabled={isSaving} onClick={saveStatus}>
+      <Button disabled={!hasEditPermission || isSaving} onClick={saveStatus}>
         Save Status
       </Button>
     </div>

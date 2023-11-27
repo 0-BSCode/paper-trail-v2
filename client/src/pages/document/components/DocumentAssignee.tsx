@@ -1,5 +1,6 @@
 import { AuthContext } from '@src/context/AuthContext';
 import { ToastContext } from '@src/context/ToastContext';
+import useDocument from '@src/hooks/useDocument';
 import DocumentService from '@src/services/document-service';
 import UserService from '@src/services/user-service';
 import RoleEnum from '@src/types/enums/role-enum';
@@ -12,11 +13,14 @@ const filterOption = (input: string, option?: { label: string; value: string }):
   (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
 const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element => {
-  const { accessToken } = useContext(AuthContext);
+  const { accessToken, userId, roles } = useContext(AuthContext);
   const { success } = useContext(ToastContext);
   const [assigneeId, setAssigneeId] = useState<number | null>(null);
   const [assigneeList, setAssigneeList] = useState<UserInterface[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+  const { document } = useDocument(parseInt(documentId));
+
+  const hasEditPermissions = document?.userId !== userId && roles?.every((r) => r !== RoleEnum.STUDENT);
 
   const onChange = (id: string | undefined): void => {
     setAssigneeId(id ? parseInt(id) : null);
@@ -63,6 +67,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
         Assignee
       </Typography.Title>
       <Select
+        disabled={!hasEditPermissions}
         showSearch
         allowClear
         placeholder="Select a person"
@@ -74,7 +79,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
           return { value: assignee.id.toString(), label: assignee.email };
         })}
       />
-      <Button disabled={isSaving} onClick={saveAssignee}>
+      <Button disabled={!hasEditPermissions || isSaving} onClick={saveAssignee}>
         Save Assignee
       </Button>
     </div>
