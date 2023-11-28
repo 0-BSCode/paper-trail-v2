@@ -8,7 +8,7 @@ const UserService = {
     });
   },
   fetchAllUsers: async (accessToken: string) => {
-    return await API.get(`user/all`, {
+    return await API.get('user/all', {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
   },

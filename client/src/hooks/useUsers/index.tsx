@@ -6,17 +6,14 @@ import UserService from '@src/services/user-service';
 
 interface UserHookType {
   allUsers: UserInterface[];
-  currentUser: UserInterface;
   loading: boolean;
   setAllUsers: Dispatch<SetStateAction<UserInterface[]>>;
-  setCurrentUser: Dispatch<SetStateAction<UserInterface>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const useUsers = (): UserHookType => {
-  const { accessToken, userId } = useAuth();
+  const { accessToken } = useAuth();
   const [allUsers, setAllUsers] = useState<UserInterface[]>([]);
-  const [currentUser, setCurrentUser] = useState<UserInterface>({});
 
   const [loading, setLoading] = useState(false);
   const { error } = useContext(ToastContext);
@@ -28,9 +25,8 @@ const useUsers = (): UserHookType => {
       const response = await UserService.fetchAllUsers(accessToken);
       setAllUsers(response.data as UserInterface[]);
     } catch (err) {
-      error('Unable to load documents. Please try again.');
+      error('Unable to load users. Please try again.');
     } finally {
-      setCurrentUser(allUsers.filter((user) => user.id === userId)[0]);
       setLoading(false);
     }
   };
@@ -43,10 +39,8 @@ const useUsers = (): UserHookType => {
 
   return {
     allUsers,
-    currentUser,
     loading,
     setAllUsers,
-    setCurrentUser,
     setLoading,
   };
 };

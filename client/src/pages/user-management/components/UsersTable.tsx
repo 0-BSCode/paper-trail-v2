@@ -2,7 +2,8 @@ import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import type UserInterface from '@src/types/interfaces/user';
 import convertToTitleCase from '@src/utils/convertToTitleCase';
-import RoleEnum from '@src/types/enums/role-enum';
+import type RoleEnum from '@src/types/enums/role-enum';
+import getRoleTagColor from '@src/utils/getRoleTagColor';
 
 interface UsersTableProps {
   users: UserInterface[];
@@ -27,16 +28,7 @@ const UsersTable = ({ users }: UsersTableProps): JSX.Element => {
         return (
           <p>
             {record.roles.map((role) => (
-              <Tag
-                key={role.name}
-                color={
-                  role.name === RoleEnum.CISCO_ADMIN
-                    ? 'error'
-                    : role.name === RoleEnum.CISCO_MEMBER
-                    ? 'processing'
-                    : 'success'
-                }
-              >
+              <Tag key={role.name} color={getRoleTagColor(role.name as RoleEnum)}>
                 {convertToTitleCase(role.name)}
               </Tag>
             ))}

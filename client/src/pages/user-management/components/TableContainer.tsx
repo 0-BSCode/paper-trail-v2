@@ -9,15 +9,12 @@ import RoleEnum from '@src/types/enums/role-enum';
 const TableContainer = (): JSX.Element => {
   const { allUsers } = useUsers();
 
-  const [filtered, setFiltered] = useState<boolean>(false);
   const [emailFilter, setEmailFilter] = useState<string>('');
   const [dropDownFilter, setDropDownFilter] = useState<RoleEnum>(RoleEnum.ALL);
   const [filteredUsers, setFilteredUsers] = useState<UserInterface[]>(allUsers);
 
   useEffect(() => {
     if (emailFilter.length > 3 || dropDownFilter !== RoleEnum.ALL) {
-      setFiltered(true);
-
       setFilteredUsers(
         allUsers.filter(
           (user) =>
@@ -26,10 +23,9 @@ const TableContainer = (): JSX.Element => {
         ),
       );
     } else {
-      setFiltered(false);
       setFilteredUsers(allUsers);
     }
-  }, [emailFilter, dropDownFilter]);
+  }, [allUsers, emailFilter, dropDownFilter]);
 
   return (
     <div className="w-[70%] h-[45%] bg-white-100 ml-[4%] flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -52,7 +48,7 @@ const TableContainer = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <UsersTable users={filtered ? filteredUsers : allUsers} />
+      <UsersTable users={filteredUsers} />
     </div>
   );
 };
