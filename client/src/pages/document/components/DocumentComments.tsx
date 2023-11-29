@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, Input, Space, Typography } from 'antd';
 import useComments from '@src/hooks/useComments';
 import { useParams } from 'react-router-dom';
