@@ -38,7 +38,7 @@ const AssignedTickets = (): JSX.Element => {
     <div className="w-[90%] h-[45%] bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
       <h1 className="m-0 text-xl font-bold">All Tickets</h1>
       <div className="flex flex-col ">
-        <div className="flex gap-[2%]">
+        <div className="flex gap-5">
           <div className="flex flex-col justify-start w-[30%]">
             <p className="my-2 font-semibold ">Search by Title</p>
             <input
