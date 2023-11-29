@@ -2,16 +2,15 @@ import DropDown from './DropDown';
 import TicketsTable from './TicketsTable';
 import { Input } from 'antd';
 import useDocuments from '@src/hooks/useDocuments';
-import useAuth from '@src/hooks/useAuth';
 import { useEffect, useState } from 'react';
 import type TicketInterface from '@src/types/interfaces/ticket';
 import StatusEnum from '@src/types/enums/status-enum';
 
 const AssignedTickets = (): JSX.Element => {
   const { allTickets } = useDocuments();
-  const { userId } = useAuth();
   const [filtered, setFiltered] = useState<boolean>(false);
   const [titleFilter, setTitleFilter] = useState<string>('');
+  const [assigneeFilter, setAssigneeFilter] = useState<string>('');
   const [dropDownFilter, setDropDownFilter] = useState<StatusEnum>(StatusEnum.ALL);
   const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
 
@@ -24,12 +23,12 @@ const AssignedTickets = (): JSX.Element => {
           (tic) =>
             (titleFilter.length > 3 ? tic.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
             (dropDownFilter === StatusEnum.ALL ? true : tic.status === dropDownFilter) &&
-            tic.assigneeId === userId,
+            tic.assigneeId,
         ),
       );
     } else {
       setFiltered(false);
-      setFilteredTickets(allTickets.filter((doc) => doc.assigneeId === userId));
+      setFilteredTickets(allTickets.filter((doc) => doc.assigneeId));
     }
   }, [titleFilter, dropDownFilter]);
 
@@ -38,7 +37,7 @@ const AssignedTickets = (): JSX.Element => {
       <h1 className="m-0 text-xl font-bold">All Tickets</h1>
       <div className="flex flex-col ">
         <div className="flex gap-5">
-          <div className="flex  flex-col justify-start w-[40%]">
+          <div className="flex  flex-col justify-start w-[35%]">
             <p className="my-2 font-semibold ">Search by Title</p>
             <Input
               onChange={(e) => {
@@ -48,13 +47,23 @@ const AssignedTickets = (): JSX.Element => {
               style={{ width: '100%' }}
             />
           </div>
+          <div className="flex flex-col w-[35%]">
+            <p className="my-2 font-semibold ">Search by Assignee</p>
+            <Input
+              onChange={(e) => {
+                setAssigneeFilter(e.target.value);
+              }}
+              placeholder="Assignee"
+              style={{ width: '100%' }}
+            />
+          </div>
           <div className="flex flex-col mb-3">
             <p className="my-2 font-semibold ">Status</p>
             <DropDown dropDownFilter={dropDownFilter} setDropDownFilter={setDropDownFilter} />
           </div>
         </div>
       </div>
-      <TicketsTable documents={filtered ? filteredTickets : allTickets.filter((doc) => doc.assigneeId === userId)} />
+      <TicketsTable documents={filtered ? filteredTickets : allTickets.filter((doc) => doc.assigneeId)} />
     </div>
   );
 };
