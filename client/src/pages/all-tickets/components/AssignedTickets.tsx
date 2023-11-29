@@ -1,6 +1,5 @@
 import DropDown from './DropDown';
 import TicketsTable from './TicketsTable';
-import { Input } from 'antd';
 import useDocuments from '@src/hooks/useDocuments';
 import { useEffect, useState } from 'react';
 import type TicketInterface from '@src/types/interfaces/ticket';
@@ -40,24 +39,24 @@ const AssignedTickets = (): JSX.Element => {
       <h1 className="m-0 text-xl font-bold">All Tickets</h1>
       <div className="flex flex-col ">
         <div className="flex gap-[2%]">
-          <div className="flex  flex-col justify-start w-[35%]">
+          <div className="flex flex-col justify-start w-[30%]">
             <p className="my-2 font-semibold ">Search by Title</p>
-            <Input
+            <input
+              className="w-full p-2 border border-gray-300 border-solid rounded-md focus:outline-none focus:ring-1 focus:border-cyan-400 border-t-solid"
               onChange={(e) => {
                 setTitleFilter(e.target.value);
               }}
               placeholder="Title"
-              style={{ width: '100%' }}
             />
           </div>
-          <div className="flex flex-col w-[35%]">
+          <div className="flex flex-col w-[30%]">
             <p className="my-2 font-semibold ">Search by Assignee</p>
-            <Input
+            <input
+              className="w-full p-2 border border-gray-300 border-solid rounded-md focus:outline-none focus:ring-1 focus:border-cyan-400 border-t-solid"
               onChange={(e) => {
                 setAssigneeFilter(e.target.value);
               }}
               placeholder="Assignee"
-              style={{ width: '100%' }}
             />
           </div>
           <div className="flex flex-col mb-3">

@@ -1,4 +1,3 @@
-import { Input } from 'antd';
 import TicketsTable from './TicketsTable';
 import DropDown from './DropDown';
 import useDocuments from '@src/hooks/useDocuments';
@@ -38,7 +37,8 @@ const UnassignedTickets = (): JSX.Element => {
         <div className="flex gap-5">
           <div className="flex flex-col justify-start w-[40%]">
             <p className="my-2 font-semibold">Search by Title</p>
-            <Input
+            <input
+              className="w-full p-2 border border-gray-300 border-solid rounded-md focus:outline-none focus:ring-1 focus:border-cyan-400 border-t-solid"
               onChange={(e) => {
                 setTitleFilter(e.target.value);
               }}
