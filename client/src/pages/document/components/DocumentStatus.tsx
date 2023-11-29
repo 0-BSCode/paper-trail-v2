@@ -30,7 +30,10 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
   const [isSaving, setIsSaving] = useState(false);
 
   const hasEditPermission =
-    userId !== document?.userId && userId === document?.assigneeId && document?.status !== StatusEnum.DRAFT;
+    userId !== document?.userId &&
+    userId === document?.assigneeId &&
+    document?.status !== StatusEnum.DRAFT &&
+    document?.status !== StatusEnum.RESOLVED;
 
   const onChange = (newStatus: StatusEnum): void => {
     setStatus(newStatus);
@@ -44,7 +47,7 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
     setIsSaving(true);
     void DocumentService.setStatus(accessToken, parseInt(documentId), status)
       .then(() => {
-        success('Successfully saved status!');
+        success(`Successfully changed status to ${status}`);
         setDocument({ ...document, status });
       })
       .catch((err) => {

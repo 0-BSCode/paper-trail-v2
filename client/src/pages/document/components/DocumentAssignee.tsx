@@ -7,7 +7,7 @@ import RoleEnum from '@src/types/enums/role-enum';
 import StatusEnum from '@src/types/enums/status-enum';
 import type UserInterface from '@src/types/interfaces/user';
 import { Typography, Select, Button } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // Filter `option.label` match the user type `input`
 const filterOption = (input: string, option?: { label: string; value: string }): boolean =>
@@ -15,14 +15,17 @@ const filterOption = (input: string, option?: { label: string; value: string }):
 
 const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element => {
   const { accessToken, userId, roles } = useContext(AuthContext);
-  const { document, setDocument } = useContext(DocumentContext);
+  const { document, setDocument, loading } = useContext(DocumentContext);
   const { success } = useContext(ToastContext);
   const [assigneeId, setAssigneeId] = useState<number | null>(null);
   const [assigneeList, setAssigneeList] = useState<UserInterface[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
-  const hasEditPermissions =
-    document?.userId !== userId && roles?.every((r) => r !== RoleEnum.STUDENT) && document?.status !== StatusEnum.DRAFT;
+  const hasEditPermission =
+    document?.userId !== userId &&
+    roles?.every((r) => r !== RoleEnum.STUDENT) &&
+    document?.status !== StatusEnum.DRAFT &&
+    document?.status !== StatusEnum.RESOLVED;
 
   const onChange = (id: string | undefined): void => {
     setAssigneeId(id ? parseInt(id) : null);
@@ -52,11 +55,13 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
   useEffect(() => {
     if (accessToken === null) return;
 
-    void UserService.fetchByRole(accessToken, [RoleEnum.CISCO_MEMBER, RoleEnum.CISCO_ADMIN]).then((res) => {
-      const assigneeOptions = res.data as UserInterface[];
-      setAssigneeList(assigneeOptions);
-    });
-  }, []);
+    if (!loading && document) {
+      void UserService.fetchByRole(accessToken, [RoleEnum.CISCO_MEMBER, RoleEnum.CISCO_ADMIN]).then((res) => {
+        const assigneeOptions = res.data as UserInterface[];
+        setAssigneeList(assigneeOptions.filter((opt) => opt.id !== document.userId));
+      });
+    }
+  }, [loading, document]);
 
   useEffect(() => {
     if (document) {
@@ -75,7 +80,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
         Assignee
       </Typography.Title>
       <Select
-        disabled={!hasEditPermissions}
+        disabled={!hasEditPermission}
         showSearch
         allowClear
         placeholder="Select a person"
@@ -87,7 +92,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
           return { value: assignee.id.toString(), label: assignee.email };
         })}
       />
-      <Button disabled={!hasEditPermissions || isSaving} onClick={saveAssignee}>
+      <Button disabled={!hasEditPermission || isSaving} onClick={saveAssignee}>
         Save Assignee
       </Button>
     </div>
