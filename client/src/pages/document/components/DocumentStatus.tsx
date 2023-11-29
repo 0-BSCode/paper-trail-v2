@@ -1,14 +1,16 @@
 import { AuthContext } from '@src/context/AuthContext';
+import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
 import DocumentService from '@src/services/document-service';
 import StatusEnum from '@src/types/enums/status-enum';
 import { Typography, Button, Select } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // Filter `option.label` match the user type `input`
 const filterOption = (input: string, option?: { label: string; value: string }): boolean =>
   (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
+// TODO: Limit options but all of them should render properly (even those not listed)
 const statusToOptionMapping = {
   [StatusEnum.CHANGES_REQUESTED]: 'Changes Requested',
   [StatusEnum.DRAFT]: 'Draft',
@@ -18,11 +20,20 @@ const statusToOptionMapping = {
   [StatusEnum.REVIEW_REQUESTED]: 'Review Requested',
 };
 
+const disabledOptions = [StatusEnum.DRAFT, StatusEnum.REVIEW, StatusEnum.REVIEW_REQUESTED];
+
 const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => {
-  const { accessToken } = useContext(AuthContext);
+  const { accessToken, userId } = useContext(AuthContext);
+  const { document, setDocument } = useContext(DocumentContext);
   const { success } = useContext(ToastContext);
   const [status, setStatus] = useState<StatusEnum | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  const hasEditPermission =
+    userId !== document?.userId &&
+    userId === document?.assigneeId &&
+    document?.status !== StatusEnum.DRAFT &&
+    document?.status !== StatusEnum.RESOLVED;
 
   const onChange = (newStatus: StatusEnum): void => {
     setStatus(newStatus);
@@ -31,12 +42,13 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
   const saveStatus = (): void => {
     // TODO: Consolidate API calls that require accessToken under one check
     // so we don't need to keep checking this
-    if (accessToken === null || status === null) return;
+    if (document === null || accessToken === null || status === null) return;
 
     setIsSaving(true);
     void DocumentService.setStatus(accessToken, parseInt(documentId), status)
       .then(() => {
-        success('Successfully saved status!');
+        success(`Successfully changed status to ${status}`);
+        setDocument({ ...document, status });
       })
       .catch((err) => {
         console.log(err);
@@ -47,13 +59,10 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
   };
 
   useEffect(() => {
-    if (accessToken === null) return;
-
-    void DocumentService.getStatus(accessToken, parseInt(documentId)).then((res) => {
-      const statusData = res.data as StatusEnum;
-      setStatus(statusData);
-    });
-  }, []);
+    if (document) {
+      setStatus(document.status);
+    }
+  }, [document]);
 
   return (
     <div className="flex flex-col border-r-4 gap-y-3 bg-white shadow-md p-3">
@@ -66,17 +75,23 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
         Status
       </Typography.Title>
       <Select
+        disabled={!hasEditPermission}
         showSearch
         placeholder="Select a status"
         optionFilterProp="children"
         onChange={onChange}
         filterOption={filterOption}
         value={status}
-        options={Object.keys(StatusEnum).map((s) => {
-          return { value: s, label: statusToOptionMapping[s as keyof typeof StatusEnum] };
+        options={Object.keys(statusToOptionMapping).map((s) => {
+          // TODO: Fix type error with s
+          return {
+            value: s,
+            label: statusToOptionMapping[s as keyof typeof statusToOptionMapping],
+            disabled: disabledOptions.includes(s as unknown as StatusEnum),
+          };
         })}
       />
-      <Button disabled={isSaving} onClick={saveStatus}>
+      <Button disabled={!hasEditPermission || isSaving} onClick={saveStatus}>
         Save Status
       </Button>
     </div>

@@ -1,22 +1,31 @@
 import { AuthContext } from '@src/context/AuthContext';
+import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
 import DocumentService from '@src/services/document-service';
 import UserService from '@src/services/user-service';
 import RoleEnum from '@src/types/enums/role-enum';
+import StatusEnum from '@src/types/enums/status-enum';
 import type UserInterface from '@src/types/interfaces/user';
 import { Typography, Select, Button } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // Filter `option.label` match the user type `input`
 const filterOption = (input: string, option?: { label: string; value: string }): boolean =>
   (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
 const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element => {
-  const { accessToken } = useContext(AuthContext);
+  const { accessToken, userId, roles } = useContext(AuthContext);
+  const { document, setDocument, loading } = useContext(DocumentContext);
   const { success } = useContext(ToastContext);
   const [assigneeId, setAssigneeId] = useState<number | null>(null);
   const [assigneeList, setAssigneeList] = useState<UserInterface[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+
+  const hasEditPermission =
+    document?.userId !== userId &&
+    roles?.every((r) => r !== RoleEnum.STUDENT) &&
+    document?.status !== StatusEnum.DRAFT &&
+    document?.status !== StatusEnum.RESOLVED;
 
   const onChange = (id: string | undefined): void => {
     setAssigneeId(id ? parseInt(id) : null);
@@ -25,12 +34,15 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
   const saveAssignee = (): void => {
     // TODO: Consolidate API calls that require accessToken under one check
     // so we don't need to keep checking this
-    if (accessToken === null) return;
+    if (document === null || accessToken === null) return;
 
     setIsSaving(true);
     void DocumentService.setAssignee(accessToken, parseInt(documentId), assigneeId)
       .then(() => {
-        success('Successfully saved assignee!');
+        const newAssignee = assigneeList.find((a) => a.id === assigneeId);
+        // TODO: Deal with undefined state (should be guaranteed though)
+        success(`Successfully set assignee to ${newAssignee?.email}`);
+        setDocument({ ...document, assigneeId });
       })
       .catch((err) => {
         console.log(err);
@@ -43,14 +55,19 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
   useEffect(() => {
     if (accessToken === null) return;
 
-    void DocumentService.getAssignee(accessToken, parseInt(documentId)).then((res) => {
-      const assigneeData = res.data as UserInterface;
-      setAssigneeId(assigneeData.id);
-    });
-    void UserService.fetchByRole(accessToken, [RoleEnum.CISCO_MEMBER, RoleEnum.CISCO_ADMIN]).then((res) => {
-      setAssigneeList(res.data as UserInterface[]);
-    });
-  }, []);
+    if (!loading && document) {
+      void UserService.fetchByRole(accessToken, [RoleEnum.CISCO_MEMBER, RoleEnum.CISCO_ADMIN]).then((res) => {
+        const assigneeOptions = res.data as UserInterface[];
+        setAssigneeList(assigneeOptions.filter((opt) => opt.id !== document.userId));
+      });
+    }
+  }, [loading, document]);
+
+  useEffect(() => {
+    if (document) {
+      setAssigneeId(document.assigneeId);
+    }
+  }, [document]);
 
   return (
     <div className="flex flex-col border-r-4 gap-y-3 bg-white shadow-md p-3">
@@ -63,6 +80,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
         Assignee
       </Typography.Title>
       <Select
+        disabled={!hasEditPermission}
         showSearch
         allowClear
         placeholder="Select a person"
@@ -74,7 +92,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
           return { value: assignee.id.toString(), label: assignee.email };
         })}
       />
-      <Button disabled={isSaving} onClick={saveAssignee}>
+      <Button disabled={!hasEditPermission || isSaving} onClick={saveAssignee}>
         Save Assignee
       </Button>
     </div>

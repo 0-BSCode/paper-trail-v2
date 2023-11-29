@@ -14,6 +14,7 @@ import DocumentComments from './components/DocumentComments';
 import DocumentAssignee from './components/DocumentAssignee';
 import DocumentStatus from './components/DocumentStatus';
 import PermissionEnum from '@src/types/enums/permission-enum';
+import StatusEnum from '@src/types/enums/status-enum';
 
 const DocumentPage = (): JSX.Element => {
   const { id: documentId } = useParams();
@@ -25,7 +26,9 @@ const DocumentPage = (): JSX.Element => {
   const { document, loading: documentLoading } = useDocument(parseInt(documentId as string));
   const documentUser = document?.users.find((user) => user.userId === userId);
 
-  const hasEditPermission = userId === document?.userId || documentUser?.permission === PermissionEnum.EDIT;
+  const hasEditPermission =
+    (userId === document?.userId || documentUser?.permission === PermissionEnum.EDIT) &&
+    document?.status !== StatusEnum.RESOLVED;
 
   useEffect(() => {
     if (document !== null) setDocument(document);
