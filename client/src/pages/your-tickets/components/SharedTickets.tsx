@@ -1,5 +1,5 @@
 import { Input } from 'antd';
-import TicketsTable from './TicketsTable';
+import SharedTicketsTable from './SharedTicketsTable';
 import DropDown from './DropDown';
 import useDocuments from '@src/hooks/useDocuments';
 import useAuth from '@src/hooks/useAuth';
@@ -54,7 +54,7 @@ const SharedTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <TicketsTable
+      <SharedTicketsTable
         documents={
           filtered ? filteredTickets : allTickets.filter((doc) => doc.users.some((tic) => tic.userId === userId))
         }
