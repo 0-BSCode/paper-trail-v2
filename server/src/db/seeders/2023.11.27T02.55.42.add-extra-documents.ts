@@ -1,5 +1,4 @@
 import { Seeder } from "../../config/db.config";
-3;
 import PermissionEnum from "../../types/enums/permission-enum";
 import StatusEnum from "../../types/enums/status-enum";
 
