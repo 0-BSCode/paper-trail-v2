@@ -4,62 +4,72 @@ const seedUsers = [
   {
     id: 5,
     email: "normal.student@usc.edu.ph",
-    password: "$2b$10$lZWq9TZH4PJZVKscZ7SDvezJo8TEDHLZk2Va8U0G998XNt80VsNXa",
+    password: "$2b$10$fApSU4GHRDO5amkfOU4xhuQflL1aA3.Gy0752cGYnzYg5e1KpCGcK",
     is_verified: true,
     verification_token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJub3JtYWwuc3R1ZGVudEB1c2MuZWR1LnBoIiwicm9sZXMiOlsiU1RVREVOVCJdLCJpYXQiOjE2OTg3NjMxNzUsImV4cCI6MTY5OTM2Nzk3NX0.jKrmLRPUsUKexwMpLpCXNqBDFPlTExHfEhurNBkTmdM",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoibm9ybWFsLnN0dWRlbnRAdXNjLmVkdS5waCIsInJvbGVzIjpbXSwiaWF0IjoxNzAxMzA5MTYwLCJleHAiOjE3MDE5MTM5NjB9.8A0oK_-TjtA5ZOFP8C-KbxTf3vfXWQw0s_oZBHcwy70",
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     id: 6,
     email: "another.student@usc.edu.ph",
-    password: "$2b$10$YNxEkqI6.t4FtymPrFkCW./VyFidyFjMO0VUyYMnHjZ8ZYJvbtGdG",
+    password: "$2b$10$zcrRoePJDU5yq8uRoh2wYuc4kOcR.50lpNZ556B5dvbC9mJP5U0ve",
     is_verified: true,
     verification_token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJhbm90aGVyLnN0dWRlbnRAdXNjLmVkdS5waCIsInJvbGVzIjpbIlNUVURFTlQiXSwiaWF0IjoxNjk4NzYzMjE5LCJleHAiOjE2OTkzNjgwMTl9.GZzPVLWuYFs-Z2DLEtnRuT6QJ__1kkz9deriqnil2BI",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiYW5vdGhlci5zdHVkZW50QHVzYy5lZHUucGgiLCJyb2xlcyI6W10sImlhdCI6MTcwMTMwODg3NSwiZXhwIjoxNzAxOTEzNjc1fQ.Lo3hqGrFYqzlG8Ipx6xgdhr60lc2yvQJ54cAln_B0qQ",
     created_at: new Date(),
     updated_at: new Date()
   },
   {
     id: 7,
     email: "cisco.member@usc.edu.ph",
-    password: "$2b$10$C7KwNUeAaOyrxDTiiMBi/eKcyr2ajShklrREcc.a5R15rmncL2Dk2",
+    password: "$2b$10$bzznitP26j4dmE4RS9vlpeWpU65wIZh0aYx/rDgi1uXT9GUSSMXPO",
     is_verified: true,
     verification_token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJjaXNjby5tZW1iZXJAdXNjLmVkdS5waCIsInJvbGVzIjpbIkNJU0NPX01FTUJFUiJdLCJpYXQiOjE2OTg3NjMyNDQsImV4cCI6MTY5OTM2ODA0NH0.HZNPZ4txdEBQQDPg_mLMHkCpY7gl_yuD6EIKfwNJbts"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiY2lzY28ubWVtYmVyQHVzYy5lZHUucGgiLCJyb2xlcyI6W10sImlhdCI6MTcwMTMwOTI5NywiZXhwIjoxNzAxOTE0MDk3fQ.1uZsi0X0T8FLkPxJJVQ7dw4i-1XeSJ6dmPANoczaDeQ",
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: 8,
     email: "cisco.admin@usc.edu.ph",
-    password: "$2b$10$C7KwNUeAaOyrxDTiiMBi/eKcyr2ajShklrREcc.a5R15rmncL2Dk2",
+    password: "$2b$10$l/KUnnqKNivN4efn2nqgL.vI3e225f0GNIYvl/CTqRb28H1hOBmhu",
     is_verified: true,
     verification_token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJjaXNjby5tZW1iZXJAdXNjLmVkdS5waCIsInJvbGVzIjpbIkNJU0NPX01FTUJFUiJdLCJpYXQiOjE2OTg3NjMyNDQsImV4cCI6MTY5OTM2ODA0NH0.HZNPZ4txdEBQQDPg_mLMHkCpY7gl_yuD6EIKfwNJbts"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoiY2lzY28uYWRtaW5AdXNjLmVkdS5waCIsInJvbGVzIjpbXSwiaWF0IjoxNzAxMzA5NDg3LCJleHAiOjE3MDE5MTQyODd9.x1EkEIlXMj0fRD4iyj3gmer-2WqxDJQjm9nUcmtFN_A",
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: 9,
     email: "another.cisco.admin@usc.edu.ph",
-    password: "$2b$10$C7KwNUeAaOyrxDTiiMBi/eKcyr2ajShklrREcc.a5R15rmncL2Dk2",
+    password: "$2b$10$VW35tsoIhxKThNETWOqIROJOApyd4SEG8w8.oYRsVs/n4d7NT4kKe",
     is_verified: true,
     verification_token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJjaXNjby5tZW1iZXJAdXNjLmVkdS5waCIsInJvbGVzIjpbIkNJU0NPX01FTUJFUiJdLCJpYXQiOjE2OTg3NjMyNDQsImV4cCI6MTY5OTM2ODA0NH0.HZNPZ4txdEBQQDPg_mLMHkCpY7gl_yuD6EIKfwNJbts"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImVtYWlsIjoiYW5vdGhlci5jaXNjby5hZG1pbkB1c2MuZWR1LnBoIiwicm9sZXMiOltdLCJpYXQiOjE3MDEzMDk1NDUsImV4cCI6MTcwMTkxNDM0NX0.diK_kdHlsxT949UqpKngYm13xzKbhNve4jcxLpLak9k",
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: 10,
     email: "another.cisco.member@usc.edu.ph",
-    password: "$2b$10$C7KwNUeAaOyrxDTiiMBi/eKcyr2ajShklrREcc.a5R15rmncL2Dk2",
+    password: "$2b$10$bh0D5Bu9JufwQir1bcTLHuoyMVyWhWQukrhMWm4L5xtBnWjS9T3Le",
     is_verified: true,
     verification_token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJjaXNjby5tZW1iZXJAdXNjLmVkdS5waCIsInJvbGVzIjpbIkNJU0NPX01FTUJFUiJdLCJpYXQiOjE2OTg3NjMyNDQsImV4cCI6MTY5OTM2ODA0NH0.HZNPZ4txdEBQQDPg_mLMHkCpY7gl_yuD6EIKfwNJbts"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsImVtYWlsIjoiYW5vdGhlci5jaXNjby5tZW1iZXJAdXNjLmVkdS5waCIsInJvbGVzIjpbXSwiaWF0IjoxNzAxMzA5NzI5LCJleHAiOjE3MDE5MTQ1Mjl9.VrWpPpDDxP_H31WdldwKSPtrYRIYzP6SeZXhkjZEPGk",
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: 11,
     email: "dcism.student@usc.edu.ph",
-    password: "$2b$10$C7KwNUeAaOyrxDTiiMBi/eKcyr2ajShklrREcc.a5R15rmncL2Dk2",
+    password: "$2b$10$USitLzXKQFb.ku1jl3sVr.u7MH1ct.5lvo3lDo8gzyyHXQFJ98Fie",
     is_verified: true,
     verification_token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJjaXNjby5tZW1iZXJAdXNjLmVkdS5waCIsInJvbGVzIjpbIkNJU0NPX01FTUJFUiJdLCJpYXQiOjE2OTg3NjMyNDQsImV4cCI6MTY5OTM2ODA0NH0.HZNPZ4txdEBQQDPg_mLMHkCpY7gl_yuD6EIKfwNJbts"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksImVtYWlsIjoiZGNpc20uc3R1ZGVudEB1c2MuZWR1LnBoIiwicm9sZXMiOltdLCJpYXQiOjE3MDEzMDk4MDUsImV4cCI6MTcwMTkxNDYwNX0.2Mfr3mGDpgG5w3C1i-BMSHRktkY3YUrKT7fknaLqSS0",
+    created_at: new Date(),
+    updated_at: new Date()
   }
 ];
 

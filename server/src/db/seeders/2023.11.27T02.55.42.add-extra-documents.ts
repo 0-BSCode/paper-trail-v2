@@ -49,7 +49,7 @@ const seedDocuments = [
   },
   {
     id: 8,
-    title: "Bullying and Harassment",
+    title: "Vandalism on School Property",
     user_id: 1,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -194,8 +194,7 @@ const seedDocuments = [
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
     created_at: new Date(),
     updated_at: new Date(),
-    status: StatusEnum.DRAFT,
-    assignee_id: 1
+    status: StatusEnum.DRAFT
   },
   {
     id: 22,
@@ -284,10 +283,10 @@ const seedDocumentUsers = [
   { permission: PermissionEnum.EDIT, user_id: 4, document_id: 7, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.EDIT, user_id: 3, document_id: 8, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.VIEW, user_id: 2, document_id: 8, created_at: new Date(), updated_at: new Date() },
-  { permission: PermissionEnum.EDIT, user_id: 1, document_id: 9, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 3, document_id: 9, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.VIEW, user_id: 4, document_id: 9, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.VIEW, user_id: 1, document_id: 10, created_at: new Date(), updated_at: new Date() },
-  { permission: PermissionEnum.VIEW, user_id: 3, document_id: 10, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 2, document_id: 10, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.EDIT, user_id: 4, document_id: 11, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.VIEW, user_id: 1, document_id: 13, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.EDIT, user_id: 2, document_id: 13, created_at: new Date(), updated_at: new Date() },
@@ -307,9 +306,9 @@ const seedDocumentUsers = [
   { permission: PermissionEnum.VIEW, user_id: 3, document_id: 23, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.EDIT, user_id: 2, document_id: 24, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.EDIT, user_id: 3, document_id: 24, created_at: new Date(), updated_at: new Date() },
-  { permission: PermissionEnum.EDIT, user_id: 4, document_id: 24, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.EDIT, user_id: 1, document_id: 24, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.VIEW, user_id: 2, document_id: 25, created_at: new Date(), updated_at: new Date() },
-  { permission: PermissionEnum.VIEW, user_id: 3, document_id: 25, created_at: new Date(), updated_at: new Date() },
+  { permission: PermissionEnum.VIEW, user_id: 1, document_id: 25, created_at: new Date(), updated_at: new Date() },
   { permission: PermissionEnum.VIEW, user_id: 4, document_id: 25, created_at: new Date(), updated_at: new Date() }
 ];
 
