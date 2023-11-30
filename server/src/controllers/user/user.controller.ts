@@ -79,6 +79,25 @@ class UserController {
     return res.status(200).json(users);
   });
 
+  public updateUserPersonalInformation = catchAsync(async (req: Request, res: Response) => {
+    const { id: userId } = req.user as RequestUser;
+    const { id } = req.params;
+    const { fullName, contactNumber, courseAndYear, studentIdNumber } = req.body;
+
+    if (Number(id) !== Number(userId)) {
+      return res.status(403).end();
+    }
+
+    const updatedUser = await userService.updateUserDetails(Number(userId), {
+      fullName,
+      contactNumber,
+      courseAndYear,
+      studentIdNumber
+    });
+
+    return res.status(200).json(updatedUser);
+  });
+
   public resetPassword = catchAsync(async (req: Request, res: Response) => {
     const err = validationResult(req);
     if (!err.isEmpty()) {

@@ -162,6 +162,41 @@ class UserService {
     });
   };
 
+  public updateUserDetails = async (
+    userId: number,
+    {
+      fullName,
+      contactNumber,
+      courseAndYear,
+      studentIdNumber
+    }: Pick<User, "fullName" | "contactNumber" | "courseAndYear" | "studentIdNumber">
+  ): Promise<null | User> => {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const updatedFullName = fullName || "";
+    const updatedContactNumber = contactNumber || "";
+    const updatedCourseAndYear = courseAndYear || "";
+    const updatedStudentIdNumber = studentIdNumber || "";
+
+    await user.update({
+      fullName: updatedFullName,
+      contactNumber: updatedContactNumber,
+      courseAndYear: updatedCourseAndYear,
+      studentIdNumber: updatedStudentIdNumber
+    });
+
+    const updatedUser = await User.findByPk(userId);
+    if (!updatedUser) {
+      throw new Error("Failed to fetch updated user");
+    }
+
+    return updatedUser;
+  };
+
   private getRequestUser = async (user: User | RequestUser): Promise<RequestUser> => {
     if (user instanceof User) {
       const userWithRoles = await User.scope("withRoles").findByPk(user.id);
