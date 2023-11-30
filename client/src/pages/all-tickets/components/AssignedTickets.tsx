@@ -7,7 +7,6 @@ import StatusEnum from '@src/types/enums/status-enum';
 
 const AssignedTickets = (): JSX.Element => {
   const { allTickets } = useDocuments();
-  const [filtered, setFiltered] = useState<boolean>(false);
   const [titleFilter, setTitleFilter] = useState<string>('');
   const [assigneeFilter, setAssigneeFilter] = useState<string>('');
   const [dropDownFilter, setDropDownFilter] = useState<StatusEnum>(StatusEnum.ALL);
@@ -15,8 +14,6 @@ const AssignedTickets = (): JSX.Element => {
 
   useEffect(() => {
     if (titleFilter.length > 3 || assigneeFilter.length > 3 || dropDownFilter !== StatusEnum.ALL) {
-      setFiltered(true);
-
       setFilteredTickets(
         allTickets.filter(
           (tic) =>
@@ -29,10 +26,9 @@ const AssignedTickets = (): JSX.Element => {
         ),
       );
     } else {
-      setFiltered(false);
       setFilteredTickets(allTickets.filter((doc) => doc.assigneeId !== null));
     }
-  }, [titleFilter, assigneeFilter, dropDownFilter]);
+  }, [titleFilter, assigneeFilter, dropDownFilter, allTickets]);
 
   return (
     <div className="w-[90%] h-[45%] bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -65,7 +61,7 @@ const AssignedTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <TicketsTable documents={filtered ? filteredTickets : allTickets.filter((doc) => doc.assigneeId !== null)} />
+      <TicketsTable documents={filteredTickets} />
     </div>
   );
 };
