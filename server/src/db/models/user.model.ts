@@ -37,6 +37,26 @@ class User extends Model {
   @Column(DataType.STRING)
   password!: string;
 
+  @AllowNull(true)
+  @Default("")
+  @Column(DataType.STRING)
+  fullName!: string | null;
+
+  @AllowNull(true)
+  @Default("")
+  @Column(DataType.STRING)
+  contactNumber!: string | null;
+
+  @AllowNull(true)
+  @Default("")
+  @Column(DataType.STRING)
+  courseAndYear!: string | null;
+
+  @AllowNull(true)
+  @Default("")
+  @Column(DataType.STRING)
+  studentIdNumber!: string | null;
+
   @AllowNull(false)
   @Default(0)
   @Column(DataType.BOOLEAN)
