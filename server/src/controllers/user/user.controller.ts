@@ -14,8 +14,6 @@ class UserController {
       return res.status(400).json(err);
     }
 
-    console.log(req.body);
-
     const { email, password1 } = req.body;
     await userService.createUser(email, password1);
 
