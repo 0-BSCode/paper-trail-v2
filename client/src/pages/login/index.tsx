@@ -94,7 +94,7 @@ const LoginPage = (): JSX.Element => {
         backgroundSize: 'cover',
       }}
     >
-      <div className="w-full max-w-sm dark:bg-slate-800 border-primary border dark:border-0 dark:shadow-xl p-6">
+      <div>
         <div className="flex flex-col space-y-4">
           <div className="w-full text-center flex flex-col justify-center items-center">
             <svg width="61" height="85" viewBox="0 0 249 282" fill="none" xmlns="http://www.w3.org/2000/svg">
