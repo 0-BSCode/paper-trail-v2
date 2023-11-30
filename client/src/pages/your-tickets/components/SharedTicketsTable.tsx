@@ -4,12 +4,13 @@ import convertToTitleCase from '@src/utils/convertToTitleCase';
 import type TicketInterface from '@src/types/interfaces/ticket';
 import { Link } from 'react-router-dom';
 import getStatusColor from '@src/utils/getStatusColor';
+import type StatusEnum from '@src/types/enums/status-enum';
 
 interface TicketsTableProps {
   documents: TicketInterface[];
 }
 
-const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
+const SharedTicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
   const columns: ColumnsType<TicketInterface> = [
     {
       title: 'Title',
@@ -54,7 +55,7 @@ const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
       render: (_, record) => {
         return (
           <div className="flex items-center gap-2">
-            <div className={`w-[5.5px] h-[5.5px] rounded-full ${getStatusColor(record.status)}`}></div>
+            <div className={`w-[5.5px] h-[5.5px] rounded-full ${getStatusColor(record.status as StatusEnum)}`}></div>
             {convertToTitleCase(record.status)}
           </div>
         );
@@ -67,7 +68,7 @@ const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
       columns={columns}
       dataSource={documents}
       pagination={{
-        pageSize: 10,
+        pageSize: 5,
         total: documents.length,
       }}
       rowKey="id"
@@ -75,4 +76,4 @@ const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
   );
 };
 
-export default TicketsTable;
+export default SharedTicketsTable;

@@ -10,7 +10,7 @@ interface TicketsTableProps {
   documents: TicketInterface[];
 }
 
-const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
+const YourTicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
   const columns: ColumnsType<TicketInterface> = [
     {
       title: 'Title',
@@ -27,16 +27,6 @@ const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
       dataIndex: 'createdAt',
       key: 'id',
       render: (text) => <p>{text.split('T')[0]}</p>,
-    },
-    {
-      title: 'Owner',
-      key: 'owner',
-      dataIndex: 'user',
-      render: (obj) => {
-        if (!obj.email) return <p>Unassigned</p>;
-
-        return <p>{obj.email}</p>;
-      },
     },
     {
       title: 'Assigned To',
@@ -76,4 +66,4 @@ const TicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
   );
 };
 
-export default TicketsTable;
+export default YourTicketsTable;

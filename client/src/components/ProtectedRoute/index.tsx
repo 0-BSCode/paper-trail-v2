@@ -3,9 +3,9 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import useAuth from '@src/hooks/useAuth';
 import { Layout, Flex, Image, Typography, Button } from 'antd';
 import LogoWhite from '@src/assets/logo-white.svg';
-import { UserOutlined } from '@ant-design/icons';
 import { ToastContext } from '@src/context/ToastContext';
 import { NotificationModal } from './Notifications';
+import { UserProfileModal } from './UserProfile';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -54,9 +54,7 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
               </div>
               <div className="flex gap-1">
                 <NotificationModal />
-                <Button type="link" size="middle">
-                  <UserOutlined />
-                </Button>
+                <UserProfileModal />
                 <Button
                   type="primary"
                   size="middle"

@@ -11,9 +11,10 @@ const { Dragger } = Upload;
 interface Props {
   userId: number;
   documentId: string;
+  canUpload: boolean;
 }
 
-const FileDropZone = ({ userId, documentId }: Props): JSX.Element => {
+const FileDropZone = ({ userId, documentId, canUpload }: Props): JSX.Element => {
   const saveDocumentFile = useMutation(api.files.saveDocumentFile);
   const { uploadFile } = useFileHandler();
 
@@ -95,7 +96,7 @@ const FileDropZone = ({ userId, documentId }: Props): JSX.Element => {
       >
         {isUploading ? 'Uploading...' : 'Upload'}
       </Button>
-      <Dragger {...uploadProps}>
+      <Dragger {...uploadProps} disabled={!canUpload}>
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>

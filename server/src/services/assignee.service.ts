@@ -3,6 +3,7 @@ import { Document } from "../db/models/document.model";
 import RoleEnum from "../types/enums/role-enum";
 import { Role } from "../db/models/role.model";
 import { DocumentUser } from "../db/models/document-user.model";
+import StatusEnum from "../types/enums/status-enum";
 
 class AssigneeService {
   public updateAssignee = async (assigneeId: number | null, documentId: number) => {
@@ -13,7 +14,8 @@ class AssigneeService {
       }
     });
 
-    if (!targetDocument) {
+    // Assignee shouldn't be set if document is still a draft
+    if (!targetDocument || targetDocument.status === StatusEnum.DRAFT) {
       // No document found
       return null;
     }
@@ -32,6 +34,10 @@ class AssigneeService {
         // Disallows non-Cisco users from being assigned to document
         return null;
       }
+
+      await targetDocument.update({ status: StatusEnum.REVIEW });
+    } else {
+      await targetDocument.update({ status: StatusEnum.REVIEW_REQUESTED });
     }
 
     await targetDocument.update({ assigneeId });

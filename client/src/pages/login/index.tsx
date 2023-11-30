@@ -1,14 +1,13 @@
 import useWindowSize from '@src/hooks/useWindowSize';
-import TextField from '@src/components/TextField';
 import { type KeyboardEvent, useContext, useState } from 'react';
 import { ToastContext } from '@src/context/ToastContext';
-import Logo from '@src/components/Logo';
 import validator from 'validator';
 import Spinner from '@src/components/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '@src/hooks/useAuth';
 import AuthService from '@src/services/auth-service';
 import axios, { type AxiosError } from 'axios';
+import { Input, Button } from 'antd';
 
 const LoginPage = (): JSX.Element => {
   const { widthStr, heightStr } = useWindowSize();
@@ -30,8 +29,12 @@ const LoginPage = (): JSX.Element => {
       setEmailErrors(['Must enter a valid email.']);
       isValid = false;
     }
+
     if (!password.length) {
       setPasswordErrors(['Must enter a password.']);
+      isValid = false;
+    } else if (password.length < 8) {
+      setPasswordErrors(['Password must be at least 8 characters.']);
       isValid = false;
     }
 
@@ -59,7 +62,7 @@ const LoginPage = (): JSX.Element => {
           error('Incorrect username or password.');
         }
       } else {
-        error('An unknown error has occured. Please try again.');
+        error('An unknown error has occurred. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -83,45 +86,70 @@ const LoginPage = (): JSX.Element => {
   return (
     <div
       onKeyPress={handleOnKeyPress}
-      className="w-full flex flex-col sm:justify-center items-center p-6 sm:pb-96 bg-gray-100 dark:bg-slate-900 text-primary"
-      style={{ width: widthStr, height: heightStr }}
+      className="w-full flex flex-col sm:justify-center items-center bg-gray-100 dark:bg-slate-900 text-primary font-sans"
+      style={{
+        width: widthStr,
+        height: heightStr,
+        backgroundImage: `url('src/assets/login-background.png')`,
+        backgroundSize: 'cover',
+      }}
     >
-      <div className="w-full max-w-sm bg-white dark:bg-slate-800 rounded border-primary shadow-md border dark:border-0 dark:shadow-xl p-6">
+      <div className="w-full max-w-sm dark:bg-slate-800 border-primary border dark:border-0 dark:shadow-xl p-6">
         <div className="flex flex-col space-y-4">
           <div className="w-full text-center flex flex-col justify-center items-center">
-            <Logo />
-            <h1 className="font-medium text-2xl">Sign in</h1>
-            <p className="font-medium">to continue to Docs</p>
+            <svg width="61" height="85" viewBox="0 0 249 282" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M139.172 204.927V281.043H248.199L196.833 0H139.172V70.2607H109.897V0H52.084L0.354492 281.043H109.897V204.927H139.172ZM109.897 99.536H139.172V181.507H109.897V99.536Z"
+                fill="black"
+              />
+            </svg>
+            <h1 className="text-6xl">Paper Trail</h1>
           </div>
-          <TextField value={email} onInput={handleOnInputEmail} label="Email" color="secondary" errors={emailErrors} />
-          <Link tabIndex={-1} to="/register" className="text-sm hover:underline font-semibold text-blue-500 text-left">
-            Need an account?
-          </Link>
-          <TextField
-            value={password}
-            onInput={handleOnInputPassword}
-            label="Password"
-            type="password"
-            color="secondary"
-            errors={passwordErrors}
-          />
-          <button tabIndex={-1} className="text-sm hover:underline font-semibold text-blue-500 text-left">
-            Forgot Password?
-          </button>
-          <button
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            onClick={loginUser}
-            disabled={loading}
-            className="bg-blue-600 text-white text-sm font-semibold px-3 py-2 rounded hover:bg-blue-500 flex justify-center items-center space-x-1 active:ring-1"
-          >
-            <span className={`${loading && 'opacity-0'}`}>Login</span>
-            {loading && <Spinner size="sm" />}
-          </button>
+          <div className="w-full flex flex-col gap-4">
+            <div>
+              <Input
+                style={{ fontFamily: 'roboto' }}
+                className="p-2"
+                placeholder="Email"
+                color="secondary"
+                onChange={(e) => {
+                  handleOnInputEmail(e.target.value);
+                }}
+              />
+              {emailErrors.length > 0 && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
+            </div>
+            <div>
+              <Input.Password
+                className="p-2"
+                placeholder="Password (8 characters at least, case sensitive)"
+                type="password"
+                color="secondary"
+                style={{ fontFamily: 'roboto' }}
+                onChange={(e) => {
+                  handleOnInputPassword(e.target.value);
+                }}
+              />
+              {passwordErrors.length > 0 && <div className="text-red-500 text-sm">{passwordErrors.join(', ')}</div>}
+            </div>
+            <Button
+              style={{ borderRadius: '6px', fontFamily: 'roboto' }}
+              size="large"
+              type="primary"
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onClick={loginUser}
+              disabled={loading}
+            >
+              <span className={`${loading && 'opacity-0'}`}>Log In</span>
+              {loading && <Spinner size="sm" />}
+            </Button>
+            <div className="text-center items-center">
+              <span>or </span>
+              <Link to="/register" className=" no-underline hover:underline text-blue-500">
+                Register
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="flex justify-center space-x-4 text-sm p-4">
-        <button className="hover:underline font-semibold text-blue-500">Terms</button>
-        <button className="hover:underline font-semibold text-blue-500">Privacy Policy</button>
       </div>
     </div>
   );

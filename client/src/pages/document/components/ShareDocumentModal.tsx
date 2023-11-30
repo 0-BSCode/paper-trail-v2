@@ -27,7 +27,7 @@ const ShareDocumentModal = (): JSX.Element => {
     const payload = {
       documentId: document.id,
       email,
-      permission: PermissionEnum.EDIT,
+      permission: PermissionEnum.VIEW,
     };
 
     setLoading(true);

@@ -1,5 +1,4 @@
 import DropDown from './DropDown';
-import TicketsTable from './TicketsTable';
 import { Input, Button } from 'antd';
 import useDocuments from '@src/hooks/useDocuments';
 import useAuth from '@src/hooks/useAuth';
@@ -10,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
 import { ToastContext } from '@src/context/ToastContext';
+import YourTicketsTable from './YourTicketsTable';
 
 const YourTickets = (): JSX.Element => {
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ const YourTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <TicketsTable documents={filtered ? filteredTickets : allTickets.filter((doc) => doc.userId === userId)} />
+      <YourTicketsTable documents={filtered ? filteredTickets : allTickets.filter((doc) => doc.userId === userId)} />
     </div>
   );
 };

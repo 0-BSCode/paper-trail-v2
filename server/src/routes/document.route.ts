@@ -18,13 +18,12 @@ router.put("/:id", authenticate, documentValidator.update, documentController.up
 router.post("/", authenticate, documentController.create);
 router.delete("/:id", authenticate, documentController.delete);
 router.post("/:id/share", authenticate, shareValidator.create, shareController.create);
+router.put("/:id/share", authenticate, shareController.update);
 router.delete("/:documentId/share/:userId", authenticate, shareController.delete);
 router.get("/assignee/:id", authenticate, assigneeController.getAssigneeDocuments);
-router.get("/:documentId/assignee", authenticate, assigneeController.getAssignee);
 router.put("/:documentId/assignee", authenticate, assigneeController.setAssignee);
 router.get("/:documentId/comment", authenticate, commentController.getDocumentComments);
 router.post("/:documentId/comment", authenticate, commentController.createComment);
-router.get("/:id/status", authenticate, statusController.getStatus);
-router.put("/:id/status", authenticate, statusController.updateStatus);
+router.put("/:id/status", authenticate, statusController.setStatus);
 
 export default router;
