@@ -6,6 +6,7 @@ import { resetPassword } from "../../responses";
 import jwt, { VerifyErrors } from "jsonwebtoken";
 import env from "../../config/env.config";
 import { UserRole } from "../../db/models/user-role.model";
+import RoleEnum from "../../types/enums/role-enum";
 
 class UserController {
   public register = catchAsync(async (req: Request, res: Response) => {
@@ -104,7 +105,7 @@ class UserController {
     const { id } = req.params;
 
     // Check if the user that requested the update is authorized (CISCO_ADMIN)
-    const isCiscoAdmin = requestingUserRoles.find((r) => r === "CISCO_ADMIN");
+    const isCiscoAdmin = requestingUserRoles.find((r) => r === RoleEnum.CISCO_ADMIN);
     if (!isCiscoAdmin) {
       return res.status(403).end();
     }

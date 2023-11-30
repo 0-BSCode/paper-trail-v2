@@ -223,7 +223,7 @@ class UserService {
 
     const existingRoles = user.roles.map((role) => role.name as RoleEnum);
     const rolesToAdd = newRoles.filter((role) => allowedRoles.includes(role) && !existingRoles.includes(role));
-    const rolesToRemove = existingRoles.filter((role) => !newRoles.includes(role) && role !== "CISCO_ADMIN");
+    const rolesToRemove = existingRoles.filter((role) => !newRoles.includes(role) && role !== RoleEnum.CISCO_ADMIN);
 
     if (rolesToAdd.length > 0 || rolesToRemove.length > 0) {
       const rolesToAddInstances = await Role.findAll({ where: { name: rolesToAdd } });
