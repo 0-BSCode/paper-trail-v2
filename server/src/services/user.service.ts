@@ -243,14 +243,28 @@ class UserService {
     }
 
     const updatedUserWithRoles = await User.findByPk(userId, {
-      include: [{ model: Role, through: { attributes: [] } }]
+      include: [
+        {
+          model: Role,
+          through: {
+            attributes: []
+          }
+        }
+      ]
     });
 
     if (!updatedUserWithRoles) {
       throw new Error("Failed to fetch updated user with roles.");
     }
 
-    return updatedUserWithRoles;
+    const updatedUserWithFilteredData = updatedUserWithRoles.toJSON();
+
+    const excludedProperties = ["password", "verificationToken", "passwordResetToken", "createdAt", "updatedAt"];
+    excludedProperties.forEach((prop) => {
+      delete updatedUserWithFilteredData[prop as keyof User];
+    });
+
+    return updatedUserWithFilteredData;
   };
 
   private getRequestUser = async (user: User | RequestUser): Promise<RequestUser> => {
