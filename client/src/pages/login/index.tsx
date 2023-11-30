@@ -121,7 +121,7 @@ const LoginPage = (): JSX.Element => {
             <div>
               <Input.Password
                 className="p-2"
-                placeholder="Password (8 characters at least, case sensitive)"
+                placeholder="Password"
                 type="password"
                 color="secondary"
                 style={{ fontFamily: 'roboto' }}
