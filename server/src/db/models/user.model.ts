@@ -37,25 +37,23 @@ class User extends Model {
   @Column(DataType.STRING)
   password!: string;
 
-  @AllowNull(true)
-  @Default("")
+  @AllowNull(false)
   @Column(DataType.STRING)
-  fullName!: string | null;
+  fullName!: string;
 
-  @AllowNull(true)
+  @AllowNull(false)
   @Default("")
   @Column(DataType.STRING)
-  contactNumber!: string | null;
+  contactNumber!: string;
 
-  @AllowNull(true)
+  @AllowNull(false)
   @Default("")
   @Column(DataType.STRING)
-  courseAndYear!: string | null;
+  courseAndYear!: string;
 
-  @AllowNull(true)
-  @Default("")
+  @AllowNull(false)
   @Column(DataType.STRING)
-  studentIdNumber!: string | null;
+  studentIdNumber!: string;
 
   @AllowNull(false)
   @Default(0)
