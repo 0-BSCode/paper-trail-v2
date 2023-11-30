@@ -5,12 +5,12 @@ import convertToTitleCase from '@src/utils/convertToTitleCase';
 import type RoleEnum from '@src/types/enums/role-enum';
 import getRoleTagColor from '@src/utils/getRoleTagColor';
 
-interface UsersTableProps {
+interface Props {
   users: UserInterface[];
 }
 
 // TODO: IAN - MAKE EMAIL ROW OPEN MODAL FOR EACH USER
-const UsersTable = ({ users }: UsersTableProps): JSX.Element => {
+const UsersTable = ({ users }: Props): JSX.Element => {
   const columns: ColumnsType<UserInterface> = [
     {
       title: 'Email',
