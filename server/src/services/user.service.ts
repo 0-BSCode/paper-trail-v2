@@ -60,7 +60,7 @@ class UserService {
     });
   };
 
-  public findUsersByRole = async (role: UserRole): Promise<User[]> => {
+  public findUsersByRole = async (roles: UserRole[]): Promise<User[]> => {
     return await User.findAll({
       include: [
         {
