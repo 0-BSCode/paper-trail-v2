@@ -48,7 +48,10 @@ class CommentService {
             exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
           }
         }
-      ]
+      ],
+      attributes: {
+        exclude: ["userId"]
+      }
     });
 
     if (!comment) {

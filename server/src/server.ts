@@ -47,6 +47,10 @@ io.on("connection", (socket) => {
               );
             });
 
+          socket.on(SocketEvent.SEND_COMMENT, (newComments) => {
+            socket.broadcast.to(documentId).emit(SocketEvent.RECEIVE_COMMENT, newComments);
+          });
+
           socket.on(SocketEvent.SEND_CHANGES, (rawDraftContentState) => {
             socket.broadcast.to(documentId).emit(SocketEvent.RECEIVE_CHANGES, rawDraftContentState);
           });

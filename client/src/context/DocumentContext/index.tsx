@@ -1,8 +1,21 @@
-import { createContext, type SetStateAction, useState, type Dispatch, useEffect, useContext } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  createContext,
+  type SetStateAction,
+  useState,
+  type Dispatch,
+  type MutableRefObject,
+  useEffect,
+  useContext,
+  useRef,
+  createRef,
+} from 'react';
 import useAuth from '../../hooks/useAuth';
 import DocumentService from '../../services/document-service';
 import type DocumentInterface from '../../types/interfaces/document';
 import { ToastContext } from '../ToastContext';
+import { io } from 'socket.io-client';
+import { BASE_URL } from '@src/services/api';
 
 interface DocumentContextInterface {
   document: DocumentInterface | null;
@@ -17,6 +30,7 @@ interface DocumentContextInterface {
   setCurrentUsers: Dispatch<SetStateAction<Set<string>>>;
   setDocumentTitle: (title: string) => void;
   saveDocument: (updatedDocument: DocumentInterface) => Promise<void>;
+  socket: MutableRefObject<any>;
 }
 
 const defaultValues = {
@@ -32,6 +46,7 @@ const defaultValues = {
   setCurrentUsers: () => {},
   setDocumentTitle: () => {},
   saveDocument: async () => {},
+  socket: createRef<any>(),
 };
 
 export const DocumentContext = createContext<DocumentContextInterface>(defaultValues);
@@ -48,6 +63,7 @@ export const DocumentProvider = ({ children }: DocumentProviderInterface): JSX.E
   const [loading, setLoading] = useState(defaultValues.loading);
   const [saving, setSaving] = useState(defaultValues.saving);
   const [currentUsers, setCurrentUsers] = useState(defaultValues.currentUsers);
+  const socket = useRef<any>(null);
 
   const setDocumentTitle = (title: string): void => {
     if (document) {
@@ -79,6 +95,33 @@ export const DocumentProvider = ({ children }: DocumentProviderInterface): JSX.E
     }
   }, [errors]);
 
+  // Connect socket
+  useEffect(() => {
+    // Don't connect if:
+    // 1. No document
+    // 2. No access token
+    // 3. socket is already connected
+    if (
+      document === null ||
+      accessToken === null ||
+      socket === null ||
+      (socket.current !== null && socket.current.connected)
+    ) {
+      return;
+    }
+
+    socket.current = io(BASE_URL, {
+      query: { documentId: document.id, accessToken },
+    }).connect();
+  }, [document, accessToken, socket]);
+
+  // Disconnect socket
+  useEffect(() => {
+    return () => {
+      socket.current?.disconnect();
+    };
+  }, []);
+
   return (
     <DocumentContext.Provider
       value={{
@@ -94,6 +137,7 @@ export const DocumentProvider = ({ children }: DocumentProviderInterface): JSX.E
         setCurrentUsers,
         setDocumentTitle,
         saveDocument,
+        socket,
       }}
     >
       {children}

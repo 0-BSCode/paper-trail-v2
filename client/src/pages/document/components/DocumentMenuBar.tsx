@@ -112,7 +112,6 @@ const DocumentMenuBar = (): JSX.Element => {
         <Link href="/home" title="Go Back" />
         <Space>
           <Input
-            maxLength={25}
             type="text"
             onBlur={(event) => {
               void handleTitleInputBlur(event);
