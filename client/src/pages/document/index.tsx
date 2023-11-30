@@ -26,9 +26,11 @@ const DocumentPage = (): JSX.Element => {
   const { document, loading: documentLoading } = useDocument(parseInt(documentId as string));
   const documentUser = document?.users.find((user) => user.userId === userId);
 
+  // TODO: Doesn't update in real time
   const hasEditPermission =
     (userId === document?.userId || documentUser?.permission === PermissionEnum.EDIT) &&
-    document?.status !== StatusEnum.RESOLVED;
+    document?.status !== StatusEnum.RESOLVED &&
+    document?.status !== StatusEnum.RAISED;
 
   useEffect(() => {
     if (document !== null) setDocument(document);

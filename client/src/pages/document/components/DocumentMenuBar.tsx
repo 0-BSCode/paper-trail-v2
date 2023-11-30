@@ -48,13 +48,16 @@ const DocumentMenuBar = (): JSX.Element => {
     document?.userId === userId &&
     (document?.status === StatusEnum.DRAFT || document?.status === StatusEnum.CHANGES_REQUESTED);
 
+  const canEditTitle =
+    document?.userId === userId && document?.status !== StatusEnum.RESOLVED && document?.status !== StatusEnum.RAISED;
+
   const handleTitleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const title = event.target.value;
     setDocumentTitle(title);
   };
 
   const handleTitleInputBlur = async (event: FocusEvent<HTMLInputElement>): Promise<void> => {
-    if (accessToken === null || document === null) return;
+    if (accessToken === null || document === null || !canEditTitle) return;
 
     setSaving(true);
 
@@ -114,6 +117,7 @@ const DocumentMenuBar = (): JSX.Element => {
         <Link href="/home" title="Go Back" />
         <Space>
           <Input
+            readOnly={!canEditTitle}
             type="text"
             onBlur={(event) => {
               void handleTitleInputBlur(event);
