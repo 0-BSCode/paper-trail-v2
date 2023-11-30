@@ -6,6 +6,7 @@ import env from "../config/env.config";
 import { UserRole } from "../db/models/user-role.model";
 import { Role } from "../db/models/role.model";
 import { Op } from "sequelize";
+import RoleEnum from "../types/enums/role-enum";
 
 // TODO: Clean up unused service methods
 class UserService {
@@ -162,6 +163,13 @@ class UserService {
     });
   };
 
+  /**
+   * Updates the user's details, outside their email & password.
+   *
+   * @param userId The userId of the user that to update
+   * @param newDetails The new full_name, contact_number, course_and_year, student_id_number used to update.
+   * @returns the newly-updated user
+   */
   public updateUserDetails = async (
     userId: number,
     {
@@ -174,7 +182,7 @@ class UserService {
     const user = await User.findByPk(userId);
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error(`User with id: ${userId} not found.`);
     }
 
     const updatedFullName = fullName || "";
@@ -191,10 +199,58 @@ class UserService {
 
     const updatedUser = await User.findByPk(userId);
     if (!updatedUser) {
-      throw new Error("Failed to fetch updated user");
+      throw new Error("Failed to fetch updated user.");
     }
 
     return updatedUser;
+  };
+
+  /**
+   * Updates the user's roles given the new array of roles the user should have.
+   * This syncs the database UserRole rows to match with the `newRoles` argument.
+   *
+   * @param userId The userId of the user that to update
+   * @param newDetails The new full_name, contact_number, course_and_year, student_id_number used to update.
+   * @returns the newly-updated user
+   */
+  public updateUserRoles = async (userId: number, newRoles: RoleEnum[]): Promise<User | null> => {
+    const allowedRoles: RoleEnum[] = Object.values(RoleEnum);
+    const user = await User.findByPk(userId, { include: [{ model: Role, through: { attributes: [] } }] });
+
+    if (!user) {
+      throw new Error(`User with id: ${userId} not found.`);
+    }
+
+    const existingRoles = user.roles.map((role) => role.name as RoleEnum);
+    const rolesToAdd = newRoles.filter((role) => allowedRoles.includes(role) && !existingRoles.includes(role));
+    const rolesToRemove = existingRoles.filter((role) => !newRoles.includes(role) && role !== "CISCO_ADMIN");
+
+    if (rolesToAdd.length > 0 || rolesToRemove.length > 0) {
+      const rolesToAddInstances = await Role.findAll({ where: { name: rolesToAdd } });
+      const rolesToRemoveInstances = await Role.findAll({ where: { name: rolesToRemove } });
+
+      await UserRole.destroy({
+        where: {
+          userId,
+          roleId: rolesToRemoveInstances.map((role) => role.id)
+        }
+      });
+
+      if (rolesToAddInstances.length > 0) {
+        const userRoleData = rolesToAddInstances.map((role) => ({ userId, roleId: role.id }));
+        await UserRole.bulkCreate(userRoleData);
+      }
+    }
+
+    const updatedUserWithRoles = await User.findByPk(userId, {
+      include: [{ model: Role, through: { attributes: [] } }]
+    });
+
+    if (!updatedUserWithRoles) {
+      throw new Error("Failed to fetch updated user with roles.");
+    }
+
+    return updatedUserWithRoles;
   };
 
   private getRequestUser = async (user: User | RequestUser): Promise<RequestUser> => {

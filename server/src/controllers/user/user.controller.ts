@@ -14,6 +14,8 @@ class UserController {
       return res.status(400).json(err);
     }
 
+    console.log(req.body);
+
     const { email, password1 } = req.body;
     await userService.createUser(email, password1);
 
@@ -84,6 +86,7 @@ class UserController {
     const { id } = req.params;
     const { fullName, contactNumber, courseAndYear, studentIdNumber } = req.body;
 
+    // Check if the user that requested the update is requesting their own details to update
     if (Number(id) !== Number(userId)) {
       return res.status(403).end();
     }
@@ -94,6 +97,27 @@ class UserController {
       courseAndYear,
       studentIdNumber
     });
+
+    return res.status(200).json(updatedUser);
+  });
+
+  public updateUserRoles = catchAsync(async (req: Request, res: Response) => {
+    const { roles: requestingUserRoles } = req.user as RequestUser;
+    const { id } = req.params;
+
+    // Check if the user that requested the update is authorized (CISCO_ADMIN)
+    const isCiscoAdmin = requestingUserRoles.find((r) => r === "CISCO_ADMIN");
+    if (!isCiscoAdmin) {
+      return res.status(403).end();
+    }
+
+    const { roles } = req.body;
+
+    if (!roles) {
+      return res.status(400).json({ error: "You must specify roles to update." });
+    }
+
+    const updatedUser = await userService.updateUserRoles(Number(id), roles);
 
     return res.status(200).json(updatedUser);
   });

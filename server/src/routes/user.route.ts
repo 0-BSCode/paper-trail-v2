@@ -15,5 +15,6 @@ router.post("/reset-password", userValidator.resetPassword, userController.reset
 router.put("/password/:token", userValidator.confirmResetPassword, userController.confirmResetPassword);
 router.get("/role/:names", authenticate, userController.getUsersByRole);
 router.patch("/:id", authenticate, userController.updateUserPersonalInformation);
+router.patch("/:id/role", authenticate, userController.updateUserRoles);
 
 export default router;
