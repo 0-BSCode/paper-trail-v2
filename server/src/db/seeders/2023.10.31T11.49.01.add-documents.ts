@@ -5,18 +5,17 @@ import StatusEnum from "../../types/enums/status-enum";
 const seedDocuments = [
   {
     id: 1,
-    title: "Test Document 1",
+    title: "Unjust Punishment from Professor",
     user_id: 1,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
     created_at: new Date(),
     updated_at: new Date(),
-    status: StatusEnum.DRAFT,
-    assignee_id: 2
+    status: StatusEnum.DRAFT
   },
   {
     id: 2,
-    title: "Test Document 2",
+    title: "Undocumented Excused Absences",
     user_id: 2,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"Some more content"}]},{"type":"table","attrs":{"dir":null,"ignoreBidiAutoUpdate":null,"isControllersInjected":true,"insertButtonAttrs":null},"content":[{"type":"tableRow","content":[{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}}]},{"type":"tableRow","content":[{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableHeaderCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"Sample"}]}]},{"type":"tableHeaderCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"Stuff"}]}]},{"type":"tableHeaderCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"Here"}]}]}]},{"type":"tableRow","content":[{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]}]},{"type":"tableRow","content":[{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]}]}]},{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]}',
@@ -27,7 +26,7 @@ const seedDocuments = [
   },
   {
     id: 3,
-    title: "Test Document 3",
+    title: "Overly Delayed Releasing of Grades",
     user_id: 2,
     content: "Dummy Content",
     created_at: new Date(),
