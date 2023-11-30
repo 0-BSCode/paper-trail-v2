@@ -6,6 +6,7 @@ import { userValidator } from "../validators/user.validator";
 
 const router = Router();
 router.post("/", userValidator.register, userController.register);
+router.get("/all", authenticate, userController.getAllUsers);
 router.put("/verify-email/:token", userController.verifyEmail);
 router.get("/notification", authenticate, notificationController.getUserNotifications);
 router.patch("/notification/:id", authenticate, notificationController.markNotificationAsRead);
