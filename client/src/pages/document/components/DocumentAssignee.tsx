@@ -4,6 +4,7 @@ import { ToastContext } from '@src/context/ToastContext';
 import DocumentService from '@src/services/document-service';
 import UserService from '@src/services/user-service';
 import RoleEnum from '@src/types/enums/role-enum';
+import SocketEvent from '@src/types/enums/socket-events';
 import StatusEnum from '@src/types/enums/status-enum';
 import type UserInterface from '@src/types/interfaces/user';
 import { Typography, Select, Button } from 'antd';
@@ -15,7 +16,7 @@ const filterOption = (input: string, option?: { label: string; value: string }):
 
 const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element => {
   const { accessToken, userId, roles } = useContext(AuthContext);
-  const { document, setDocument, loading } = useContext(DocumentContext);
+  const { document, setDocument, loading, socket } = useContext(DocumentContext);
   const { success } = useContext(ToastContext);
   const [assigneeId, setAssigneeId] = useState<number | null>(null);
   const [assigneeList, setAssigneeList] = useState<UserInterface[]>([]);
@@ -37,6 +38,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
     if (document === null || accessToken === null) return;
 
     setIsSaving(true);
+    socket.current.emit(SocketEvent.SEND_ASSIGNEE, assigneeId);
     void DocumentService.setAssignee(accessToken, parseInt(documentId), assigneeId)
       .then(() => {
         const newAssignee = assigneeList.find((a) => a.id === assigneeId);
@@ -51,6 +53,21 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
         setIsSaving(false);
       });
   };
+
+  useEffect(() => {
+    if (socket.current === null || document === null) return;
+
+    const handler = (newAssigneeId: number | null): void => {
+      setAssigneeId(newAssigneeId);
+      setDocument({ ...document, assigneeId: newAssigneeId });
+    };
+
+    socket.current.on(SocketEvent.RECEIVE_ASSIGNEE, handler);
+
+    return () => {
+      socket.current.off(SocketEvent.RECEIVE_ASSIGNEE, handler);
+    };
+  });
 
   useEffect(() => {
     if (accessToken === null) return;

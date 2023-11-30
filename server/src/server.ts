@@ -51,6 +51,10 @@ io.on("connection", (socket) => {
             socket.broadcast.to(documentId).emit(SocketEvent.RECEIVE_COMMENT, newComments);
           });
 
+          socket.on(SocketEvent.SEND_ASSIGNEE, (newAssigneeId) => {
+            socket.broadcast.to(documentId).emit(SocketEvent.RECEIVE_ASSIGNEE, newAssigneeId);
+          });
+
           socket.on(SocketEvent.SEND_CHANGES, (rawDraftContentState) => {
             socket.broadcast.to(documentId).emit(SocketEvent.RECEIVE_CHANGES, rawDraftContentState);
           });
