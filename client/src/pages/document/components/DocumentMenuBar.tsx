@@ -10,6 +10,7 @@ import type DocumentInterface from '@src/types/interfaces/document';
 import { Anchor, Button, Input, Space } from 'antd';
 import StatusEnum from '@src/types/enums/status-enum';
 import { ToastContext } from '@src/context/ToastContext';
+import SocketEvent from '@src/types/enums/socket-events';
 
 const { Link } = Anchor;
 
@@ -93,6 +94,7 @@ const DocumentMenuBar = (): JSX.Element => {
     if (newStatus === status) return;
 
     setIsStatusSaving(true);
+    socket.current.emit(SocketEvent.SEND_STATUS, newStatus);
     void DocumentService.setStatus(accessToken, document.id, newStatus)
       .then(() => {
         success(`Successfully changed status to ${newStatus}`);

@@ -14,8 +14,6 @@ import useAuth from '../../hooks/useAuth';
 import DocumentService from '../../services/document-service';
 import type DocumentInterface from '../../types/interfaces/document';
 import { ToastContext } from '../ToastContext';
-import { io } from 'socket.io-client';
-import { BASE_URL } from '@src/services/api';
 
 interface DocumentContextInterface {
   document: DocumentInterface | null;
@@ -94,33 +92,6 @@ export const DocumentProvider = ({ children }: DocumentProviderInterface): JSX.E
       });
     }
   }, [errors]);
-
-  // Connect socket
-  useEffect(() => {
-    // Don't connect if:
-    // 1. No document
-    // 2. No access token
-    // 3. socket is already connected
-    if (
-      document === null ||
-      accessToken === null ||
-      socket === null ||
-      (socket.current !== null && socket.current.connected)
-    ) {
-      return;
-    }
-
-    socket.current = io(BASE_URL, {
-      query: { documentId: document.id, accessToken },
-    }).connect();
-  }, [document, accessToken, socket]);
-
-  // Disconnect socket
-  useEffect(() => {
-    return () => {
-      socket.current?.disconnect();
-    };
-  }, []);
 
   return (
     <DocumentContext.Provider
