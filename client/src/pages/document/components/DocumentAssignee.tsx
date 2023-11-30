@@ -6,6 +6,7 @@ import UserService from '@src/services/user-service';
 import RoleEnum from '@src/types/enums/role-enum';
 import SocketEvent from '@src/types/enums/socket-events';
 import StatusEnum from '@src/types/enums/status-enum';
+import type DocumentInterface from '@src/types/interfaces/document';
 import type UserInterface from '@src/types/interfaces/user';
 import { Typography, Select, Button } from 'antd';
 import { useContext, useEffect, useState } from 'react';
@@ -39,12 +40,17 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
 
     setIsSaving(true);
     socket.current.emit(SocketEvent.SEND_ASSIGNEE, assigneeId);
+    const updatedDocument: DocumentInterface = { ...document, assigneeId };
+    if (assigneeId) {
+      updatedDocument.status = StatusEnum.REVIEW;
+    } else {
+      updatedDocument.status = StatusEnum.REVIEW_REQUESTED;
+    }
     void DocumentService.setAssignee(accessToken, parseInt(documentId), assigneeId)
       .then(() => {
         const newAssignee = assigneeList.find((a) => a.id === assigneeId);
-        // TODO: Deal with undefined state (should be guaranteed though)
-        success(`Successfully set assignee to ${newAssignee?.email}`);
-        setDocument({ ...document, assigneeId });
+        success(`Successfully set assignee to ${newAssignee ? newAssignee.email : 'None'}`);
+        setDocument(updatedDocument);
       })
       .catch((err) => {
         console.log(err);
@@ -58,8 +64,8 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
     if (socket.current === null || document === null) return;
 
     const handler = (newAssigneeId: number | null): void => {
-      setAssigneeId(newAssigneeId);
-      setDocument({ ...document, assigneeId: newAssigneeId });
+      const status = newAssigneeId ? StatusEnum.REVIEW : StatusEnum.REVIEW_REQUESTED;
+      setDocument({ ...document, assigneeId: newAssigneeId, status });
     };
 
     socket.current.on(SocketEvent.RECEIVE_ASSIGNEE, handler);

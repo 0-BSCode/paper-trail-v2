@@ -39,7 +39,7 @@ const CurrentUsers = (): JSX.Element => {
 const DocumentMenuBar = (): JSX.Element => {
   const { accessToken, userId } = useAuth();
   const { success } = useContext(ToastContext);
-  const { document, saving, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
+  const { document, saving, socket, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
   const [isStatusSaving, setIsStatusSaving] = useState(false);
 
   const canSubmit =
