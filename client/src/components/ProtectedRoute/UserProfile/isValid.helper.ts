@@ -21,7 +21,7 @@ const isValid = {
   },
   courseAndYear: (courseAndYear: string): boolean => {
     if (courseAndYear === '') return true;
-    const courseAndYearPattern = /^[A-Z]{4}-[1-9]$/; // Matches format XXXX-N, where XXXX is 4 uppercase letters and N is a single digit from 1 to 9
+    const courseAndYearPattern = /^[A-Z]{4}-[1-5]$/; // Matches format XXXX-N, where XXXX is 4 uppercase letters and N is a single digit from 1 to 5
     return courseAndYearPattern.test(courseAndYear);
   },
 };
