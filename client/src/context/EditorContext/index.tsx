@@ -22,7 +22,6 @@ import { type EditorRef } from '@src/types/interfaces/editor-ref';
 interface EditorContextInterface {
   editorState: RemirrorJSON;
   setEditorState: Dispatch<SetStateAction<RemirrorJSON>>;
-  socket: null | MutableRefObject<any>;
   documentRendered: boolean;
   setDocumentRendered: Dispatch<SetStateAction<boolean>>;
   editorRef: null | MutableRefObject<null | EditorRef>;
@@ -43,7 +42,6 @@ const defaultEditorState: RemirrorJSON = {
 const defaultValues = {
   editorState: defaultEditorState,
   setEditorState: () => {},
-  socket: null,
   documentRendered: false,
   setDocumentRendered: () => {},
   editorRef: null,
@@ -61,11 +59,10 @@ let saveInterval: null | NodeJS.Timeout = null;
 
 export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Element => {
   const [editorState, setEditorState] = useState(defaultValues.editorState);
-  const socket = useRef<any>(defaultValues.socket);
   const [documentRendered, setDocumentRendered] = useState(defaultValues.documentRendered);
   const editorRef = useRef<null | EditorRef>(defaultValues.editorRef);
 
-  const { document, setCurrentUsers, setSaving, setDocument, saveDocument } = useContext(DocumentContext);
+  const { document, socket, setCurrentUsers, setSaving, setDocument, saveDocument } = useContext(DocumentContext);
   const { error } = useContext(ToastContext);
   const { accessToken } = useAuth();
 
@@ -141,13 +138,6 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
     }).connect();
   }, [document, accessToken, socket]);
 
-  // Disconnect socket
-  useEffect(() => {
-    return () => {
-      socket?.current?.disconnect();
-    };
-  }, []);
-
   // Receive changes
   useEffect(() => {
     if (socket.current === null) return;
@@ -188,7 +178,6 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
     <EditorContext.Provider
       value={{
         editorState,
-        socket,
         documentRendered,
         editorRef,
         setEditorState,

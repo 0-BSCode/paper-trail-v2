@@ -41,6 +41,7 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
 
       if (documentUser) {
         documentUser.permission = updatedDocumentUser.permission;
+        // TODO: Should be email of document user (not owner)
         success(`Successfully updated permissions of ${email}!`);
         setDocument({
           ...document,
