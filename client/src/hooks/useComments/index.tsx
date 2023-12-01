@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from 'react';
 import axios, { type AxiosError } from 'axios';
 import { AuthContext } from '@src/context/AuthContext';
 import { ToastContext } from '@src/context/ToastContext';
+import { DocumentContext } from '@src/context/DocumentContext';
+import SocketEvent from '@src/types/enums/socket-events';
 
 interface CommentHookType {
   comments: CommentInterface[];
@@ -16,6 +18,7 @@ interface CommentHookType {
 const useComments = (documentId: number): CommentHookType => {
   const { accessToken } = useContext(AuthContext);
   const { error } = useContext(ToastContext);
+  const { socket } = useContext(DocumentContext);
   const [comments, setComments] = useState<CommentInterface[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -53,7 +56,12 @@ const useComments = (documentId: number): CommentHookType => {
     try {
       const response = await CommentService.create(accessToken, documentId, content);
       const newComment = response.data as CommentInterface;
-      setComments([...comments, newComment]);
+
+      if (socket === null || socket.current === null) return;
+
+      const newComments = [...comments, newComment];
+      socket.current.emit(SocketEvent.SEND_COMMENT, newComments);
+      setComments(newComments);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const { response } = error as AxiosError;
@@ -69,6 +77,20 @@ const useComments = (documentId: number): CommentHookType => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (socket.current === null) return;
+
+    const handler = (newComments: CommentInterface[]): void => {
+      setComments(newComments);
+    };
+
+    socket.current.on(SocketEvent.RECEIVE_COMMENT, handler);
+
+    return () => {
+      socket.current.off(SocketEvent.RECEIVE_COMMENT, handler);
+    };
+  }, [socket.current]);
 
   useEffect(() => {
     if (accessToken === null) return;

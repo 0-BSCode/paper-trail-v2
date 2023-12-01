@@ -1,4 +1,3 @@
-import { Input } from 'antd';
 import TicketsTable from './TicketsTable';
 import DropDown from './DropDown';
 import useDocuments from '@src/hooks/useDocuments';
@@ -19,10 +18,10 @@ const UnassignedTickets = (): JSX.Element => {
 
       setFilteredTickets(
         allTickets.filter(
-          (tic) =>
-            (titleFilter.length > 3 ? tic.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
-            (dropDownFilter === StatusEnum.ALL ? true : tic.status === dropDownFilter) &&
-            !tic.assigneeId,
+          (t) =>
+            (titleFilter.length > 3 ? t.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
+            (dropDownFilter === StatusEnum.ALL ? true : t.status === dropDownFilter) &&
+            !t.assigneeId,
         ),
       );
     } else {
@@ -38,7 +37,8 @@ const UnassignedTickets = (): JSX.Element => {
         <div className="flex gap-5">
           <div className="flex flex-col justify-start w-[40%]">
             <p className="my-2 font-semibold">Search by Title</p>
-            <Input
+            <input
+              className="w-full p-2 border border-gray-300 border-solid rounded-md focus:outline-none focus:ring-1 focus:border-cyan-400 border-t-solid"
               onChange={(e) => {
                 setTitleFilter(e.target.value);
               }}

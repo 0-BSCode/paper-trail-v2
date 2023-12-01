@@ -2,6 +2,7 @@ import { AuthContext } from '@src/context/AuthContext';
 import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
 import DocumentService from '@src/services/document-service';
+import SocketEvent from '@src/types/enums/socket-events';
 import StatusEnum from '@src/types/enums/status-enum';
 import { Typography, Button, Select } from 'antd';
 import { useContext, useEffect, useState } from 'react';
@@ -24,7 +25,7 @@ const disabledOptions = [StatusEnum.DRAFT, StatusEnum.REVIEW, StatusEnum.REVIEW_
 
 const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => {
   const { accessToken, userId } = useContext(AuthContext);
-  const { document, setDocument } = useContext(DocumentContext);
+  const { document, setDocument, socket } = useContext(DocumentContext);
   const { success } = useContext(ToastContext);
   const [status, setStatus] = useState<StatusEnum | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -45,6 +46,7 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
     if (document === null || accessToken === null || status === null) return;
 
     setIsSaving(true);
+    socket.current.emit(SocketEvent.SEND_STATUS, status);
     void DocumentService.setStatus(accessToken, parseInt(documentId), status)
       .then(() => {
         success(`Successfully changed status to ${status}`);
@@ -57,6 +59,20 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
         setIsSaving(false);
       });
   };
+
+  useEffect(() => {
+    if (socket.current === null || document === null) return;
+
+    const handler = (newStatus: StatusEnum): void => {
+      setDocument({ ...document, status: newStatus });
+    };
+
+    socket.current.on(SocketEvent.RECEIVE_STATUS, handler);
+
+    return () => {
+      socket.current.off(SocketEvent.RECEIVE_STATUS, handler);
+    };
+  }, [socket.current]);
 
   useEffect(() => {
     if (document) {

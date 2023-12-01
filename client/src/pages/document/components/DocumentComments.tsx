@@ -16,6 +16,14 @@ const DocumentComments = (): JSX.Element => {
 
   const hasCommentPermission = document?.status !== StatusEnum.RESOLVED;
 
+  const handleAddComment = (): void => {
+    if (!content.length) return;
+
+    void createComment(parseInt(documentId as string), content).then(() => {
+      setContent('');
+    });
+  };
+
   return (
     <div className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-3">
       <Typography.Title
@@ -57,13 +65,7 @@ const DocumentComments = (): JSX.Element => {
           style={{
             flex: 1,
           }}
-          onClick={() => {
-            if (!content.length) return;
-
-            void createComment(parseInt(documentId as string), content).then(() => {
-              setContent('');
-            });
-          }}
+          onClick={handleAddComment}
         />
       </Space.Compact>
     </div>

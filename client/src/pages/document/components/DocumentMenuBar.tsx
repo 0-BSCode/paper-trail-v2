@@ -10,6 +10,7 @@ import type DocumentInterface from '@src/types/interfaces/document';
 import { Anchor, Button, Input, Space } from 'antd';
 import StatusEnum from '@src/types/enums/status-enum';
 import { ToastContext } from '@src/context/ToastContext';
+import SocketEvent from '@src/types/enums/socket-events';
 
 const { Link } = Anchor;
 
@@ -39,7 +40,7 @@ const CurrentUsers = (): JSX.Element => {
 const DocumentMenuBar = (): JSX.Element => {
   const { accessToken, userId } = useAuth();
   const { success } = useContext(ToastContext);
-  const { document, saving, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
+  const { document, saving, socket, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
   const [isStatusSaving, setIsStatusSaving] = useState(false);
 
   const canSubmit =
@@ -93,6 +94,7 @@ const DocumentMenuBar = (): JSX.Element => {
     if (newStatus === status) return;
 
     setIsStatusSaving(true);
+    socket.current.emit(SocketEvent.SEND_STATUS, newStatus);
     void DocumentService.setStatus(accessToken, document.id, newStatus)
       .then(() => {
         success(`Successfully changed status to ${newStatus}`);
@@ -112,7 +114,6 @@ const DocumentMenuBar = (): JSX.Element => {
         <Link href="/home" title="Go Back" />
         <Space>
           <Input
-            maxLength={25}
             type="text"
             onBlur={(event) => {
               void handleTitleInputBlur(event);
