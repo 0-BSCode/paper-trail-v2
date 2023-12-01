@@ -38,6 +38,24 @@ class User extends Model {
   password!: string;
 
   @AllowNull(false)
+  @Column(DataType.STRING)
+  fullName!: string;
+
+  @AllowNull(false)
+  @Default("")
+  @Column(DataType.STRING)
+  contactNumber!: string;
+
+  @AllowNull(false)
+  @Default("")
+  @Column(DataType.STRING)
+  courseAndYear!: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  studentIdNumber!: string;
+
+  @AllowNull(false)
   @Default(0)
   @Column(DataType.BOOLEAN)
   isVerified!: boolean;

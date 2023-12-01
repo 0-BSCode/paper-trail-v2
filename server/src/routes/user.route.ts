@@ -14,5 +14,7 @@ router.get("/:id", authenticate, userController.getUser);
 router.post("/reset-password", userValidator.resetPassword, userController.resetPassword);
 router.put("/password/:token", userValidator.confirmResetPassword, userController.confirmResetPassword);
 router.get("/role/:names", authenticate, userController.getUsersByRole);
+router.patch("/:id", authenticate, userController.updateUserPersonalInformation);
+router.patch("/:id/role", authenticate, userController.updateUserRoles);
 
 export default router;

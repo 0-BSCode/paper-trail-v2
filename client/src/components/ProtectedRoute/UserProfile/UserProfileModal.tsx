@@ -1,42 +1,47 @@
 import './UserProfileModal.css';
 import type { ChangeEvent, Dispatch } from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import useAuth from '@src/hooks/useAuth';
 import { Modal, Button, Typography, Divider, Flex, Avatar, Form } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import FormInputField from './FormInputField';
+import UserService from '@src/services/user-service';
+import { ToastContext } from '@src/context/ToastContext';
 const { Title } = Typography;
 
 const UserProfileModal = (): JSX.Element => {
+  const { error } = useContext(ToastContext);
   const [isOpen, setIsOpen] = useState(false);
-  const { email: authEmail } = useAuth();
+  const { email: authEmail, accessToken, userId } = useAuth();
   const [form] = Form.useForm();
 
   // Input fields for edit profile form
-  const [id, setId] = useState('');
+  const [studentIdNumber, setStudentIdNumber] = useState('');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState(String(authEmail));
-  const [contact, setContact] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
   const [courseAndYear, setCourseAndYear] = useState('');
 
-  // TODO (Ian): Create a useEffect to fetch user data to prefill the inputs based on useAuth().userId
+  const fetchUserDetails = async (): Promise<void> => {
+    if (accessToken === null || userId === null) {
+      error('Please log in.');
+      return;
+    }
 
-  const handleUploadNewPhoto = (): void => {
-    // TODO (Ian): Integrate with backend when routes are ready.
-    window.alert('Uploading new profile picture to the server.');
+    const fetchedUser = await UserService.getUserById(accessToken, userId);
+
+    setStudentIdNumber(fetchedUser.studentIdNumber);
+    setFullName(fetchedUser.fullName);
+    setContactNumber(fetchedUser.contactNumber);
+    setCourseAndYear(fetchedUser.courseAndYear);
   };
 
-  const handleRemovePhoto = (): void => {
-    // TODO (Ian): Integrate with backend when routes are ready.
-    window.alert('Removing profile picture from the server.');
-  };
-
-  const handleUpdateInfo = (): void => {
-    // TODO (Ian): Integrate with backend when routes are ready.
-    window.alert('Sending an update request with new user data to the server.');
-  };
+  useEffect(() => {
+    void fetchUserDetails();
+  }, []);
 
   const handleOpen = (): void => {
+    void fetchUserDetails();
     setIsOpen(true);
   };
 
@@ -56,12 +61,14 @@ const UserProfileModal = (): JSX.Element => {
       <Modal
         title="Student Profile"
         open={isOpen}
-        okText={'Update Info'}
-        onOk={handleUpdateInfo}
-        cancelText={'Close'}
         onCancel={handleClose}
         width={1000}
         className="UserProfileModal"
+        footer={[
+          <Button key="back" onClick={handleClose}>
+            Close
+          </Button>,
+        ]}
       >
         <Divider />
         <Title style={{ fontWeight: '700' }} level={3}>
@@ -72,51 +79,55 @@ const UserProfileModal = (): JSX.Element => {
           {/* Left Side */}
           <Flex vertical justify="start" align="center" gap="middle">
             <Avatar size={256} src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=1`} />
-            <Button onClick={handleUploadNewPhoto} type="primary" style={{ minWidth: '60%' }}>
-              Upload New Photo
-            </Button>
-            <Button onClick={handleRemovePhoto} type="primary" danger style={{ minWidth: '60%' }}>
-              Remove Photo
-            </Button>
           </Flex>
           {/* Right Side */}
           <Flex vertical justify="center" align="center" gap="middle">
             <Form form={form} layout="vertical" autoComplete="off">
               <FormInputField
-                name="id"
+                disabled
+                name="student-id-number"
                 label="Student ID Number"
-                value={id}
+                type="number"
+                value={studentIdNumber}
                 onChange={(e) => {
-                  handleChange(e, setId);
+                  handleChange(e, setStudentIdNumber);
                 }}
               />
               <FormInputField
+                disabled
                 name="full-name"
                 label="Full Name"
+                type="text"
                 value={fullName}
                 onChange={(e) => {
                   handleChange(e, setFullName);
                 }}
               />
               <FormInputField
+                disabled
                 name="email"
                 label="Email"
+                type="email"
                 value={email}
                 onChange={(e) => {
                   handleChange(e, setEmail);
                 }}
               />
               <FormInputField
-                name="contact"
+                disabled
+                name="contact-number"
                 label="Contact Number"
-                value={contact}
+                type="tel"
+                value={contactNumber}
                 onChange={(e) => {
-                  handleChange(e, setContact);
+                  handleChange(e, setContactNumber);
                 }}
               />
               <FormInputField
-                name="course"
+                disabled
+                name="course-and-year"
                 label="Course & Year"
+                type="text"
                 value={courseAndYear}
                 onChange={(e) => {
                   handleChange(e, setCourseAndYear);

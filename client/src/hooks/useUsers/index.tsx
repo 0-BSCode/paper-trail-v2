@@ -9,6 +9,7 @@ interface UserHookType {
   loading: boolean;
   setAllUsers: Dispatch<SetStateAction<UserInterface[]>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  reloadUsers: () => Promise<void>;
 }
 
 const useUsers = (): UserHookType => {
@@ -31,6 +32,17 @@ const useUsers = (): UserHookType => {
     }
   };
 
+  /**
+   * Used to refresh the loaded users in the user dashboard after manual updates.
+   */
+  const reloadUsers = async (): Promise<void> => {
+    if (accessToken === null) {
+      return;
+    }
+
+    await loadUsers(accessToken);
+  };
+
   useEffect(() => {
     if (accessToken === null) return;
 
@@ -42,6 +54,7 @@ const useUsers = (): UserHookType => {
     loading,
     setAllUsers,
     setLoading,
+    reloadUsers,
   };
 };
 
