@@ -13,7 +13,7 @@ interface Props {
 }
 
 function FormInputField({ name, label, value, onChange, disabled, type, placeholder, isValid }: Props): JSX.Element {
-  const status = disabled === true || isValid ? '' : 'error';
+  const status = disabled ?? isValid ? '' : 'error';
   return (
     <Form.Item name={name} label={label} style={{ marginBottom: '16px' }}>
       <Flex gap="small">
