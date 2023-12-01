@@ -15,9 +15,10 @@ interface Props {
   userId: number;
   email: string;
   userRoles: Array<Pick<RoleInterface, 'name'>> | undefined;
+  reloadUsers: () => Promise<void>;
 }
 
-const AdminEditProfileModal = ({ userId, email, userRoles }: Props): JSX.Element => {
+const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props): JSX.Element => {
   const { success, error } = useContext(ToastContext);
   const [isOpen, setIsOpen] = useState(false);
   const { accessToken } = useAuth();
@@ -91,6 +92,7 @@ const AdminEditProfileModal = ({ userId, email, userRoles }: Props): JSX.Element
 
     if (roles.length === 0) {
       error('Users must have at least 1 role.');
+      return;
     }
 
     const newDetails = { studentIdNumber, fullName, contactNumber, courseAndYear };
@@ -100,6 +102,7 @@ const AdminEditProfileModal = ({ userId, email, userRoles }: Props): JSX.Element
       await UserService.updateUserDetails(accessToken, userId, newDetails);
       await UserService.updateUserRoles(accessToken, userId, newRoles);
       success('Successfully updated personal information!');
+      await reloadUsers();
     } catch (e) {
       error((e as Error).message);
     }

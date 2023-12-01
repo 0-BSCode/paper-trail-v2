@@ -8,15 +8,23 @@ import AdminEditProfileModal from './AdminEditProfileModal/AdminEditProfileModal
 
 interface Props {
   users: UserInterface[];
+  reloadUsers: () => Promise<void>;
 }
 
-const UsersTable = ({ users }: Props): JSX.Element => {
+const UsersTable = ({ users, reloadUsers }: Props): JSX.Element => {
   const columns: ColumnsType<UserInterface> = [
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      render: (_, record) => <AdminEditProfileModal userId={record.id} email={record.email} userRoles={record.roles} />,
+      render: (_, record) => (
+        <AdminEditProfileModal
+          userId={record.id}
+          email={record.email}
+          userRoles={record.roles}
+          reloadUsers={reloadUsers}
+        />
+      ),
     },
     {
       title: 'Roles',

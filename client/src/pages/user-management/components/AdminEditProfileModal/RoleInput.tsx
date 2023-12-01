@@ -15,9 +15,8 @@ const RoleInput = ({ roles, setRoles }: Props): JSX.Element => {
   const filteredOptions = OPTIONS.filter((o) => !roles.includes(o));
 
   return (
-    <Form.Item name={'roles'} label={'Roles'} style={{ marginBottom: '16px' }}>
+    <Form.Item name={'roles'} label={'Roles'} style={{ marginBottom: '16px' }} initialValue={roles}>
       <Select
-        defaultValue={roles}
         mode="multiple"
         tagRender={RoleTag}
         placeholder="User does not have roles"
