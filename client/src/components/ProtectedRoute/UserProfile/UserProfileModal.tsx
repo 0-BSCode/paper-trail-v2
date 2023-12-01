@@ -7,11 +7,10 @@ import { UserOutlined } from '@ant-design/icons';
 import FormInputField from './FormInputField';
 import UserService from '@src/services/user-service';
 import { ToastContext } from '@src/context/ToastContext';
-import isValid from '@src/utils/isValid.helper';
 const { Title } = Typography;
 
 const UserProfileModal = (): JSX.Element => {
-  const { success, error } = useContext(ToastContext);
+  const { error } = useContext(ToastContext);
   const [isOpen, setIsOpen] = useState(false);
   const { email: authEmail, accessToken, userId } = useAuth();
   const [form] = Form.useForm();
@@ -22,13 +21,6 @@ const UserProfileModal = (): JSX.Element => {
   const [email, setEmail] = useState(String(authEmail));
   const [contactNumber, setContactNumber] = useState('');
   const [courseAndYear, setCourseAndYear] = useState('');
-
-  // Booleans for input validation
-  const isValidFullName = isValid.fullName(fullName);
-  const isValidStudentIdNumber = isValid.studentNumber(studentIdNumber);
-  const isValidContactNumber = isValid.contactNumber(contactNumber);
-  const isValidCourseAndYear = isValid.courseAndYear(courseAndYear);
-  const isValidFormDetails = isValidFullName && isValidStudentIdNumber && isValidContactNumber && isValidCourseAndYear;
 
   const fetchUserDetails = async (): Promise<void> => {
     if (accessToken === null || userId === null) {
@@ -47,37 +39,6 @@ const UserProfileModal = (): JSX.Element => {
   useEffect(() => {
     void fetchUserDetails();
   }, []);
-
-  const handleUploadNewPhoto = (): void => {
-    // TODO (Ian): Integrate with backend when routes are ready.
-    window.alert('Uploading new profile picture to the server.');
-  };
-
-  const handleRemovePhoto = (): void => {
-    // TODO (Ian): Integrate with backend when routes are ready.
-    window.alert('Removing profile picture from the server.');
-  };
-
-  const handleUpdateInfo = async (): Promise<void> => {
-    if (accessToken === null || userId === null) {
-      error('Please log in.');
-      return;
-    }
-
-    if (!isValidFormDetails) {
-      error('Invalid form details, please input correctly.');
-      return;
-    }
-
-    const newDetails = { studentIdNumber, fullName, contactNumber, courseAndYear };
-
-    try {
-      await UserService.updateUserDetails(accessToken, userId, newDetails);
-      success('Successfully updated personal information!');
-    } catch (e) {
-      error((e as Error).message);
-    }
-  };
 
   const handleOpen = (): void => {
     void fetchUserDetails();
@@ -100,13 +61,14 @@ const UserProfileModal = (): JSX.Element => {
       <Modal
         title="Student Profile"
         open={isOpen}
-        okText={'Update Info'}
-        /* eslint-disable @typescript-eslint/no-misused-promises */
-        onOk={handleUpdateInfo}
-        cancelText={'Close'}
         onCancel={handleClose}
         width={1000}
         className="UserProfileModal"
+        footer={[
+          <Button key="back" onClick={handleClose}>
+            Close
+          </Button>,
+        ]}
       >
         <Divider />
         <Title style={{ fontWeight: '700' }} level={3}>
@@ -117,12 +79,6 @@ const UserProfileModal = (): JSX.Element => {
           {/* Left Side */}
           <Flex vertical justify="start" align="center" gap="middle">
             <Avatar size={256} src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=1`} />
-            <Button onClick={handleUploadNewPhoto} type="primary" style={{ minWidth: '60%' }}>
-              Upload New Photo
-            </Button>
-            <Button onClick={handleRemovePhoto} type="primary" danger style={{ minWidth: '60%' }}>
-              Remove Photo
-            </Button>
           </Flex>
           {/* Right Side */}
           <Flex vertical justify="center" align="center" gap="middle">
@@ -134,7 +90,6 @@ const UserProfileModal = (): JSX.Element => {
                 type="number"
                 placeholder="ex. 22101295"
                 value={studentIdNumber}
-                isValid={isValidStudentIdNumber}
                 onChange={(e) => {
                   handleChange(e, setStudentIdNumber);
                 }}
@@ -149,7 +104,6 @@ const UserProfileModal = (): JSX.Element => {
                 onChange={(e) => {
                   handleChange(e, setFullName);
                 }}
-                isValid={isValidFullName}
               />
               <FormInputField
                 disabled
@@ -171,7 +125,6 @@ const UserProfileModal = (): JSX.Element => {
                 onChange={(e) => {
                   handleChange(e, setContactNumber);
                 }}
-                isValid={isValidContactNumber}
               />
               <FormInputField
                 disabled
@@ -183,7 +136,6 @@ const UserProfileModal = (): JSX.Element => {
                 onChange={(e) => {
                   handleChange(e, setCourseAndYear);
                 }}
-                isValid={isValidCourseAndYear}
               />
             </Form>
           </Flex>
