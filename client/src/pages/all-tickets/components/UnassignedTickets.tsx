@@ -18,10 +18,10 @@ const UnassignedTickets = (): JSX.Element => {
 
       setFilteredTickets(
         allTickets.filter(
-          (tic) =>
-            (titleFilter.length > 3 ? tic.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
-            (dropDownFilter === StatusEnum.ALL ? true : tic.status === dropDownFilter) &&
-            !tic.assigneeId,
+          (t) =>
+            (titleFilter.length > 3 ? t.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
+            (dropDownFilter === StatusEnum.ALL ? true : t.status === dropDownFilter) &&
+            !t.assigneeId,
         ),
       );
     } else {

@@ -46,13 +46,13 @@ const YourTickets = (): JSX.Element => {
 
       setFilteredTickets(
         allTickets.filter(
-          (tic) =>
-            (titleFilter.length > 3 ? tic.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
+          (t) =>
+            (titleFilter.length > 3 ? t.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
             (assigneeFilter.length > 3
-              ? tic.assignee?.email.toLowerCase().includes(assigneeFilter.toLowerCase())
+              ? t.assignee?.email.toLowerCase().includes(assigneeFilter.toLowerCase())
               : true) &&
-            (dropDownFilter === StatusEnum.ALL ? true : tic.status === dropDownFilter) &&
-            tic.assigneeId,
+            (dropDownFilter === StatusEnum.ALL ? true : t.status === dropDownFilter) &&
+            t.assigneeId,
         ),
       );
     } else {
