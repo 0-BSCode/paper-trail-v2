@@ -81,16 +81,18 @@ class UserController {
   });
 
   public updateUserPersonalInformation = catchAsync(async (req: Request, res: Response) => {
-    const { id: userId } = req.user as RequestUser;
+    const { id: userId, roles } = req.user as RequestUser;
     const { id } = req.params;
     const { fullName, contactNumber, courseAndYear, studentIdNumber } = req.body;
 
     // Check if the user that requested the update is requesting their own details to update
-    if (Number(id) !== Number(userId)) {
+    // or if they are not a CISCO_ADMIN
+    const isCiscoAdmin = roles.find((r) => r !== RoleEnum.CISCO_ADMIN);
+    if (Number(id) !== Number(userId) && !isCiscoAdmin) {
       return res.status(403).end();
     }
 
-    const updatedUser = await userService.updateUserDetails(Number(userId), {
+    const updatedUser = await userService.updateUserDetails(Number(id), {
       fullName,
       contactNumber,
       courseAndYear,
