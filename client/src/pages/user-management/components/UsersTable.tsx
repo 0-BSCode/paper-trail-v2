@@ -23,7 +23,7 @@ const UsersTable = ({ users }: Props): JSX.Element => {
       dataIndex: 'roles',
       key: 'roles',
       render: (_, record) => {
-        if (!record.roles.length) return <p>No roles</p>;
+        if (!record?.roles?.length) return <p>No roles</p>;
 
         return (
           <p>
