@@ -14,9 +14,9 @@ const isValid = {
     const studentNumberPattern = /^[0-9]{8}$/; // Matches 8 digits
     return studentNumberPattern.test(studentNumber);
   },
-  contactNumber: (contactNumber: string): boolean => {
+  contactNumber: (contactNumber: string) => {
     if (contactNumber === '') return true;
-    const contactNumberPattern = /^\+[1-9]\d{7,14}$/; // Matches international phone number format
+    const contactNumberPattern = /^(09|\+639)\d{9}$/; // Matches Philippine phone number format
     return contactNumberPattern.test(contactNumber);
   },
   courseAndYear: (courseAndYear: string): boolean => {

@@ -156,7 +156,7 @@ const AdminEditProfileModal = ({ userId, email }: Props): JSX.Element => {
                 name="contact-number"
                 label="Contact Number"
                 type="tel"
-                placeholder="ex. +1234567890"
+                placeholder="ex. 09153219876"
                 value={contactNumber}
                 onChange={(e) => {
                   handleChange(e, setContactNumber);
