@@ -88,7 +88,6 @@ const UserProfileModal = (): JSX.Element => {
                 name="student-id-number"
                 label="Student ID Number"
                 type="number"
-                placeholder="ex. 22101295"
                 value={studentIdNumber}
                 onChange={(e) => {
                   handleChange(e, setStudentIdNumber);
@@ -99,7 +98,6 @@ const UserProfileModal = (): JSX.Element => {
                 name="full-name"
                 label="Full Name"
                 type="text"
-                placeholder="ex. John Doe"
                 value={fullName}
                 onChange={(e) => {
                   handleChange(e, setFullName);
@@ -120,7 +118,6 @@ const UserProfileModal = (): JSX.Element => {
                 name="contact-number"
                 label="Contact Number"
                 type="tel"
-                placeholder="ex. +1234567890"
                 value={contactNumber}
                 onChange={(e) => {
                   handleChange(e, setContactNumber);
@@ -131,7 +128,6 @@ const UserProfileModal = (): JSX.Element => {
                 name="course-and-year"
                 label="Course & Year"
                 type="text"
-                placeholder="ex. BSCS-2"
                 value={courseAndYear}
                 onChange={(e) => {
                   handleChange(e, setCourseAndYear);
