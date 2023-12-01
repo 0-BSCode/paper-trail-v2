@@ -1,25 +1,27 @@
-import './UserProfileModal.css';
 import type { ChangeEvent, Dispatch } from 'react';
 import { useState, useEffect, useContext } from 'react';
 import useAuth from '@src/hooks/useAuth';
 import { Modal, Button, Typography, Divider, Flex, Avatar, Form } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import FormInputField from './FormInputField';
+import AdminFormInputField from './AdminFormInputField';
 import UserService from '@src/services/user-service';
 import { ToastContext } from '@src/context/ToastContext';
 import isValid from '@src/utils/isValid.helper';
 const { Title } = Typography;
 
-const UserProfileModal = (): JSX.Element => {
+interface Props {
+  userId: number;
+  email: string;
+}
+
+const AdminEditProfileModal = ({ userId, email }: Props): JSX.Element => {
   const { success, error } = useContext(ToastContext);
   const [isOpen, setIsOpen] = useState(false);
-  const { email: authEmail, accessToken, userId } = useAuth();
+  const { accessToken } = useAuth();
   const [form] = Form.useForm();
 
   // Input fields for edit profile form
   const [studentIdNumber, setStudentIdNumber] = useState('');
   const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState(String(authEmail));
   const [contactNumber, setContactNumber] = useState('');
   const [courseAndYear, setCourseAndYear] = useState('');
 
@@ -95,10 +97,10 @@ const UserProfileModal = (): JSX.Element => {
   return (
     <>
       <Button type="link" size="middle" onClick={handleOpen}>
-        <UserOutlined />
+        <a>{email}</a>
       </Button>
       <Modal
-        title="Student Profile"
+        title="Edit Student Profile"
         open={isOpen}
         okText={'Update Info'}
         /* eslint-disable @typescript-eslint/no-misused-promises */
@@ -106,7 +108,7 @@ const UserProfileModal = (): JSX.Element => {
         cancelText={'Close'}
         onCancel={handleClose}
         width={1000}
-        className="UserProfileModal"
+        className="AdminEditProfileModal"
       >
         <Divider />
         <Title style={{ fontWeight: '700' }} level={3}>
@@ -127,8 +129,7 @@ const UserProfileModal = (): JSX.Element => {
           {/* Right Side */}
           <Flex vertical justify="center" align="center" gap="middle">
             <Form form={form} layout="vertical" autoComplete="off">
-              <FormInputField
-                disabled
+              <AdminFormInputField
                 name="student-id-number"
                 label="Student ID Number"
                 type="number"
@@ -139,8 +140,7 @@ const UserProfileModal = (): JSX.Element => {
                   handleChange(e, setStudentIdNumber);
                 }}
               />
-              <FormInputField
-                disabled
+              <AdminFormInputField
                 name="full-name"
                 label="Full Name"
                 type="text"
@@ -151,18 +151,8 @@ const UserProfileModal = (): JSX.Element => {
                 }}
                 isValid={isValidFullName}
               />
-              <FormInputField
-                disabled
-                name="email"
-                label="Email"
-                type="email"
-                value={email}
-                onChange={(e) => {
-                  handleChange(e, setEmail);
-                }}
-              />
-              <FormInputField
-                disabled
+              <AdminFormInputField disabled name="email" label="Email" type="email" value={email} isEditable={false} />
+              <AdminFormInputField
                 name="contact-number"
                 label="Contact Number"
                 type="tel"
@@ -173,8 +163,7 @@ const UserProfileModal = (): JSX.Element => {
                 }}
                 isValid={isValidContactNumber}
               />
-              <FormInputField
-                disabled
+              <AdminFormInputField
                 name="course-and-year"
                 label="Course & Year"
                 type="text"
@@ -193,4 +182,4 @@ const UserProfileModal = (): JSX.Element => {
   );
 };
 
-export default UserProfileModal;
+export default AdminEditProfileModal;

@@ -1,18 +1,30 @@
 import type { ChangeEventHandler } from 'react';
 import { Form, Flex, Input } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 
 interface Props {
   name: string;
   label: string;
   value: string | number;
-  onChange: ChangeEventHandler;
+  onChange?: ChangeEventHandler;
   disabled?: boolean;
   type: string;
   placeholder?: string;
   isValid?: boolean;
+  isEditable?: boolean;
 }
 
-function FormInputField({ name, label, value, onChange, disabled, type, placeholder, isValid }: Props): JSX.Element {
+function AdminFormInputField({
+  name,
+  label,
+  value,
+  onChange,
+  disabled,
+  type,
+  placeholder,
+  isValid,
+  isEditable,
+}: Props): JSX.Element {
   const status = disabled === true || isValid ? '' : 'error';
   return (
     <Form.Item name={name} label={label} style={{ marginBottom: '16px' }}>
@@ -25,9 +37,10 @@ function FormInputField({ name, label, value, onChange, disabled, type, placehol
           placeholder={placeholder}
           status={status}
         />
+        {isEditable === false ? '' : <EditOutlined />}
       </Flex>
     </Form.Item>
   );
 }
 
-export default FormInputField;
+export default AdminFormInputField;

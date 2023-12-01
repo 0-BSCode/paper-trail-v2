@@ -4,6 +4,7 @@ import type UserInterface from '@src/types/interfaces/user';
 import convertToTitleCase from '@src/utils/convertToTitleCase';
 import type RoleEnum from '@src/types/enums/role-enum';
 import getRoleTagColor from '@src/utils/getRoleTagColor';
+import AdminEditProfileModal from './AdminEditProfileModal';
 
 interface Props {
   users: UserInterface[];
@@ -16,7 +17,7 @@ const UsersTable = ({ users }: Props): JSX.Element => {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      render: (_, record) => <a>{record.email}</a>,
+      render: (_, record) => <AdminEditProfileModal userId={record.id} email={record.email} />,
     },
     {
       title: 'Roles',
