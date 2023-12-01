@@ -225,7 +225,7 @@ class UserService {
     const rolesToAdd = newRoles.filter((role) => allowedRoles.includes(role) && !existingRoles.includes(role));
     const rolesToRemove = existingRoles.filter((role) => !newRoles.includes(role) && role !== RoleEnum.CISCO_ADMIN);
 
-    if (rolesToAdd.length > 0 || rolesToRemove.length > 0) {
+    if (rolesToAdd.length || rolesToRemove.length) {
       const rolesToAddInstances = await Role.findAll({ where: { name: rolesToAdd } });
       const rolesToRemoveInstances = await Role.findAll({ where: { name: rolesToRemove } });
 
@@ -236,7 +236,7 @@ class UserService {
         }
       });
 
-      if (rolesToAddInstances.length > 0) {
+      if (rolesToAddInstances.length) {
         const userRoleData = rolesToAddInstances.map((role) => ({ userId, roleId: role.id }));
         await UserRole.bulkCreate(userRoleData);
       }
