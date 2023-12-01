@@ -1,29 +1,48 @@
 import type { ChangeEvent, Dispatch } from 'react';
+import type RoleInterface from '@src/types/interfaces/role';
 import { useState, useEffect, useContext } from 'react';
 import useAuth from '@src/hooks/useAuth';
 import { Modal, Button, Typography, Divider, Flex, Avatar, Form } from 'antd';
 import AdminFormInputField from './AdminFormInputField';
+import FormRoleInput from './RoleInput';
 import UserService from '@src/services/user-service';
 import { ToastContext } from '@src/context/ToastContext';
 import isValid from '@src/utils/isValid.helper';
+
 const { Title } = Typography;
 
 interface Props {
   userId: number;
   email: string;
+  userRoles: Array<Pick<RoleInterface, 'name'>> | undefined;
 }
 
-const AdminEditProfileModal = ({ userId, email }: Props): JSX.Element => {
+const AdminEditProfileModal = ({ userId, email, userRoles }: Props): JSX.Element => {
   const { success, error } = useContext(ToastContext);
   const [isOpen, setIsOpen] = useState(false);
   const { accessToken } = useAuth();
   const [form] = Form.useForm();
+
+  if (userRoles === undefined) {
+    return (
+      <Button
+        type="link"
+        size="middle"
+        onClick={() => {
+          error('Cannot edit profile. Error fetching user roles.');
+        }}
+      >
+        <a>{email}</a>
+      </Button>
+    );
+  }
 
   // Input fields for edit profile form
   const [studentIdNumber, setStudentIdNumber] = useState('');
   const [fullName, setFullName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [courseAndYear, setCourseAndYear] = useState('');
+  const [roles, setRoles] = useState<string[]>(userRoles.map((r) => r.name));
 
   // Booleans for input validation
   const isValidFullName = isValid.fullName(fullName);
@@ -39,7 +58,6 @@ const AdminEditProfileModal = ({ userId, email }: Props): JSX.Element => {
     }
 
     const fetchedUser = await UserService.getUserById(accessToken, userId);
-
     setStudentIdNumber(fetchedUser.studentIdNumber);
     setFullName(fetchedUser.fullName);
     setContactNumber(fetchedUser.contactNumber);
@@ -71,10 +89,16 @@ const AdminEditProfileModal = ({ userId, email }: Props): JSX.Element => {
       return;
     }
 
+    if (roles.length === 0) {
+      error('Users must have at least 1 role.');
+    }
+
     const newDetails = { studentIdNumber, fullName, contactNumber, courseAndYear };
+    const newRoles = roles;
 
     try {
       await UserService.updateUserDetails(accessToken, userId, newDetails);
+      await UserService.updateUserRoles(accessToken, userId, newRoles);
       success('Successfully updated personal information!');
     } catch (e) {
       error((e as Error).message);
@@ -174,6 +198,7 @@ const AdminEditProfileModal = ({ userId, email }: Props): JSX.Element => {
                 }}
                 isValid={isValidCourseAndYear}
               />
+              <FormRoleInput roles={roles} setRoles={setRoles} />
             </Form>
           </Flex>
         </Flex>

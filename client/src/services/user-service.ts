@@ -29,6 +29,16 @@ const UserService = {
     });
     return data;
   },
+  updateUserRoles: async (accessToken: string, userId: string | number, newRoles: string[]) => {
+    const { data } = await API.patch(
+      `user/${userId}/role`,
+      { roles: newRoles },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
+    return data;
+  },
 };
 
 export default UserService;
