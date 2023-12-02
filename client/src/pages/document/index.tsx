@@ -22,15 +22,14 @@ const DocumentPage = (): JSX.Element => {
   const { heightStr, widthStr } = useWindowSize();
   const documentHeaderRef = useRef<null | HTMLDivElement>(null);
   const documentViewerHeight = `calc(${heightStr} - ${documentHeaderRef.current?.clientHeight}px)`;
-  const { setDocument } = useContext(DocumentContext);
+  const { document: docInfo, setDocument } = useContext(DocumentContext);
   const { document, loading: documentLoading } = useDocument(parseInt(documentId as string));
   const documentUser = document?.users.find((user) => user.userId === userId);
 
-  // TODO: Doesn't update in real time
   const hasEditPermission =
-    (userId === document?.userId || documentUser?.permission === PermissionEnum.EDIT) &&
-    document?.status !== StatusEnum.RESOLVED &&
-    document?.status !== StatusEnum.RAISED;
+    (userId === docInfo?.userId || documentUser?.permission === PermissionEnum.EDIT) &&
+    docInfo?.status !== StatusEnum.RESOLVED &&
+    docInfo?.status !== StatusEnum.RAISED;
 
   useEffect(() => {
     if (document !== null) setDocument(document);

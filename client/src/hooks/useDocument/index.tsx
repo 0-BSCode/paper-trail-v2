@@ -20,6 +20,7 @@ const useDocument = (documentId: number): DocumentHookType => {
   const [document, setDocument] = useState<null | DocumentInterface>(null);
   const navigate = useNavigate();
 
+  // TODO: Refactor doc loading (not sure when to call this)
   const loadDocument = async (accessToken: string, documentId: number): Promise<void> => {
     setLoading(true);
 
