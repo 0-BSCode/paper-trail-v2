@@ -83,13 +83,15 @@ class UserService {
     });
   };
 
-  public createUser = async (email: string, password: string) => {
+  public createUser = async (email: string, password: string, fullName: string, studentIdNumber: string) => {
     const salt = await genSalt();
     const hashedPassword = await hash(password, salt);
     const verificationToken = jwt.sign({ email }, env.VERIFY_EMAIL_SECRET);
     const newUser = await User.create({
       email: email,
       password: hashedPassword,
+      fullName,
+      studentIdNumber,
       verificationToken: verificationToken
     });
 

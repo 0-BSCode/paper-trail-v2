@@ -19,7 +19,14 @@ class UserValidator {
         throw new Error("Passwords must match.");
       }
       return true;
-    })
+    }),
+    body("fullname").trim().escape(),
+    body("studentIdNumber")
+      .trim()
+      .isNumeric()
+      .withMessage("Student ID number must only contain numbers.")
+      .isLength({ min: 8, max: 8 })
+      .withMessage("Student ID number must be your 8-digit USC ID number.")
   ];
   public resetPassword = [body("email").isEmail().normalizeEmail().withMessage("Must provide a valid email address.")];
   public confirmResetPassword = [
