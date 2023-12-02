@@ -31,6 +31,7 @@ const DocumentPage = (): JSX.Element => {
     docInfo?.status !== StatusEnum.RESOLVED &&
     docInfo?.status !== StatusEnum.RAISED;
 
+  // Sets document context based on fetched document
   useEffect(() => {
     if (document !== null) setDocument(document);
   }, [document]);

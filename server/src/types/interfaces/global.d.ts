@@ -6,6 +6,7 @@ declare global {
   interface RequestUser {
     id: string;
     email: string;
+    fullName: string;
     roles: Array<string>;
   }
 

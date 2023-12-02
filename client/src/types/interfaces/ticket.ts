@@ -10,7 +10,7 @@ interface TicketInterface {
   users: DocumentUser[];
   assigneeId: number;
   isPublic: boolean;
-  user: { email: string };
+  owner: { email: string };
   assignee: { email: string };
   status: string;
 }

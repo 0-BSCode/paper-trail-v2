@@ -276,6 +276,7 @@ class UserService {
       return {
         id: user.id,
         email: user.email,
+        fullName: user.fullName,
         roles: roles
       } as RequestUser;
     } else return user;

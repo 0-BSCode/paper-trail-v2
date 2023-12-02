@@ -18,6 +18,8 @@ export interface AuthContextInterface {
   setEmail: Dispatch<SetStateAction<string | null>>;
   roles: string[] | null;
   setRoles: Dispatch<SetStateAction<string[] | null>>;
+  fullName: string | null;
+  setFullName: Dispatch<SetStateAction<string | null>>;
 }
 
 const defaultValues: AuthContextInterface = {
@@ -37,6 +39,8 @@ const defaultValues: AuthContextInterface = {
   setEmail: () => {},
   roles: null,
   setRoles: () => {},
+  fullName: null,
+  setFullName: () => {},
 };
 
 export const AuthContext = createContext<AuthContextInterface>(defaultValues);
@@ -54,6 +58,8 @@ export const AuthProvider = ({ children }: AuthProviderInterface): JSX.Element =
   const [userId, setUserId] = useState<number | null>(defaultValues.userId);
   const [roles, setRoles] = useState<string[] | null>(defaultValues.roles);
   const [email, setEmail] = useState<string | null>(defaultValues.email);
+  const [fullName, setFullName] = useState<string | null>(defaultValues.fullName);
+
   return (
     <AuthContext.Provider
       value={{
@@ -73,6 +79,8 @@ export const AuthProvider = ({ children }: AuthProviderInterface): JSX.Element =
         setEmail,
         roles,
         setRoles,
+        fullName,
+        setFullName,
       }}
     >
       {children}
