@@ -1,65 +1,38 @@
 import Modal from '@src/components/Modal';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import { useContext, useRef, useState, type KeyboardEvent } from 'react';
-import type DocumentInterface from '@src/types/interfaces/document';
-import validator from 'validator';
-import PermissionEnum from '@src/types/enums/permission-enum';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DocumentContext } from '@src/context/DocumentContext';
 import useAuth from '@src/hooks/useAuth';
 import { ToastContext } from '@src/context/ToastContext';
-import DocumentUserService from '@src/services/document-user-service';
-import type DocumentUser from '@src/types/interfaces/document-user';
 import { Button, Space } from 'antd';
+import DocumentService from '@src/services/document-service';
+import useFileHandler from '@src/hooks/useFileHandler';
 
 const DeleteDocumentModal = (): JSX.Element => {
-  const { document, saving, saveDocument, setDocument } = useContext(DocumentContext);
-  const copyLinkInputRef = useRef<null | HTMLInputElement>(null);
-  const [email, setEmail] = useState<null | string>(null);
+  const { document } = useContext(DocumentContext);
   const { accessToken } = useAuth();
   const { success, error } = useContext(ToastContext);
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { deleteAllFiles } = useFileHandler();
 
-  const shareDocument = async (): Promise<void> => {
-    if (email === null || !validator.isEmail(email) || accessToken === null || document === null) return;
-
-    const payload = {
-      documentId: document.id,
-      email,
-      permission: PermissionEnum.VIEW,
-    };
-
-    setLoading(true);
-
+  const deleteDocument = async (): Promise<void> => {
     try {
-      const response = await DocumentUserService.create(accessToken, payload);
-      const documentUser = response.data as DocumentUser;
-      documentUser.user = { email };
+      await DocumentService.delete(accessToken, document.id);
+      deleteAllFiles(document?.id + '');
 
-      success(`Successfully shared document with ${email}!`);
-      setDocument({
-        ...document,
-        users: [...document.users, documentUser],
-      } satisfies DocumentInterface);
-      setEmail('');
+      success(`Successfully deleted document!`);
     } catch (err) {
-      error(`Unable to share this document with ${email}. Please try again`);
+      error(`Document could not be successfully deleted`);
     } finally {
-      setLoading(false);
+      navigate('/home');
     }
   };
 
-  const handleCopyLinkBtnClick = (): void => {
-    if (copyLinkInputRef?.current === null) return;
-
-    const url = window.location.href;
-    copyLinkInputRef.current.value = url;
-    copyLinkInputRef.current.focus();
-    copyLinkInputRef.current.select();
-    window.document.execCommand('copy');
-  };
-
-  const handleOnKeyPress = async (event: KeyboardEvent): Promise<void> => {
-    if (event.key === 'Enter') await shareDocument();
+  const handleDeleteClick = (): void => {
+    deleteDocument().catch((err) => {
+      console.error(err);
+    });
   };
 
   return (
@@ -75,12 +48,7 @@ const DeleteDocumentModal = (): JSX.Element => {
         document === null ? (
           <></>
         ) : (
-          <div
-            onKeyPress={(event) => {
-              void handleOnKeyPress(event);
-            }}
-            className="space-y-4 text-sm"
-          >
+          <div className="space-y-4 text-sm">
             <div className="flex flex-col p-4 space-x-4 bg-white rounded-md shadow-xl">
               <div className="flex items-center mx-2 space-x-2">
                 <div className="flex items-center justify-center w-8 h-8 text-white bg-red-500 rounded-full">
@@ -91,7 +59,7 @@ const DeleteDocumentModal = (): JSX.Element => {
               <div className="flex flex-col px-4">
                 <p>This will delete this document permanently. This action cannot be undone.</p>
                 <div className="flex items-center justify-end gap-3">
-                  <Button type="primary" danger onClick={handleCopyLinkBtnClick}>
+                  <Button type="primary" danger onClick={handleDeleteClick}>
                     Confirm
                   </Button>
                 </div>
