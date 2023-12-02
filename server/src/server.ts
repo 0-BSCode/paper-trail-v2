@@ -29,8 +29,8 @@ io.on("connection", (socket) => {
   if (!accessToken || !documentId) return socket.disconnect();
   else {
     jwt.verify(accessToken, env.ACCESS_TOKEN_SECRET, (err: VerifyErrors | null, decoded: unknown) => {
-      const { id, email } = decoded as RequestUser;
-      (socket as any).username = email;
+      const { id, fullName } = decoded as RequestUser;
+      (socket as any).username = fullName;
 
       documentService
         .findDocumentById(parseInt(documentId), parseInt(id))
