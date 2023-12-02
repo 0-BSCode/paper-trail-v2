@@ -36,6 +36,8 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
     document?.status !== StatusEnum.DRAFT &&
     document?.status !== StatusEnum.RESOLVED;
 
+  const disableButton = !hasEditPermission || isSaving || status === document?.status;
+
   const onChange = (newStatus: StatusEnum): void => {
     setStatus(newStatus);
   };
@@ -107,7 +109,7 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
           };
         })}
       />
-      <Button disabled={!hasEditPermission || isSaving} onClick={saveStatus}>
+      <Button disabled={disableButton} onClick={saveStatus}>
         Save Status
       </Button>
     </div>

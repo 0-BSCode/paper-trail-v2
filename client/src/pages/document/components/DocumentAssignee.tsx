@@ -29,6 +29,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
     document?.status !== StatusEnum.DRAFT &&
     document?.status !== StatusEnum.RESOLVED;
 
+  const disableButton = !hasEditPermission || isSaving || assigneeId === document?.assigneeId;
   const onChange = (id: string | undefined): void => {
     setAssigneeId(id ? parseInt(id) : null);
   };
@@ -115,7 +116,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
           return { value: assignee.id.toString(), label: assignee.email };
         })}
       />
-      <Button disabled={!hasEditPermission || isSaving} onClick={saveAssignee}>
+      <Button disabled={disableButton} onClick={saveAssignee}>
         Save Assignee
       </Button>
     </div>
