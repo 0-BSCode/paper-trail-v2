@@ -17,6 +17,8 @@ const DeleteDocumentModal = (): JSX.Element => {
   const { deleteAllFiles } = useFileHandler();
 
   const deleteDocument = async (): Promise<void> => {
+    if (!document) return;
+
     try {
       await DocumentService.delete(accessToken, document.id);
       deleteAllFiles(document?.id + '');
@@ -46,7 +48,11 @@ const DeleteDocumentModal = (): JSX.Element => {
       }
       content={
         document === null ? (
-          <></>
+          <div className="space-y-4 text-sm">
+            <div className="flex flex-col p-4 space-x-4 bg-white rounded-md shadow-xl">
+              <p>Document could not be found</p>
+            </div>
+          </div>
         ) : (
           <div className="space-y-4 text-sm">
             <div className="flex flex-col p-4 space-x-4 bg-white rounded-md shadow-xl">
