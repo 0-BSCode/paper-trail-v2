@@ -10,7 +10,7 @@ const UserDropdown = (): JSX.Element => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const { success } = useContext(ToastContext);
-  const { email, logout } = useAuth();
+  const { fullName, logout } = useAuth();
   const navigate = useNavigate();
 
   const logoutUser = async (): Promise<void> => {
@@ -32,7 +32,7 @@ const UserDropdown = (): JSX.Element => {
         }}
         className={`${backgroundColor} w-8 h-8 text-white font-semibold flex justify-center items-center rounded-full ring-2 flex-shrink-0 uppercase`}
       >
-        {email?.[0]}
+        {fullName?.[0]}
       </button>
       <CSSTransition nodeRef={dropdownRef} in={showDropdown} timeout={200} classNames="fade-in" unmountOnExit>
         <div
