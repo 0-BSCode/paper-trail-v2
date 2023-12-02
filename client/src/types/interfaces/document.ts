@@ -1,3 +1,4 @@
+// TODO: Unify this w/ TicketInterface (they're referring to the same entity)
 import type StatusEnum from '../enums/status-enum';
 import type DocumentUser from './document-user';
 
@@ -7,6 +8,7 @@ interface DocumentInterface {
   content: string | null;
   createdAt: Date;
   updatedAt: Date;
+  owner: { id: number; fullName: string; email: string };
   userId: number;
   users: DocumentUser[];
   assigneeId: number | null;

@@ -6,7 +6,7 @@ import useAuth from '@src/hooks/useAuth';
 import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
-import { Button, Input, Space, Tooltip } from 'antd';
+import { Button, Input, Space, Tooltip, Typography } from 'antd';
 import StatusEnum from '@src/types/enums/status-enum';
 import { ToastContext } from '@src/context/ToastContext';
 import SocketEvent from '@src/types/enums/socket-events';
@@ -15,13 +15,13 @@ import { useNavigate } from 'react-router-dom';
 
 const CurrentUsers = (): JSX.Element => {
   const { backgroundColor } = useRandomBackground();
-  const { email } = useAuth();
+  const { fullName } = useAuth();
   const { currentUsers } = useContext(DocumentContext);
 
   return (
     <>
       {Array.from(currentUsers)
-        .filter((currentUser) => currentUser !== email)
+        .filter((currentUser) => currentUser !== fullName)
         .map((currentUser) => {
           return (
             <div
@@ -117,27 +117,40 @@ const DocumentMenuBar = (): JSX.Element => {
 
   return (
     <div className="w-full flex justify-between items-center border-b">
-      <div className="w-full flex justify-start items-center overflow-x-hidden md:overflow-visible gap-x-2">
+      <div className="w-full flex justify-start items-center overflow-x-hidden md:overflow-visible gap-x-4">
         <Tooltip title="Go back">
           <Button onClick={handleBackNavigation} shape="circle" icon={<ArrowLeftOutlined />} />
         </Tooltip>
-        <Space>
-          <Input
-            readOnly={!canEditTitle}
-            type="text"
-            onBlur={(event) => {
-              void handleTitleInputBlur(event);
-            }}
-            onChange={(event) => {
-              handleTitleInputChange(event);
-            }}
-            value={document?.title ? document?.title : ''}
-            name=""
-            id=""
-            placeholder="Untitled Document"
-          />
-          <p className={`text-sm text-gray-500 px-2 ${saving ? 'visible' : 'invisible'}`}>Saving...</p>
-        </Space>
+        <Space.Compact direction="vertical">
+          <Space>
+            <Input
+              type="text"
+              onBlur={(event) => {
+                void handleTitleInputBlur(event);
+              }}
+              onChange={(event) => {
+                handleTitleInputChange(event);
+              }}
+              value={document?.title ? document?.title : ''}
+              name=""
+              id=""
+              placeholder="Untitled Document"
+            />
+            <p className={`text-sm text-gray-500 px-2 ${saving ? 'visible' : 'invisible'}`}>Saving...</p>
+          </Space>
+          <Space>
+            <Typography.Text strong>Owner:</Typography.Text>
+            <Tooltip title={document?.owner.email} placement="bottom">
+              <Typography.Text
+                style={{
+                  color: 'grey',
+                }}
+              >
+                {document?.owner.fullName}
+              </Typography.Text>
+            </Tooltip>
+          </Space>
+        </Space.Compact>
       </div>
       <div className="flex items-center flex-shrink-0 pl-3 gap-x-4">
         <div className="flex gap-x-2">
