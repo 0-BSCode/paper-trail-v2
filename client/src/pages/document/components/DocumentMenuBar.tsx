@@ -91,7 +91,7 @@ const DocumentMenuBar = (): JSX.Element => {
   };
 
   const handleTitleInputBlur = async (event: FocusEvent<HTMLInputElement>): Promise<void> => {
-    if (accessToken === null || document === null) return;
+    if (accessToken === null || document === null || !canEditTitle) return;
 
     setSaving(true);
 
@@ -124,6 +124,7 @@ const DocumentMenuBar = (): JSX.Element => {
         <Space.Compact direction="vertical">
           <Space>
             <Input
+              readOnly={!canEditTitle}
               type="text"
               onBlur={(event) => {
                 void handleTitleInputBlur(event);

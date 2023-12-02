@@ -76,7 +76,6 @@ const RegisterPage = (): JSX.Element => {
 
       addToast({
         title: `Successfully registered ${email}!`,
-        body: 'Please check your inbox to verify your email address',
         color: 'success',
       });
       navigate('/login');
