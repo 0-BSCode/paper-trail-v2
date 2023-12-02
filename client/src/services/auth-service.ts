@@ -4,7 +4,13 @@ const AuthService = {
   login: async (payload: { email: string; password: string }) => {
     return await API.post('auth/login', payload);
   },
-  register: async (payload: { email: string; password1: string; password2: string }) => {
+  register: async (payload: {
+    email: string;
+    password1: string;
+    password2: string;
+    studentIdNumber: string;
+    fullName: string;
+  }) => {
     return await API.post('user', payload);
   },
   refreshToken: async (payload: { token: string }) => {
