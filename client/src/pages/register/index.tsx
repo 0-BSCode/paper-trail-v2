@@ -34,11 +34,11 @@ const RegisterPage = (): JSX.Element => {
     setPassword2Errors([]);
     let isValid = true;
 
-    if (studentIdNumber.length === 0 || !isValidHelper.studentNumber(studentIdNumber)) {
+    if (!studentIdNumber.length || !isValidHelper.studentNumber(studentIdNumber)) {
       setStudentIdNumberErrors(['Please enter your 8-digit USC ID number.']);
       isValid = false;
     }
-    if (fullName.length === 0 || !isValidHelper.fullName(fullName)) {
+    if (!fullName.length || !isValidHelper.fullName(fullName)) {
       setFullNameErrors(['Must enter a valid full name.']);
       isValid = false;
     }
