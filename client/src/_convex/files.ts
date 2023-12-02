@@ -62,7 +62,7 @@ export const deleteFileById = mutation({
   },
 });
 
-export const deleteFilesOfDocument = mutation({
+export const deleteFilesbyDocId = mutation({
   args: { documentId: v.string() },
   handler: async (ctx, args) => {
     const documentFiles = await ctx.db
