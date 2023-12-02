@@ -1,0 +1,204 @@
+import Modal from '@src/components/Modal';
+import { UserPlusIcon, LinkIcon } from '@heroicons/react/24/outline';
+import { useContext, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react';
+import type DocumentInterface from '@src/types/interfaces/document';
+import Spinner from '@src/components/Spinner';
+import validator from 'validator';
+import PermissionEnum from '@src/types/enums/permission-enum';
+import SharedUsers from './SharedUsers';
+import { DocumentContext } from '@src/context/DocumentContext';
+import useAuth from '@src/hooks/useAuth';
+import { ToastContext } from '@src/context/ToastContext';
+import DocumentUserService from '@src/services/document-user-service';
+import type DocumentUser from '@src/types/interfaces/document-user';
+import { Button, Space } from 'antd';
+
+const DeleteDocumentModal = (): JSX.Element => {
+  const { document, saving, saveDocument, setDocument } = useContext(DocumentContext);
+  const copyLinkInputRef = useRef<null | HTMLInputElement>(null);
+  const [email, setEmail] = useState<null | string>(null);
+  const { accessToken } = useAuth();
+  const { success, error } = useContext(ToastContext);
+  const [loading, setLoading] = useState(false);
+
+  const shareDocument = async (): Promise<void> => {
+    if (email === null || !validator.isEmail(email) || accessToken === null || document === null) return;
+
+    const payload = {
+      documentId: document.id,
+      email,
+      permission: PermissionEnum.VIEW,
+    };
+
+    setLoading(true);
+
+    try {
+      const response = await DocumentUserService.create(accessToken, payload);
+      const documentUser = response.data as DocumentUser;
+      documentUser.user = { email };
+
+      success(`Successfully shared document with ${email}!`);
+      setDocument({
+        ...document,
+        users: [...document.users, documentUser],
+      } satisfies DocumentInterface);
+      setEmail('');
+    } catch (err) {
+      error(`Unable to share this document with ${email}. Please try again`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleShareEmailInputChange = (event: ChangeEvent): void => {
+    setEmail((event.target as HTMLInputElement).value);
+  };
+
+  const handleCopyLinkBtnClick = (): void => {
+    if (copyLinkInputRef?.current === null) return;
+
+    const url = window.location.href;
+    copyLinkInputRef.current.value = url;
+    copyLinkInputRef.current.focus();
+    copyLinkInputRef.current.select();
+    window.document.execCommand('copy');
+  };
+
+  const handleOnKeyPress = async (event: KeyboardEvent): Promise<void> => {
+    if (event.key === 'Enter') await shareDocument();
+  };
+
+  const handleShareBtnClick = async (): Promise<void> => {
+    await shareDocument();
+  };
+
+  const updateIsPublic = (isPublic: boolean): void => {
+    if (document) {
+      const updatedDocument = {
+        ...document,
+        isPublic,
+      } satisfies DocumentInterface;
+
+      void saveDocument(updatedDocument);
+    }
+  };
+
+  const alreadyShared =
+    document === null ||
+    (document !== null && document.users.filter((documentUser) => documentUser.user.email === email).length > 0);
+
+  const restrictedAccessBtn = (
+    <div className="space-y-1">
+      <button
+        disabled={saving}
+        onClick={() => {
+          updateIsPublic(true);
+        }}
+        className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
+      >
+        {saving && <Spinner size="sm" />}
+        <span className={`${saving && 'opacity-0'}`}>Change to anyone with the link</span>
+      </button>
+      <p className="mx-2">
+        <b className="font-semibold">Restricted</b>&nbsp;
+        <span className="text-gray-600">Only people added can open with this link</span>
+      </p>
+    </div>
+  );
+
+  const publicAccessBtn = (
+    <div className="space-y-1">
+      <button
+        disabled={saving}
+        onClick={() => {
+          updateIsPublic(false);
+        }}
+        className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
+      >
+        {saving && <Spinner size="sm" />}
+        <span className={`${saving && 'opacity-0'}`}>Change to only shared users</span>
+      </button>
+      <p className="mx-2">
+        <b className="font-semibold">Public</b>&nbsp;
+        <span className="text-gray-600">Anyone with this link can view</span>
+      </p>
+    </div>
+  );
+
+  return (
+    <Modal
+      button={
+        <Space>
+          <Button type="primary" danger>
+            Delete
+          </Button>
+        </Space>
+      }
+      content={
+        document === null ? (
+          <></>
+        ) : (
+          <div
+            onKeyPress={(event) => {
+              void handleOnKeyPress(event);
+            }}
+            className="space-y-4 text-sm"
+          >
+            <div className="p-4 space-y-4 bg-white rounded-md shadow-xl">
+              <div className="flex items-center m-2 space-x-2">
+                <div className="flex items-center justify-center w-8 h-8 text-white bg-blue-500 rounded-full">
+                  <UserPlusIcon className="relative w-5 h-5" />
+                </div>
+                <h1 className="text-xl font-medium">Share with people</h1>
+              </div>
+              <input
+                type="text"
+                name=""
+                id=""
+                value={email ?? ''}
+                onChange={handleShareEmailInputChange}
+                placeholder="Enter email"
+                className="w-full p-4 font-medium bg-gray-100 border-b border-blue-500 rounded-t-md"
+              />
+              <SharedUsers documentUsers={document.users} setDocument={setDocument} />
+              <div className="flex justify-end w-full space-x-2">
+                <button
+                  onClick={() => handleShareBtnClick}
+                  disabled={loading || email === null || !validator.isEmail(email) || alreadyShared}
+                  className={`${
+                    email === null || !validator.isEmail(email) || alreadyShared ? 'btn-disabled' : 'btn-primary'
+                  } px-6`}
+                >
+                  {loading && <Spinner size="sm" />}
+                  <span className={`${loading && 'opacity-0'}`}>Share</span>
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col p-4 space-y-4 bg-white rounded-md shadow-xl">
+              <div className="flex items-center m-2 space-x-2">
+                <div className="flex items-center justify-center w-8 h-8 text-white bg-gray-400 rounded-full">
+                  <LinkIcon className="relative w-5 h-5" />
+                </div>
+                <h1 className="text-xl font-medium">Get Link</h1>
+              </div>
+              <div>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">{document.isPublic ? publicAccessBtn : restrictedAccessBtn}</div>
+                  <input ref={copyLinkInputRef} type="text" className="opacity-0 cursor-default d-none" />
+                  <button
+                    onClick={handleCopyLinkBtnClick}
+                    className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
+                  >
+                    Copy link
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    />
+  );
+};
+
+export default DeleteDocumentModal;

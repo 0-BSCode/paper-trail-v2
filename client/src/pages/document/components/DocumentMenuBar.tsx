@@ -11,6 +11,7 @@ import { Anchor, Button, Input, Space } from 'antd';
 import StatusEnum from '@src/types/enums/status-enum';
 import { ToastContext } from '@src/context/ToastContext';
 import SocketEvent from '@src/types/enums/socket-events';
+import DeleteDocumentModal from './DeleteDocumentModal';
 
 const { Link } = Anchor;
 
@@ -109,8 +110,8 @@ const DocumentMenuBar = (): JSX.Element => {
   };
 
   return (
-    <div className="w-full flex justify-between items-center border-b">
-      <div className="w-full flex flex-col justify-start items-start overflow-x-hidden md:overflow-visible gap-y-1">
+    <div className="flex items-center justify-between w-full border-b">
+      <div className="flex flex-col items-start justify-start w-full overflow-x-hidden md:overflow-visible gap-y-1">
         <Link href="/home" title="Go Back" />
         <Space>
           <Input
@@ -135,6 +136,9 @@ const DocumentMenuBar = (): JSX.Element => {
           <UserDropdown />
         </Space>
         <Space>
+          {document !== null && document.userId === userId && document.status === StatusEnum.DRAFT && (
+            <DeleteDocumentModal />
+          )}
           {document !== null && document.userId === userId && <ShareDocumentModal />}
           <Button
             disabled={!canSubmit}
