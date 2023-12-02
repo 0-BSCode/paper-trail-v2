@@ -6,14 +6,12 @@ import useAuth from '@src/hooks/useAuth';
 import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
-import { Anchor, Button, Input, Space, Tooltip } from 'antd';
+import { Button, Input, Space, Tooltip } from 'antd';
 import StatusEnum from '@src/types/enums/status-enum';
 import { ToastContext } from '@src/context/ToastContext';
 import SocketEvent from '@src/types/enums/socket-events';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-
-const { Link } = Anchor;
 
 const CurrentUsers = (): JSX.Element => {
   const { backgroundColor } = useRandomBackground();
@@ -142,10 +140,10 @@ const DocumentMenuBar = (): JSX.Element => {
         </Space>
       </div>
       <div className="flex items-center flex-shrink-0 pl-3 gap-x-4">
-        <Space>
+        <div className="flex gap-x-2">
           <CurrentUsers />
           <UserDropdown />
-        </Space>
+        </div>
         <Space>
           {document !== null && document.userId === userId && <ShareDocumentModal />}
           <Button
