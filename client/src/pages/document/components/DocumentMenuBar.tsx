@@ -1,4 +1,3 @@
-// TODO: Remove unneeded buttons
 import { type ChangeEvent, type FocusEvent, useContext, useState } from 'react';
 import UserDropdown from '@src/components/UserDropdown';
 import ShareDocumentModal from './ShareDocumentModal';
@@ -7,10 +6,12 @@ import useAuth from '@src/hooks/useAuth';
 import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
-import { Anchor, Button, Input, Space } from 'antd';
+import { Anchor, Button, Input, Space, Tooltip } from 'antd';
 import StatusEnum from '@src/types/enums/status-enum';
 import { ToastContext } from '@src/context/ToastContext';
 import SocketEvent from '@src/types/enums/socket-events';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const { Link } = Anchor;
 
@@ -41,6 +42,7 @@ const DocumentMenuBar = (): JSX.Element => {
   const { accessToken, userId } = useAuth();
   const { success } = useContext(ToastContext);
   const { document, saving, socket, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
+  const navigate = useNavigate();
   const [isStatusSaving, setIsStatusSaving] = useState(false);
 
   const canSubmit =
@@ -50,32 +52,6 @@ const DocumentMenuBar = (): JSX.Element => {
 
   const canEditTitle =
     document?.userId === userId && document?.status !== StatusEnum.RESOLVED && document?.status !== StatusEnum.RAISED;
-
-  const handleTitleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const title = event.target.value;
-    setDocumentTitle(title);
-  };
-
-  const handleTitleInputBlur = async (event: FocusEvent<HTMLInputElement>): Promise<void> => {
-    if (accessToken === null || document === null || !canEditTitle) return;
-
-    setSaving(true);
-
-    const title = (event.target as HTMLInputElement).value;
-    const updatedDocument: DocumentInterface = {
-      ...document,
-      title,
-    };
-
-    try {
-      await DocumentService.update(accessToken, updatedDocument);
-    } catch (error) {
-      setErrors(['There was an error saving the document. Please try again.']);
-    } finally {
-      setDocument(updatedDocument);
-      setSaving(false);
-    }
-  };
 
   const saveStatus = (status: StatusEnum | undefined): void => {
     // TODO: Consolidate API calls that require accessToken under one check
@@ -111,10 +87,42 @@ const DocumentMenuBar = (): JSX.Element => {
       });
   };
 
+  const handleTitleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const title = event.target.value;
+    setDocumentTitle(title);
+  };
+
+  const handleTitleInputBlur = async (event: FocusEvent<HTMLInputElement>): Promise<void> => {
+    if (accessToken === null || document === null) return;
+
+    setSaving(true);
+
+    const title = (event.target as HTMLInputElement).value;
+    const updatedDocument: DocumentInterface = {
+      ...document,
+      title,
+    };
+
+    try {
+      await DocumentService.update(accessToken, updatedDocument);
+    } catch (error) {
+      setErrors(['There was an error saving the document. Please try again.']);
+    } finally {
+      setDocument(updatedDocument);
+      setSaving(false);
+    }
+  };
+
+  const handleBackNavigation = (): void => {
+    navigate('/home');
+  };
+
   return (
     <div className="w-full flex justify-between items-center border-b">
-      <div className="w-full flex flex-col justify-start items-start overflow-x-hidden md:overflow-visible gap-y-1">
-        <Link href="/home" title="Go Back" />
+      <div className="w-full flex justify-start items-center overflow-x-hidden md:overflow-visible gap-x-2">
+        <Tooltip title="Go back">
+          <Button onClick={handleBackNavigation} shape="circle" icon={<ArrowLeftOutlined />} />
+        </Tooltip>
         <Space>
           <Input
             readOnly={!canEditTitle}
