@@ -31,7 +31,7 @@ const SharedTicketsTable = ({ documents }: TicketsTableProps): JSX.Element => {
     {
       title: 'Owner',
       key: 'owner',
-      dataIndex: 'user',
+      dataIndex: 'owner',
       render: (obj) => {
         if (!obj.email) return <p>Unassigned</p>;
 
