@@ -25,11 +25,11 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
 
   const hasEditPermission =
     document?.userId !== userId &&
-    // TODO: Allow user to edit if they're cisco member/admin (not if they aren't a student)
-    roles?.every((r) => r !== RoleEnum.STUDENT) &&
+    roles?.some((r) => r === RoleEnum.CISCO_MEMBER || r === RoleEnum.CISCO_ADMIN) &&
     document?.status !== StatusEnum.DRAFT &&
     document?.status !== StatusEnum.RESOLVED;
 
+  const disableButton = !hasEditPermission || isSaving || assigneeId === document?.assigneeId;
   const onChange = (id: string | undefined): void => {
     setAssigneeId(id ? parseInt(id) : null);
   };
@@ -116,7 +116,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
           return { value: assignee.id.toString(), label: assignee.email };
         })}
       />
-      <Button disabled={!hasEditPermission || isSaving} onClick={saveAssignee}>
+      <Button disabled={disableButton} onClick={saveAssignee}>
         Save Assignee
       </Button>
     </div>

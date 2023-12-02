@@ -52,7 +52,6 @@ io.on("connection", (socket) => {
           });
 
           socket.on(SocketEvent.SEND_ASSIGNEE, (newAssigneeId) => {
-            console.log("SENDING ASSIGNEE: ", newAssigneeId);
             socket.broadcast.to(documentId).emit(SocketEvent.RECEIVE_ASSIGNEE, newAssigneeId);
           });
 
