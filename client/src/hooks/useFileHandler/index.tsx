@@ -12,7 +12,7 @@ interface FileHandlerHookType {
 const useFileHandler = (): FileHandlerHookType => {
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
   const deleteFileById = useMutation(api.files.deleteFileById);
-  const deleteFilesOfDocument = useMutation(api.files.deleteFilesbyDocId);
+  const deleteFilesbyDocId = useMutation(api.files.deleteFilesbyDocId);
 
   const uploadFile = async (file: File): Promise<string> => {
     // Step 1: Get a short-lived upload URL
@@ -47,7 +47,7 @@ const useFileHandler = (): FileHandlerHookType => {
   };
 
   const deleteAllFiles = (documentId: string): void => {
-    void deleteFilesOfDocument({ documentId });
+    void deleteFilesbyDocId({ documentId });
   };
 
   return {
