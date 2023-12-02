@@ -20,7 +20,7 @@ const DeleteDocumentModal = (): JSX.Element => {
     if (!document) return;
 
     try {
-      await DocumentService.delete(accessToken, document.id);
+      await DocumentService.delete(accessToken as string, document.id);
       deleteAllFiles(document?.id + '');
 
       success(`Successfully deleted document!`);
