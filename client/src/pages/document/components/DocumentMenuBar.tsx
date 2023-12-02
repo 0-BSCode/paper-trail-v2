@@ -43,6 +43,8 @@ const DocumentMenuBar = (): JSX.Element => {
   const { success } = useContext(ToastContext);
   const { document, saving, socket, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
   const [isStatusSaving, setIsStatusSaving] = useState(false);
+  const hasDeletePermissions: boolean =
+    document !== null && document.userId === userId && document.status === StatusEnum.DRAFT;
 
   const canSubmit =
     !isStatusSaving &&
@@ -136,9 +138,7 @@ const DocumentMenuBar = (): JSX.Element => {
           <UserDropdown />
         </Space>
         <Space>
-          {document !== null && document.userId === userId && document.status === StatusEnum.DRAFT && (
-            <DeleteDocumentModal />
-          )}
+          {hasDeletePermissions && <DeleteDocumentModal />}
           {document !== null && document.userId === userId && <ShareDocumentModal />}
           <Button
             disabled={!canSubmit}
