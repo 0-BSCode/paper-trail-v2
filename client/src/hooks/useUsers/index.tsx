@@ -24,6 +24,22 @@ const useUsers = (): UserHookType => {
 
     try {
       const response = await UserService.fetchAllUsers(accessToken);
+      const data: UserInterface[] = response.data;
+
+      // Sort the array by the 'email' property in ascending order
+      data.sort((a, b) => {
+        const emailA = a.email.toLowerCase();
+        const emailB = b.email.toLowerCase();
+
+        if (emailA < emailB) {
+          return -1;
+        }
+        if (emailA > emailB) {
+          return 1;
+        }
+        return 0;
+      });
+
       setAllUsers(response.data as UserInterface[]);
     } catch (err) {
       error('Unable to load users. Please try again.');

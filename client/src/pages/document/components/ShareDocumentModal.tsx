@@ -28,7 +28,7 @@ const ShareDocumentModal = (): JSX.Element => {
   const { allUsers } = useUsers();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState<null | string>(null);
-
+  const [searchText, setSearchText] = useState('');
   const docUserIds = document?.users.map((u) => u.userId) ?? [];
   const userIds = [document?.userId, ...docUserIds];
   const userOptions = allUsers.filter((u) => userIds.every((id) => id !== u.id));
@@ -64,6 +64,10 @@ const ShareDocumentModal = (): JSX.Element => {
 
   const onChange = (newEmail: string | undefined): void => {
     setEmail(newEmail ?? null);
+  };
+
+  const onSearch = (searchVal: string): void => {
+    setSearchText(searchVal);
   };
 
   const handleCopyLinkBtnClick = (): void => {
@@ -163,11 +167,13 @@ const ShareDocumentModal = (): JSX.Element => {
                 <h1 className="text-xl font-medium">Share with people</h1>
               </div>
               <Select
+                open={searchText.length >= 3}
                 showSearch
                 allowClear
                 placeholder="Select a user"
                 optionFilterProp="children"
                 onChange={onChange}
+                onSearch={onSearch}
                 filterOption={filterOption}
                 value={email}
                 options={userOptions.map((user) => {
