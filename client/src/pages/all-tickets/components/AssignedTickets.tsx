@@ -1,5 +1,5 @@
 import DropDown from './DropDown';
-import TicketsTable from './TicketsTable';
+import AssignedTicketsTable from './AssignedTicketsTable';
 import useDocuments from '@src/hooks/useDocuments';
 import { useEffect, useState } from 'react';
 import type TicketInterface from '@src/types/interfaces/ticket';
@@ -61,7 +61,7 @@ const AssignedTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <TicketsTable documents={filteredTickets} />
+      <AssignedTicketsTable documents={filteredTickets} />
     </div>
   );
 };

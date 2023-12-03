@@ -94,7 +94,7 @@ const ShareDocumentModal = (): JSX.Element => {
         onClick={() => {
           updateIsPublic(true);
         }}
-        className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
+        className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
       >
         {saving && <Spinner size="sm" />}
         <span className={`${saving && 'opacity-0'}`}>Change to anyone with the link</span>
@@ -113,7 +113,7 @@ const ShareDocumentModal = (): JSX.Element => {
         onClick={() => {
           updateIsPublic(false);
         }}
-        className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
+        className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
       >
         {saving && <Spinner size="sm" />}
         <span className={`${saving && 'opacity-0'}`}>Change to only shared users</span>
@@ -142,10 +142,10 @@ const ShareDocumentModal = (): JSX.Element => {
             }}
             className="space-y-4 text-sm"
           >
-            <div className="rounded-md bg-white shadow-xl p-4 space-y-4">
-              <div className="flex items-center space-x-2 m-2">
-                <div className="w-8 h-8 bg-blue-500 flex justify-center items-center rounded-full text-white">
-                  <UserPlusIcon className="w-5 h-5 relative" />
+            <div className="p-4 space-y-4 bg-white rounded-md shadow-xl">
+              <div className="flex items-center m-2 space-x-2">
+                <div className="flex items-center justify-center w-8 h-8 text-white bg-blue-500 rounded-full">
+                  <UserPlusIcon className="relative w-5 h-5" />
                 </div>
                 <h1 className="text-xl font-medium">Share with people</h1>
               </div>
@@ -156,10 +156,10 @@ const ShareDocumentModal = (): JSX.Element => {
                 value={email ?? ''}
                 onChange={handleShareEmailInputChange}
                 placeholder="Enter email"
-                className="border-b border-blue-500 rounded-t-md p-4 w-full bg-gray-100  font-medium"
+                className="w-full p-4 font-medium bg-gray-100 border-b border-blue-500 rounded-t-md"
               />
               <SharedUsers documentUsers={document.users} setDocument={setDocument} />
-              <div className="w-full flex justify-end space-x-2">
+              <div className="flex justify-end w-full space-x-2">
                 <button
                   onClick={() => handleShareBtnClick}
                   disabled={loading || email === null || !validator.isEmail(email) || alreadyShared}
@@ -172,20 +172,20 @@ const ShareDocumentModal = (): JSX.Element => {
                 </button>
               </div>
             </div>
-            <div className="rounded-md bg-white shadow-xl p-4 space-y-4 flex flex-col">
-              <div className="m-2 flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gray-400 flex justify-center items-center rounded-full text-white">
-                  <LinkIcon className="w-5 h-5 relative" />
+            <div className="flex flex-col p-4 space-y-4 bg-white rounded-md shadow-xl">
+              <div className="flex items-center m-2 space-x-2">
+                <div className="flex items-center justify-center w-8 h-8 text-white bg-gray-400 rounded-full">
+                  <LinkIcon className="relative w-5 h-5" />
                 </div>
                 <h1 className="text-xl font-medium">Get Link</h1>
               </div>
               <div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div className="space-y-1">{document.isPublic ? publicAccessBtn : restrictedAccessBtn}</div>
-                  <input ref={copyLinkInputRef} type="text" className="d-none opacity-0 cursor-default" />
+                  <input ref={copyLinkInputRef} type="text" className="opacity-0 cursor-default d-none" />
                   <button
                     onClick={handleCopyLinkBtnClick}
-                    className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
+                    className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
                   >
                     Copy link
                   </button>

@@ -1,5 +1,5 @@
-import TicketsTable from './TicketsTable';
 import DropDown from './DropDown';
+import UnassignedTicketsTable from './UnassignedTicketsTable';
 import useDocuments from '@src/hooks/useDocuments';
 import { useEffect, useState } from 'react';
 import type TicketInterface from '@src/types/interfaces/ticket';
@@ -52,7 +52,7 @@ const UnassignedTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <TicketsTable documents={filtered ? filteredTickets : allTickets.filter((doc) => !doc.assigneeId)} />
+      <UnassignedTicketsTable documents={filtered ? filteredTickets : allTickets.filter((doc) => !doc.assigneeId)} />
     </div>
   );
 };
