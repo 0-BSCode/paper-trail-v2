@@ -24,8 +24,12 @@ const DocumentComments = (): JSX.Element => {
     });
   };
 
+  const handleOnKeyPress = (event: React.KeyboardEvent<HTMLDivElement>): void => {
+    if (event.key === 'Enter' && event.ctrlKey) handleAddComment();
+  };
+
   return (
-    <div className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-3">
+    <div onKeyDown={handleOnKeyPress} className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-3">
       <Typography.Title
         level={5}
         style={{
@@ -44,12 +48,17 @@ const DocumentComments = (): JSX.Element => {
         }}
       >
         {commentsLoading && <Spinner size="lg" />}
-        {comments.map((comment) => (
-          <DocumentComment key={`comment_${comment.id}`} comment={comment} />
-        ))}
+        {!comments.length ? (
+          <Typography.Paragraph italic style={{ margin: 0, color: 'grey', textAlign: 'center' }}>
+            No comments yet
+          </Typography.Paragraph>
+        ) : (
+          comments.map((comment) => <DocumentComment key={`comment_${comment.id}`} comment={comment} />)
+        )}
       </Space>
       <Space.Compact style={{ alignItems: 'stretch', columnGap: 5 }}>
         <Input.TextArea
+          placeholder="Leave a comment..."
           disabled={!hasCommentPermission}
           rows={1}
           style={{ width: '80%' }}
@@ -59,7 +68,7 @@ const DocumentComments = (): JSX.Element => {
           }}
         />
         <Button
-          disabled={!hasCommentPermission}
+          disabled={!hasCommentPermission || !content.length}
           icon={<ArrowRightOutlined />}
           type="primary"
           style={{

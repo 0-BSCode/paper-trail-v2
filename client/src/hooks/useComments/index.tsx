@@ -14,7 +14,6 @@ interface CommentHookType {
   createComment: (documentId: number, content: string) => Promise<void>;
 }
 
-// TODO (Bryan): Make comment creation a socket event for automatic propagation
 const useComments = (documentId: number): CommentHookType => {
   const { accessToken } = useContext(AuthContext);
   const { error } = useContext(ToastContext);
