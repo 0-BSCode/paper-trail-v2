@@ -1,4 +1,5 @@
 /* eslint-disable react/display-name */
+import './index.css';
 import type { RemirrorJSON } from 'remirror';
 import { useRemirrorContext, OnChangeJSON } from '@remirror/react';
 import { WysiwygEditor } from '@remirror/react-editors/wysiwyg';
