@@ -11,7 +11,6 @@ import { useContext, useEffect, useState } from 'react';
 const filterOption = (input: string, option?: { label: string; value: string }): boolean =>
   (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
-// TODO: Limit options but all of them should render properly (even those not listed)
 const statusToOptionMapping = {
   [StatusEnum.CHANGES_REQUESTED]: 'Changes Requested',
   [StatusEnum.DRAFT]: 'Draft',
