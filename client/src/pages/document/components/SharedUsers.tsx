@@ -8,7 +8,7 @@ import type DocumentInterface from '@src/types/interfaces/document';
 import type DocumentUser from '@src/types/interfaces/document-user';
 import PermissionEnum from '@src/types/enums/permission-enum';
 import validator from 'validator';
-import { Space, Switch } from 'antd';
+import { Button, Space, Switch } from 'antd';
 import { EyeIcon, PencilIcon } from '@heroicons/react/24/outline';
 
 interface SharedUsersProps {
@@ -41,8 +41,7 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
 
       if (documentUser) {
         documentUser.permission = updatedDocumentUser.permission;
-        // TODO: Should be email of document user (not owner)
-        success(`Successfully updated permissions of ${email}!`);
+        success(`Successfully updated permissions of ${documentUser.user.email}!`);
         setDocument({
           ...document,
           users: document.users.map((d) => (d.userId === documentUser.userId ? documentUser : d)),
@@ -80,7 +79,7 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
   };
 
   return (
-    <div>
+    <div className="max-h-[150px] overflow-y-auto">
       <div className="flex items-center justify-between w-full px-2 py-4 rounded-md hover:bg-gray-100">
         <div className="flex items-center space-x-2">
           <div
@@ -88,7 +87,7 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
           >
             {email?.[0]}
           </div>
-          <p className="font-medium">{email !== null && email} (you)</p>
+          <p className="font-medium">{email !== null && email} (You)</p>
         </div>
         <p className="italic text-gray-500">Owner</p>
       </div>
@@ -123,7 +122,7 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
                 }}
               />
 
-              <button
+              <Button
                 onClick={() => {
                   void removeDocumentUser({
                     documentId: documentUser.documentId,
@@ -131,10 +130,11 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
                   });
                 }}
                 disabled={loading}
-                className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
+                type="dashed"
+                danger
               >
                 Remove
-              </button>
+              </Button>
             </Space>
           </div>
         );

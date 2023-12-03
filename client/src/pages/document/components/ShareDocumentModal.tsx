@@ -64,6 +64,7 @@ const ShareDocumentModal = (): JSX.Element => {
 
   const onChange = (newEmail: string | undefined): void => {
     setEmail(newEmail ?? null);
+    setSearchText('');
   };
 
   const onSearch = (searchVal: string): void => {
@@ -78,6 +79,8 @@ const ShareDocumentModal = (): JSX.Element => {
     copyLinkInputRef.current.focus();
     copyLinkInputRef.current.select();
     window.document.execCommand('copy');
+
+    success('Link copied to clipboard');
   };
 
   const handleOnKeyPress = async (event: KeyboardEvent): Promise<void> => {
@@ -106,16 +109,15 @@ const ShareDocumentModal = (): JSX.Element => {
 
   const restrictedAccessBtn = (
     <div className="space-y-1">
-      <button
+      <Button
         disabled={saving}
         onClick={() => {
           updateIsPublic(true);
         }}
-        className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
       >
         {saving && <Spinner size="sm" />}
         <span className={`${saving && 'opacity-0'}`}>Change to anyone with the link</span>
-      </button>
+      </Button>
       <p className="mx-2">
         <b className="font-semibold">Restricted</b>&nbsp;
         <span className="text-gray-600">Only people added can open with this link</span>
@@ -125,16 +127,15 @@ const ShareDocumentModal = (): JSX.Element => {
 
   const publicAccessBtn = (
     <div className="space-y-1">
-      <button
+      <Button
         disabled={saving}
         onClick={() => {
           updateIsPublic(false);
         }}
-        className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
       >
         {saving && <Spinner size="sm" />}
         <span className={`${saving && 'opacity-0'}`}>Change to only shared users</span>
-      </button>
+      </Button>
       <p className="mx-2">
         <b className="font-semibold">Public</b>&nbsp;
         <span className="text-gray-600">Anyone with this link can view</span>
@@ -160,7 +161,7 @@ const ShareDocumentModal = (): JSX.Element => {
             className="space-y-4 text-sm"
           >
             <div className="rounded-md bg-white shadow-xl p-4 space-y-4">
-              <div className="flex items-center space-x-2 m-2">
+              <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-blue-500 flex justify-center items-center rounded-full text-white">
                   <UserPlusIcon className="w-5 h-5 relative" />
                 </div>
@@ -192,7 +193,7 @@ const ShareDocumentModal = (): JSX.Element => {
               </div>
             </div>
             <div className="rounded-md bg-white shadow-xl p-4 space-y-4 flex flex-col">
-              <div className="m-2 flex items-center space-x-2">
+              <div className=" flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gray-400 flex justify-center items-center rounded-full text-white">
                   <LinkIcon className="w-5 h-5 relative" />
                 </div>
@@ -202,12 +203,9 @@ const ShareDocumentModal = (): JSX.Element => {
                 <div className="flex justify-between items-center">
                   <div className="space-y-1">{document.isPublic ? publicAccessBtn : restrictedAccessBtn}</div>
                   <input ref={copyLinkInputRef} type="text" className="d-none opacity-0 cursor-default" />
-                  <button
-                    onClick={handleCopyLinkBtnClick}
-                    className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
-                  >
+                  <Button type="primary" onClick={handleCopyLinkBtnClick}>
                     Copy link
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
