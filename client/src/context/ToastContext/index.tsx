@@ -3,9 +3,9 @@ import { ExclamationCircleOutlined, CheckCircleOutlined, InfoCircleOutlined } fr
 import { notification } from 'antd';
 
 interface ToastContextInterface {
-  error: (title: string) => void;
-  success: (title: string) => void;
-  info: (title: string) => void;
+  error: (description: string) => void;
+  success: (description: string) => void;
+  info: (description: string) => void;
 }
 
 const defaultValues = {
@@ -22,28 +22,28 @@ interface ToastProviderInterface {
 
 export const ToastProvider = ({ children }: ToastProviderInterface): JSX.Element => {
   const [api, contextHolder] = notification.useNotification();
-  const info = (title: string): void => {
+  const info = (description: string): void => {
     api.open({
       message: 'Error',
-      description: title,
+      description,
       icon: <InfoCircleOutlined style={{ color: '#108ee9' }} />,
       placement: 'bottomLeft',
     });
   };
 
-  const error = (title: string): void => {
+  const error = (description: string): void => {
     api.open({
       message: 'Error',
-      description: title,
+      description,
       icon: <ExclamationCircleOutlined style={{ color: '#fc3d39' }} />,
       placement: 'bottomLeft',
     });
   };
 
-  const success = (title: string): void => {
+  const success = (description: string): void => {
     api.open({
       message: 'Success',
-      description: title,
+      description,
       icon: <CheckCircleOutlined style={{ color: '#53d769' }} />,
       placement: 'bottomLeft',
     });
