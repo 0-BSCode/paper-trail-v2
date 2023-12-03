@@ -68,8 +68,8 @@ const ShareDocumentModal = (): JSX.Element => {
     if (event.key === 'Enter') await shareDocument();
   };
 
-  const handleShareBtnClick = async (): Promise<void> => {
-    await shareDocument();
+  const handleShareBtnClick = (): void => {
+    void shareDocument();
   };
 
   const updateIsPublic = (isPublic: boolean): void => {
@@ -161,7 +161,7 @@ const ShareDocumentModal = (): JSX.Element => {
               <SharedUsers documentUsers={document.users} setDocument={setDocument} />
               <div className="w-full flex justify-end space-x-2">
                 <button
-                  onClick={() => handleShareBtnClick}
+                  onClick={handleShareBtnClick}
                   disabled={loading || email === null || !validator.isEmail(email) || alreadyShared}
                   className={`${
                     email === null || !validator.isEmail(email) || alreadyShared ? 'btn-disabled' : 'btn-primary'
