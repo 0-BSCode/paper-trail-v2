@@ -1,4 +1,4 @@
-import DropDown from './DropDown';
+import StatusDropDown from './StatusDropDown';
 import { Button } from 'antd';
 import useDocuments from '@src/hooks/useDocuments';
 import useAuth from '@src/hooks/useAuth';
@@ -19,7 +19,7 @@ const YourTickets = (): JSX.Element => {
   const { allTickets } = useDocuments();
   const [titleFilter, setTitleFilter] = useState<string>('');
   const [assigneeFilter, setAssigneeFilter] = useState<string>('');
-  const [dropDownFilter, setDropDownFilter] = useState<StatusEnum>(StatusEnum.ALL);
+  const [statusFilter, setStatusFilter] = useState<StatusEnum>(StatusEnum.ALL);
   const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
   const [loading, setLoading] = useState(false);
 
@@ -41,22 +41,20 @@ const YourTickets = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (titleFilter.length > 3 || assigneeFilter.length > 3 || dropDownFilter !== StatusEnum.ALL) {
+    if (titleFilter.length > 3 || assigneeFilter || statusFilter !== StatusEnum.ALL) {
       setFilteredTickets(
         allTickets.filter(
           (t) =>
             (titleFilter.length > 3 ? t.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
-            (assigneeFilter.length > 3
-              ? t.assignee?.email.toLowerCase().includes(assigneeFilter.toLowerCase())
-              : true) &&
-            (dropDownFilter === StatusEnum.ALL ? true : t.status === dropDownFilter) &&
+            (assigneeFilter ? t.assignee?.email.toLowerCase().includes(assigneeFilter.toLowerCase()) : true) &&
+            (statusFilter === StatusEnum.ALL ? true : t.status === statusFilter) &&
             t.userId === userId,
         ),
       );
     } else {
       setFilteredTickets(allTickets.filter((doc) => doc.userId === userId));
     }
-  }, [titleFilter, assigneeFilter, dropDownFilter, allTickets]);
+  }, [titleFilter, assigneeFilter, statusFilter, allTickets]);
 
   return (
     <div className="w-[95%] h-full bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -87,18 +85,11 @@ const YourTickets = (): JSX.Element => {
           </div>
           <div className="flex flex-col w-[30%]">
             <p className="my-2 font-semibold ">Search by Assignee</p>
-            {/* <input
-              className="w-full p-2 border border-gray-300 border-solid rounded-md focus:outline-none focus:ring-1 focus:border-cyan-400 border-t-solid"
-              onChange={(e) => {
-                setAssigneeFilter(e.target.value);
-              }}
-              placeholder="Assignee"
-            /> */}
             <AssigneeDropDown setAssigneeFilter={setAssigneeFilter} />
           </div>
           <div className="flex flex-col mb-3">
             <p className="my-2 font-semibold ">Status</p>
-            <DropDown dropDownFilter={dropDownFilter} setDropDownFilter={setDropDownFilter} />
+            <StatusDropDown statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
           </div>
         </div>
       </div>
