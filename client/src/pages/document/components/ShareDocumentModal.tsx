@@ -1,6 +1,6 @@
 import Modal from '@src/components/Modal';
 import { UserPlusIcon, LinkIcon } from '@heroicons/react/24/outline';
-import { useContext, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react';
+import { useContext, useRef, useState, type KeyboardEvent } from 'react';
 import type DocumentInterface from '@src/types/interfaces/document';
 import Spinner from '@src/components/Spinner';
 import validator from 'validator';
@@ -11,15 +11,27 @@ import useAuth from '@src/hooks/useAuth';
 import { ToastContext } from '@src/context/ToastContext';
 import DocumentUserService from '@src/services/document-user-service';
 import type DocumentUser from '@src/types/interfaces/document-user';
-import { Button, Space } from 'antd';
+import { Button, Select, Space } from 'antd';
+import useUsers from '@src/hooks/useUsers';
+
+// Filter `option.label` match the user type `input`
+const filterOption = (input: string, option?: { label: string; value: string }): boolean =>
+  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
 const ShareDocumentModal = (): JSX.Element => {
+  const { success, error } = useContext(ToastContext);
   const { document, saving, saveDocument, setDocument } = useContext(DocumentContext);
   const copyLinkInputRef = useRef<null | HTMLInputElement>(null);
-  const [email, setEmail] = useState<null | string>(null);
   const { accessToken } = useAuth();
-  const { success, error } = useContext(ToastContext);
+  // TODO: Create new endpoint to retrieve only email and ID
+  // so we don't get unnecessary info
+  const { allUsers } = useUsers();
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState<null | string>(null);
+  const [searchText, setSearchText] = useState('');
+  const docUserIds = document?.users.map((u) => u.userId) ?? [];
+  const userIds = [document?.userId, ...docUserIds];
+  const userOptions = allUsers.filter((u) => userIds.every((id) => id !== u.id));
 
   const shareDocument = async (): Promise<void> => {
     if (email === null || !validator.isEmail(email) || accessToken === null || document === null) return;
@@ -42,7 +54,7 @@ const ShareDocumentModal = (): JSX.Element => {
         ...document,
         users: [...document.users, documentUser],
       } satisfies DocumentInterface);
-      setEmail('');
+      setEmail(null);
     } catch (err) {
       error(`Unable to share this document with ${email}. Please try again`);
     } finally {
@@ -50,8 +62,13 @@ const ShareDocumentModal = (): JSX.Element => {
     }
   };
 
-  const handleShareEmailInputChange = (event: ChangeEvent): void => {
-    setEmail((event.target as HTMLInputElement).value);
+  const onChange = (newEmail: string | undefined): void => {
+    setEmail(newEmail ?? null);
+    setSearchText('');
+  };
+
+  const onSearch = (searchVal: string): void => {
+    setSearchText(searchVal);
   };
 
   const handleCopyLinkBtnClick = (): void => {
@@ -62,14 +79,16 @@ const ShareDocumentModal = (): JSX.Element => {
     copyLinkInputRef.current.focus();
     copyLinkInputRef.current.select();
     window.document.execCommand('copy');
+
+    success('Link copied to clipboard');
   };
 
   const handleOnKeyPress = async (event: KeyboardEvent): Promise<void> => {
     if (event.key === 'Enter') await shareDocument();
   };
 
-  const handleShareBtnClick = async (): Promise<void> => {
-    await shareDocument();
+  const handleShareBtnClick = (): void => {
+    void shareDocument();
   };
 
   const updateIsPublic = (isPublic: boolean): void => {
@@ -86,19 +105,19 @@ const ShareDocumentModal = (): JSX.Element => {
   const alreadyShared =
     document === null ||
     (document !== null && document.users.filter((documentUser) => documentUser.user.email === email).length > 0);
+  const disableButton = loading || email === null || !validator.isEmail(email) || alreadyShared;
 
   const restrictedAccessBtn = (
     <div className="space-y-1">
-      <button
+      <Button
         disabled={saving}
         onClick={() => {
           updateIsPublic(true);
         }}
-        className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
       >
         {saving && <Spinner size="sm" />}
         <span className={`${saving && 'opacity-0'}`}>Change to anyone with the link</span>
-      </button>
+      </Button>
       <p className="mx-2">
         <b className="font-semibold">Restricted</b>&nbsp;
         <span className="text-gray-600">Only people added can open with this link</span>
@@ -108,16 +127,15 @@ const ShareDocumentModal = (): JSX.Element => {
 
   const publicAccessBtn = (
     <div className="space-y-1">
-      <button
+      <Button
         disabled={saving}
         onClick={() => {
           updateIsPublic(false);
         }}
-        className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
       >
         {saving && <Spinner size="sm" />}
         <span className={`${saving && 'opacity-0'}`}>Change to only shared users</span>
-      </button>
+      </Button>
       <p className="mx-2">
         <b className="font-semibold">Public</b>&nbsp;
         <span className="text-gray-600">Anyone with this link can view</span>
@@ -142,53 +160,52 @@ const ShareDocumentModal = (): JSX.Element => {
             }}
             className="space-y-4 text-sm"
           >
-            <div className="p-4 space-y-4 bg-white rounded-md shadow-xl">
-              <div className="flex items-center m-2 space-x-2">
-                <div className="flex items-center justify-center w-8 h-8 text-white bg-blue-500 rounded-full">
-                  <UserPlusIcon className="relative w-5 h-5" />
+            <div className="rounded-md bg-white shadow-xl p-4 space-y-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-blue-500 flex justify-center items-center rounded-full text-white">
+                  <UserPlusIcon className="w-5 h-5 relative" />
                 </div>
                 <h1 className="text-xl font-medium">Share with people</h1>
               </div>
-              <input
-                type="text"
-                name=""
-                id=""
-                value={email ?? ''}
-                onChange={handleShareEmailInputChange}
-                placeholder="Enter email"
-                className="w-full p-4 font-medium bg-gray-100 border-b border-blue-500 rounded-t-md"
+              <Select
+                open={searchText.length >= 3}
+                showSearch
+                allowClear
+                placeholder="Select a user"
+                optionFilterProp="children"
+                onChange={onChange}
+                onSearch={onSearch}
+                filterOption={filterOption}
+                value={email}
+                options={userOptions.map((user) => {
+                  return { value: user.email, label: user.email };
+                })}
+                style={{
+                  width: '100%',
+                }}
               />
               <SharedUsers documentUsers={document.users} setDocument={setDocument} />
-              <div className="flex justify-end w-full space-x-2">
-                <button
-                  onClick={() => handleShareBtnClick}
-                  disabled={loading || email === null || !validator.isEmail(email) || alreadyShared}
-                  className={`${
-                    email === null || !validator.isEmail(email) || alreadyShared ? 'btn-disabled' : 'btn-primary'
-                  } px-6`}
-                >
+              <div className="w-full flex justify-end space-x-2">
+                <Button onClick={handleShareBtnClick} type="primary" disabled={disableButton}>
                   {loading && <Spinner size="sm" />}
                   <span className={`${loading && 'opacity-0'}`}>Share</span>
-                </button>
+                </Button>
               </div>
             </div>
-            <div className="flex flex-col p-4 space-y-4 bg-white rounded-md shadow-xl">
-              <div className="flex items-center m-2 space-x-2">
-                <div className="flex items-center justify-center w-8 h-8 text-white bg-gray-400 rounded-full">
-                  <LinkIcon className="relative w-5 h-5" />
+            <div className="rounded-md bg-white shadow-xl p-4 space-y-4 flex flex-col">
+              <div className=" flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gray-400 flex justify-center items-center rounded-full text-white">
+                  <LinkIcon className="w-5 h-5 relative" />
                 </div>
                 <h1 className="text-xl font-medium">Get Link</h1>
               </div>
               <div>
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">{document.isPublic ? publicAccessBtn : restrictedAccessBtn}</div>
-                  <input ref={copyLinkInputRef} type="text" className="opacity-0 cursor-default d-none" />
-                  <button
-                    onClick={handleCopyLinkBtnClick}
-                    className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
-                  >
+                  <input ref={copyLinkInputRef} type="text" className="d-none opacity-0 cursor-default" />
+                  <Button type="primary" onClick={handleCopyLinkBtnClick}>
                     Copy link
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
