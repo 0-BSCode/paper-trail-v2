@@ -1,6 +1,6 @@
-import { UserOutlined } from '@ant-design/icons';
 import type CommentInterface from '@src/types/interfaces/comment';
-import { Space, Typography } from 'antd';
+import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
+import { Avatar, Space, Tooltip, Typography } from 'antd';
 import React from 'react';
 
 const convertDateToLocaleString = (date: Date): string => {
@@ -15,18 +15,19 @@ const convertDateToLocaleString = (date: Date): string => {
 
 const DocumentComment = ({ comment }: { comment: CommentInterface }): JSX.Element => {
   return (
-    <div className="px-3 py-1 border border-solid rounded-sm  flex-col">
-      <Space.Compact>
-        <UserOutlined />
+    <div className="px-3 py-1 border border-solid border-gray-400 rounded-lg flex-col">
+      <Space.Compact style={{ alignItems: 'center' }}>
+        <Avatar size={32} src={getAvatarImageUrlByEmail(comment.user.email)} />
         <Space.Compact direction="vertical" className="ml-2">
-          {/* TODO (Bryan): Get username from email */}
-          <Typography.Text className="block font-semibold">{comment.user.email}</Typography.Text>
+          <Tooltip title={comment.user.email}>
+            <Typography.Text className="block font-semibold">{comment.user.fullName}</Typography.Text>
+          </Tooltip>
           <Typography.Text className="block text-gray-400">
             {convertDateToLocaleString(comment.createdAt)}
           </Typography.Text>
         </Space.Compact>
       </Space.Compact>
-      <Typography.Text className="block ml-6">{comment.content}</Typography.Text>
+      <Typography.Text className="block ml-10">{comment.content}</Typography.Text>
     </div>
   );
 };
