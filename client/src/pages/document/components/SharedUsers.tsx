@@ -21,7 +21,7 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
   const { backgroundColor: sharedUserBackgroundColor } = useRandomBackground();
   const { accessToken, email } = useAuth();
   const [loading, setLoading] = useState(false);
-  const { addToast, success, error } = useContext(ToastContext);
+  const { success, error } = useContext(ToastContext);
   const { document } = useContext(DocumentContext);
 
   const updateDocumentUser = async (payload: {
@@ -73,11 +73,7 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
         } satisfies DocumentInterface);
       }
     } catch {
-      addToast({
-        color: 'danger',
-        title: 'Unable to remove user',
-        body: 'Please try again.',
-      });
+      error('Unable to remove user.');
     } finally {
       setLoading(false);
     }
@@ -85,7 +81,7 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
 
   return (
     <div>
-      <div className="px-2 py-4 w-full flex items-center justify-between hover:bg-gray-100 rounded-md">
+      <div className="flex items-center justify-between w-full px-2 py-4 rounded-md hover:bg-gray-100">
         <div className="flex items-center space-x-2">
           <div
             className={`${backgroundColor} w-8 h-8 flex justify-center items-center text-white uppercase rounded-full text-xl font-medium`}
@@ -94,13 +90,13 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
           </div>
           <p className="font-medium">{email !== null && email} (you)</p>
         </div>
-        <p className="text-gray-500 italic">Owner</p>
+        <p className="italic text-gray-500">Owner</p>
       </div>
       {documentUsers.map((documentUser) => {
         return (
           <div
             key={documentUser.user.email}
-            className="px-2 py-4 w-full flex items-center justify-between hover:bg-gray-100 rounded-md"
+            className="flex items-center justify-between w-full px-2 py-4 rounded-md hover:bg-gray-100"
           >
             <div className="flex items-center space-x-2">
               <div
@@ -135,7 +131,7 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
                   });
                 }}
                 disabled={loading}
-                className="font-semibold text-blue-600 p-2 hover:bg-blue-50 rounded-md"
+                className="p-2 font-semibold text-blue-600 rounded-md hover:bg-blue-50"
               >
                 Remove
               </button>
