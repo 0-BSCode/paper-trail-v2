@@ -1,4 +1,4 @@
-import DropDown from './DropDown';
+import StatusDropDown from './StatusDropDown';
 import UnassignedTicketsTable from './UnassignedTicketsTable';
 import useDocuments from '@src/hooks/useDocuments';
 import { useEffect, useState } from 'react';
@@ -8,23 +8,23 @@ import StatusEnum from '@src/types/enums/status-enum';
 const UnassignedTickets = (): JSX.Element => {
   const { allTickets } = useDocuments();
   const [titleFilter, setTitleFilter] = useState<string>('');
-  const [dropDownFilter, setDropDownFilter] = useState<StatusEnum>(StatusEnum.ALL);
+  const [statusFilter, setStatusFilter] = useState<StatusEnum>(StatusEnum.ALL);
   const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
 
   useEffect(() => {
-    if (titleFilter.length > 3 || dropDownFilter !== StatusEnum.ALL) {
+    if (titleFilter.length > 3 || statusFilter !== StatusEnum.ALL) {
       setFilteredTickets(
         allTickets.filter(
           (t) =>
             (titleFilter.length > 3 ? t.title.toLowerCase().includes(titleFilter.toLowerCase()) : true) &&
-            (dropDownFilter === StatusEnum.ALL ? true : t.status === dropDownFilter) &&
+            (statusFilter === StatusEnum.ALL ? true : t.status === statusFilter) &&
             !t.assigneeId,
         ),
       );
     } else {
       setFilteredTickets(allTickets.filter((doc) => !doc.assigneeId));
     }
-  }, [titleFilter, dropDownFilter, allTickets]);
+  }, [titleFilter, statusFilter, allTickets]);
 
   return (
     <div className="w-[90%] h-[45%] bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -44,7 +44,7 @@ const UnassignedTickets = (): JSX.Element => {
           </div>
           <div className="flex flex-col mb-3">
             <p className="my-2 font-semibold ">Status</p>
-            <DropDown dropDownFilter={dropDownFilter} setDropDownFilter={setDropDownFilter} />
+            <StatusDropDown statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
           </div>
         </div>
       </div>
