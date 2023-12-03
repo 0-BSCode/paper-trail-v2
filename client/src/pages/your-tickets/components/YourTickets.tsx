@@ -76,7 +76,7 @@ const YourTickets = (): JSX.Element => {
           <div className="flex flex-col justify-start w-[30%]">
             <p className="my-2 font-semibold ">Search by Title</p>
             <input
-              className="w-full p-2 border border-gray-300 border-solid rounded-md focus:outline-none focus:ring-1 focus:border-cyan-400 border-t-solid"
+              className="w-full p-2 placeholder-gray-300 border border-gray-300 border-solid rounded-md focus:outline-none focus:ring-1 focus:border-cyan-400 border-t-solid"
               onChange={(e) => {
                 setTitleFilter(e.target.value);
               }}
