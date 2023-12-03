@@ -10,6 +10,7 @@ import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
 import { ToastContext } from '@src/context/ToastContext';
 import YourTicketsTable from './YourTicketsTable';
+import AssigneeDropDown from './AssigneeDropDown';
 
 const YourTickets = (): JSX.Element => {
   const navigate = useNavigate();
@@ -86,13 +87,14 @@ const YourTickets = (): JSX.Element => {
           </div>
           <div className="flex flex-col w-[30%]">
             <p className="my-2 font-semibold ">Search by Assignee</p>
-            <input
+            {/* <input
               className="w-full p-2 border border-gray-300 border-solid rounded-md focus:outline-none focus:ring-1 focus:border-cyan-400 border-t-solid"
               onChange={(e) => {
                 setAssigneeFilter(e.target.value);
               }}
               placeholder="Assignee"
-            />
+            /> */}
+            <AssigneeDropDown setAssigneeFilter={setAssigneeFilter} />
           </div>
           <div className="flex flex-col mb-3">
             <p className="my-2 font-semibold ">Status</p>
