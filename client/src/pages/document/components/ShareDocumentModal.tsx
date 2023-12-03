@@ -1,6 +1,6 @@
 import Modal from '@src/components/Modal';
 import { UserPlusIcon, LinkIcon } from '@heroicons/react/24/outline';
-import { useContext, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react';
+import { useContext, useRef, useState, type KeyboardEvent } from 'react';
 import type DocumentInterface from '@src/types/interfaces/document';
 import Spinner from '@src/components/Spinner';
 import validator from 'validator';
@@ -11,15 +11,27 @@ import useAuth from '@src/hooks/useAuth';
 import { ToastContext } from '@src/context/ToastContext';
 import DocumentUserService from '@src/services/document-user-service';
 import type DocumentUser from '@src/types/interfaces/document-user';
-import { Button, Space } from 'antd';
+import { Button, Select, Space } from 'antd';
+import useUsers from '@src/hooks/useUsers';
+
+// Filter `option.label` match the user type `input`
+const filterOption = (input: string, option?: { label: string; value: string }): boolean =>
+  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
 const ShareDocumentModal = (): JSX.Element => {
+  const { success, error } = useContext(ToastContext);
   const { document, saving, saveDocument, setDocument } = useContext(DocumentContext);
   const copyLinkInputRef = useRef<null | HTMLInputElement>(null);
-  const [email, setEmail] = useState<null | string>(null);
   const { accessToken } = useAuth();
-  const { success, error } = useContext(ToastContext);
+  // TODO: Create new endpoint to retrieve only email and ID
+  // so we don't get unnecessary info
+  const { allUsers } = useUsers();
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState<null | string>(null);
+
+  const docUserIds = document?.users.map((u) => u.userId) ?? [];
+  const userIds = [document?.userId, ...docUserIds];
+  const userOptions = allUsers.filter((u) => userIds.every((id) => id !== u.id));
 
   const shareDocument = async (): Promise<void> => {
     if (email === null || !validator.isEmail(email) || accessToken === null || document === null) return;
@@ -42,7 +54,7 @@ const ShareDocumentModal = (): JSX.Element => {
         ...document,
         users: [...document.users, documentUser],
       } satisfies DocumentInterface);
-      setEmail('');
+      setEmail(null);
     } catch (err) {
       error(`Unable to share this document with ${email}. Please try again`);
     } finally {
@@ -50,8 +62,8 @@ const ShareDocumentModal = (): JSX.Element => {
     }
   };
 
-  const handleShareEmailInputChange = (event: ChangeEvent): void => {
-    setEmail((event.target as HTMLInputElement).value);
+  const onChange = (newEmail: string | undefined): void => {
+    setEmail(newEmail ?? null);
   };
 
   const handleCopyLinkBtnClick = (): void => {
@@ -86,6 +98,7 @@ const ShareDocumentModal = (): JSX.Element => {
   const alreadyShared =
     document === null ||
     (document !== null && document.users.filter((documentUser) => documentUser.user.email === email).length > 0);
+  const disableButton = loading || email === null || !validator.isEmail(email) || alreadyShared;
 
   const restrictedAccessBtn = (
     <div className="space-y-1">
@@ -149,27 +162,27 @@ const ShareDocumentModal = (): JSX.Element => {
                 </div>
                 <h1 className="text-xl font-medium">Share with people</h1>
               </div>
-              <input
-                type="text"
-                name=""
-                id=""
-                value={email ?? ''}
-                onChange={handleShareEmailInputChange}
-                placeholder="Enter email"
-                className="border-b border-blue-500 rounded-t-md p-4 w-full bg-gray-100  font-medium"
+              <Select
+                showSearch
+                allowClear
+                placeholder="Select a user"
+                optionFilterProp="children"
+                onChange={onChange}
+                filterOption={filterOption}
+                value={email}
+                options={userOptions.map((user) => {
+                  return { value: user.email, label: user.email };
+                })}
+                style={{
+                  width: '100%',
+                }}
               />
               <SharedUsers documentUsers={document.users} setDocument={setDocument} />
               <div className="w-full flex justify-end space-x-2">
-                <button
-                  onClick={handleShareBtnClick}
-                  disabled={loading || email === null || !validator.isEmail(email) || alreadyShared}
-                  className={`${
-                    email === null || !validator.isEmail(email) || alreadyShared ? 'btn-disabled' : 'btn-primary'
-                  } px-6`}
-                >
+                <Button onClick={handleShareBtnClick} type="primary" disabled={disableButton}>
                   {loading && <Spinner size="sm" />}
                   <span className={`${loading && 'opacity-0'}`}>Share</span>
-                </button>
+                </Button>
               </div>
             </div>
             <div className="rounded-md bg-white shadow-xl p-4 space-y-4 flex flex-col">
