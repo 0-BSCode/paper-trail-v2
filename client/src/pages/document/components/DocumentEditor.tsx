@@ -14,7 +14,8 @@ const DocumentEditor = (): JSX.Element => {
 
   const hasEditPermission =
     (userId === document?.userId || documentUser?.permission === PermissionEnum.EDIT) &&
-    document?.status !== StatusEnum.RESOLVED;
+    document?.status !== StatusEnum.RESOLVED &&
+    document?.status !== StatusEnum.RAISED;
 
   return (
     <div className="w-[850px] h-[650px] bg-white shadow-md flex-shrink-0 cursor-text p-10 overflow-y-scroll">

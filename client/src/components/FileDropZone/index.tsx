@@ -22,6 +22,8 @@ const FileDropZone = ({ userId, documentId, canUpload }: Props): JSX.Element => 
   const [selectedFiles, setSelectedFiles] = useState<RcFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
+  const disable = isUploading || !canUpload;
+
   const handleSendFiles = async (event: FormEvent): Promise<void> => {
     event.preventDefault();
     if (!selectedFiles.length) return;
@@ -76,7 +78,7 @@ const FileDropZone = ({ userId, documentId, canUpload }: Props): JSX.Element => 
       const filteredFiles = selectedFiles.filter((sFile) => sFile.uid !== file.uid);
       setSelectedFiles(filteredFiles);
     },
-    disabled: isUploading,
+    disabled: disable,
     fileList: selectedFiles,
   };
 
@@ -88,7 +90,7 @@ const FileDropZone = ({ userId, documentId, canUpload }: Props): JSX.Element => 
         onClick={(e) => {
           void handleSendFiles(e);
         }}
-        disabled={!selectedFiles.length}
+        disabled={!selectedFiles.length || disable}
         loading={isUploading}
         style={{
           borderRadius: '6px',
@@ -96,7 +98,7 @@ const FileDropZone = ({ userId, documentId, canUpload }: Props): JSX.Element => 
       >
         {isUploading ? 'Uploading...' : 'Upload'}
       </Button>
-      <Dragger {...uploadProps} disabled={!canUpload}>
+      <Dragger {...uploadProps}>
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>

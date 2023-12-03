@@ -29,8 +29,8 @@ io.on("connection", (socket) => {
   if (!accessToken || !documentId) return socket.disconnect();
   else {
     jwt.verify(accessToken, env.ACCESS_TOKEN_SECRET, (err: VerifyErrors | null, decoded: unknown) => {
-      const { id, email } = decoded as RequestUser;
-      (socket as any).username = email;
+      const { id, fullName } = decoded as RequestUser;
+      (socket as any).username = fullName;
 
       documentService
         .findDocumentById(parseInt(documentId), parseInt(id))
@@ -52,7 +52,6 @@ io.on("connection", (socket) => {
           });
 
           socket.on(SocketEvent.SEND_ASSIGNEE, (newAssigneeId) => {
-            console.log("SENDING ASSIGNEE: ", newAssigneeId);
             socket.broadcast.to(documentId).emit(SocketEvent.RECEIVE_ASSIGNEE, newAssigneeId);
           });
 

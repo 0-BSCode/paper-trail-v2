@@ -6,7 +6,7 @@ import type UserInterface from '@src/types/interfaces/user';
 import RoleEnum from '@src/types/enums/role-enum';
 
 const TableContainer = (): JSX.Element => {
-  const { allUsers } = useUsers();
+  const { allUsers, reloadUsers } = useUsers();
 
   const [emailFilter, setEmailFilter] = useState<string>('');
   const [dropDownFilter, setDropDownFilter] = useState<RoleEnum>(RoleEnum.ALL);
@@ -48,7 +48,7 @@ const TableContainer = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <UsersTable users={filteredUsers} />
+      <UsersTable users={filteredUsers} reloadUsers={reloadUsers} />
     </div>
   );
 };

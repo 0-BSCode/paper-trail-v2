@@ -4,26 +4,34 @@ import type UserInterface from '@src/types/interfaces/user';
 import convertToTitleCase from '@src/utils/convertToTitleCase';
 import type RoleEnum from '@src/types/enums/role-enum';
 import getRoleTagColor from '@src/utils/getRoleTagColor';
+import AdminEditProfileModal from './AdminEditProfileModal/AdminEditProfileModal';
 
 interface Props {
   users: UserInterface[];
+  reloadUsers: () => Promise<void>;
 }
 
-// TODO: IAN - MAKE EMAIL ROW OPEN MODAL FOR EACH USER
-const UsersTable = ({ users }: Props): JSX.Element => {
+const UsersTable = ({ users, reloadUsers }: Props): JSX.Element => {
   const columns: ColumnsType<UserInterface> = [
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      render: (_, record) => <a>{record.email}</a>,
+      render: (_, record) => (
+        <AdminEditProfileModal
+          userId={record.id}
+          email={record.email}
+          userRoles={record.roles}
+          reloadUsers={reloadUsers}
+        />
+      ),
     },
     {
       title: 'Roles',
       dataIndex: 'roles',
       key: 'roles',
       render: (_, record) => {
-        if (!record.roles.length) return <p>No roles</p>;
+        if (!record?.roles?.length) return <p>No roles</p>;
 
         return (
           <p>

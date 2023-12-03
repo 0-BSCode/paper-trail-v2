@@ -10,16 +10,24 @@ class DocumentService {
     const user = await User.findByPk(userId, { include: [Role, DocumentUser] });
 
     if (!user) return null;
-    const isCisco = user.roles.some((r) => r.name === RoleEnum.CISCO_MEMBER || r.name === RoleEnum.CISCO_ADMIN);
 
     let document;
+    const isCisco = user.roles.some((r) => r.name === RoleEnum.CISCO_MEMBER || r.name === RoleEnum.CISCO_ADMIN);
 
+    // TODO: Remove userId from document (owner field should already be giving id)
     // Give access to cisco member/admin
     if (isCisco) {
       document = await Document.findOne({
         where: {
           id: id
-        }
+        },
+        include: [
+          {
+            model: User,
+            as: "owner",
+            attributes: ["id", "fullName", "email"]
+          }
+        ]
       });
 
       if (!document) return null;
@@ -34,10 +42,18 @@ class DocumentService {
             },
             {
               id: id,
-              isPublic: true
+              isPublic: true,
+              userId: userId
             }
           ]
-        }
+        },
+        include: [
+          {
+            model: User,
+            as: "owner",
+            attributes: ["id", "fullName", "email"]
+          }
+        ]
       });
 
       if (!document) {

@@ -44,8 +44,8 @@ class AuthController {
     jwt.verify(refreshToken, env.REFRESH_TOKEN_SECRET, async (error: VerifyErrors | null, decoded: unknown) => {
       if (error) return res.sendStatus(403);
       try {
-        const { id, email, roles } = decoded as RequestUser;
-        const user = { id, email, roles };
+        const { id, email, roles, fullName } = decoded as RequestUser;
+        const user = { id, email, roles, fullName };
 
         // issue new tokens
         const authResponse = await userService.generateAuthResponse(user);

@@ -22,14 +22,16 @@ const DocumentPage = (): JSX.Element => {
   const { heightStr, widthStr } = useWindowSize();
   const documentHeaderRef = useRef<null | HTMLDivElement>(null);
   const documentViewerHeight = `calc(${heightStr} - ${documentHeaderRef.current?.clientHeight}px)`;
-  const { setDocument } = useContext(DocumentContext);
+  const { document: docInfo, setDocument } = useContext(DocumentContext);
   const { document, loading: documentLoading } = useDocument(parseInt(documentId as string));
   const documentUser = document?.users.find((user) => user.userId === userId);
 
   const hasEditPermission =
-    (userId === document?.userId || documentUser?.permission === PermissionEnum.EDIT) &&
-    document?.status !== StatusEnum.RESOLVED;
+    (userId === docInfo?.userId || documentUser?.permission === PermissionEnum.EDIT) &&
+    docInfo?.status !== StatusEnum.RESOLVED &&
+    docInfo?.status !== StatusEnum.RAISED;
 
+  // Sets document context based on fetched document
   useEffect(() => {
     if (document !== null) setDocument(document);
   }, [document]);

@@ -42,7 +42,7 @@ class DocumentController {
   public getAllDocuments = catchAsync(async (req: Request, res: Response) => {
     const documents = await Document.findAll({
       include: [
-        { model: User, as: "user", attributes: ["email"] },
+        { model: User, as: "owner", attributes: ["email"] },
         { model: User, as: "assignee", attributes: ["email"] },
         { model: DocumentUser, include: [{ model: User, attributes: ["email"] }] }
       ]

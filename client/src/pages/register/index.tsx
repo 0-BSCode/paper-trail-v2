@@ -8,9 +8,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios, { type AxiosError } from 'axios';
 import AuthService from '@src/services/auth-service';
 import { Input, Button } from 'antd';
+import isValidHelper from '@src/utils/isValid.helper';
 
 const RegisterPage = (): JSX.Element => {
   const { widthStr, heightStr } = useWindowSize();
+  const [studentIdNumber, setStudentIdNumber] = useState('');
+  const [studentIdNumberErrors, setStudentIdNumberErrors] = useState<string[]>([]);
+  const [fullName, setFullName] = useState('');
+  const [fullNameErrors, setFullNameErrors] = useState<string[]>([]);
   const [email, setEmail] = useState('');
   const [emailErrors, setEmailErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -22,11 +27,21 @@ const RegisterPage = (): JSX.Element => {
   const { addToast, error } = useContext(ToastContext);
 
   const validate = (): boolean => {
+    setStudentIdNumberErrors([]);
+    setFullNameErrors([]);
     setEmailErrors([]);
     setPassword1Errors([]);
     setPassword2Errors([]);
     let isValid = true;
 
+    if (!studentIdNumber.length || !isValidHelper.studentNumber(studentIdNumber)) {
+      setStudentIdNumberErrors(['Please enter your 8-digit USC ID number.']);
+      isValid = false;
+    }
+    if (!fullName.length || !isValidHelper.fullName(fullName)) {
+      setFullNameErrors(['Must enter a valid full name.']);
+      isValid = false;
+    }
     if (!validator.isEmail(email)) {
       setEmailErrors(['Must enter a valid email.']);
       isValid = false;
@@ -55,11 +70,12 @@ const RegisterPage = (): JSX.Element => {
         email,
         password1,
         password2,
+        studentIdNumber,
+        fullName,
       });
 
       addToast({
         title: `Successfully registered ${email}!`,
-        body: 'Please check your inbox to verify your email address',
         color: 'success',
       });
       navigate('/login');
@@ -92,8 +108,18 @@ const RegisterPage = (): JSX.Element => {
 
   const handleOnKeyPress = (event: KeyboardEvent): void => {
     if (event.key === 'Enter') {
-      register();
+      void register();
     }
+  };
+
+  const handleOnInputStudentIdNumber = (value: string): void => {
+    setStudentIdNumberErrors([]);
+    setStudentIdNumber(value);
+  };
+
+  const handleOnInputFullName = (value: string): void => {
+    setFullNameErrors([]);
+    setFullName(value);
   };
 
   const handleOnInputEmail = (value: string): void => {
@@ -114,7 +140,7 @@ const RegisterPage = (): JSX.Element => {
   return (
     <div
       onKeyPress={handleOnKeyPress}
-      className="w-full flex flex-col sm:justify-center items-center bg-gray-100 dark:bg-slate-900 text-primary font-sans"
+      className="flex flex-col items-center w-full font-sans bg-gray-100 sm:justify-center dark:bg-slate-900 text-primary"
       style={{
         width: widthStr,
         height: heightStr,
@@ -122,9 +148,9 @@ const RegisterPage = (): JSX.Element => {
         backgroundSize: 'cover',
       }}
     >
-      <div className="w-full max-w-sm dark:bg-slate-800 border-primary border dark:border-0 dark:shadow-xl p-6">
+      <div>
         <div className="flex flex-col space-y-4">
-          <div className="w-full text-center flex flex-col justify-center items-center">
+          <div className="flex flex-col items-center justify-center w-full text-center">
             <svg width="61" height="85" viewBox="0 0 249 282" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M139.172 204.927V281.043H248.199L196.833 0H139.172V70.2607H109.897V0H52.084L0.354492 281.043H109.897V204.927H139.172ZM109.897 99.536H139.172V181.507H109.897V99.536Z"
@@ -137,6 +163,34 @@ const RegisterPage = (): JSX.Element => {
             <Input
               style={{ fontFamily: 'roboto' }}
               className="p-2"
+              placeholder="USC ID Number"
+              color="secondary"
+              value={studentIdNumber}
+              onChange={(e) => {
+                handleOnInputStudentIdNumber(e.target.value);
+              }}
+            />
+            {!!studentIdNumberErrors.length && (
+              <div className="text-sm text-red-500">{studentIdNumberErrors.join(', ')}</div>
+            )}
+          </div>
+          <div>
+            <Input
+              style={{ fontFamily: 'roboto' }}
+              className="p-2"
+              placeholder="Full Name"
+              color="secondary"
+              value={fullName}
+              onChange={(e) => {
+                handleOnInputFullName(e.target.value);
+              }}
+            />
+            {!!fullNameErrors.length && <div className="text-sm text-red-500">{fullNameErrors.join(', ')}</div>}
+          </div>
+          <div>
+            <Input
+              style={{ fontFamily: 'roboto' }}
+              className="p-2"
               placeholder="Email"
               color="secondary"
               value={email}
@@ -144,7 +198,7 @@ const RegisterPage = (): JSX.Element => {
                 handleOnInputEmail(e.target.value);
               }}
             />
-            {!!emailErrors.length && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
+            {!!emailErrors.length && <div className="text-sm text-red-500">{emailErrors.join(', ')}</div>}
           </div>
           <div>
             <Input.Password
@@ -158,7 +212,7 @@ const RegisterPage = (): JSX.Element => {
                 handleOnInputPassword1(e.target.value);
               }}
             />
-            {!!password1Errors.length && <div className="text-red-500 text-sm">{password1Errors.join(', ')}</div>}
+            {!!password1Errors.length && <div className="text-sm text-red-500">{password1Errors.join(', ')}</div>}
           </div>
           <div>
             <Input.Password
@@ -172,7 +226,7 @@ const RegisterPage = (): JSX.Element => {
                 handleOnInputPassword2(e.target.value);
               }}
             />
-            {!!password2Errors.length && <div className="text-red-500 text-sm">{password2Errors.join(', ')}</div>}
+            {!!password2Errors.length && <div className="text-sm text-red-500">{password2Errors.join(', ')}</div>}
           </div>
           <Button
             style={{ borderRadius: '6px', fontFamily: 'roboto' }}
@@ -185,9 +239,9 @@ const RegisterPage = (): JSX.Element => {
             <span className={`${loading && 'opacity-0'}`}>Register</span>
             {loading && <Spinner size="sm" />}
           </Button>
-          <div className="text-center items-center">
+          <div className="items-center text-center">
             <span>or </span>
-            <Link to="/login" className="no-underline hover:underline text-blue-500">
+            <Link to="/login" className="text-blue-500 no-underline hover:underline">
               Log In
             </Link>
           </div>
