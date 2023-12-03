@@ -10,8 +10,10 @@ import { Button, Input, Space, Tooltip, Typography } from 'antd';
 import StatusEnum from '@src/types/enums/status-enum';
 import { ToastContext } from '@src/context/ToastContext';
 import SocketEvent from '@src/types/enums/socket-events';
+import DeleteDocumentModal from './DeleteDocumentModal';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+
 
 const CurrentUsers = (): JSX.Element => {
   const { backgroundColor } = useRandomBackground();
@@ -42,6 +44,8 @@ const DocumentMenuBar = (): JSX.Element => {
   const { document, saving, socket, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
   const navigate = useNavigate();
   const [isStatusSaving, setIsStatusSaving] = useState(false);
+  const hasDeletePermissions: boolean =
+    document !== null && document.userId === userId && document.status === StatusEnum.DRAFT;
 
   const canSubmit =
     !isStatusSaving &&
@@ -159,6 +163,7 @@ const DocumentMenuBar = (): JSX.Element => {
           <UserDropdown />
         </div>
         <Space>
+          {hasDeletePermissions && <DeleteDocumentModal />}
           {document !== null && document.userId === userId && <ShareDocumentModal />}
           <Button
             disabled={!canSubmit}
