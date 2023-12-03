@@ -61,6 +61,7 @@ const NotificationModal = (): JSX.Element => {
         <BellOutlined />
       </Button>
       <Modal
+        style={{ height: 'calc(100vh - 200px)' }}
         title="Notifications"
         open={isNotificationsModalOpen}
         okText={'Mark as Read'}
@@ -75,23 +76,25 @@ const NotificationModal = (): JSX.Element => {
         ) : (
           <List
             itemLayout="horizontal"
-            dataSource={notifications}
-            renderItem={(item, index) => (
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar size={64} src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />}
-                />
-                <div className="flex flex-col w-full ml-2">
-                  <div>
-                    <p className="w-full text-lg">
-                      {!item.isRead && <InfoCircleFilled className="text-[#ce3131] me-2" />}
-                      {item.message}
-                    </p>
-                    <p className="font-semibold text-end">{formatTimeAgo(item.createdAt)}</p>
+            dataSource={notifications?.filter((n) => !n.isRead)}
+            renderItem={(item, index) => {
+              return (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar size={64} src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />}
+                  />
+                  <div className="flex flex-col w-full ml-2">
+                    <div>
+                      <p className="w-full text-lg">
+                        {!item.isRead && <InfoCircleFilled className="text-[#ce3131] me-2" />}
+                        {item.message}
+                      </p>
+                      <p className="font-semibold text-end">{formatTimeAgo(item.createdAt)}</p>
+                    </div>
                   </div>
-                </div>
-              </List.Item>
-            )}
+                </List.Item>
+              );
+            }}
           />
         )}
       </Modal>
