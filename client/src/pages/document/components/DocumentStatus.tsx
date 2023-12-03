@@ -1,23 +1,24 @@
+import statusToOptionMapping from '@src/constants/statusToOptionMapping';
 import { AuthContext } from '@src/context/AuthContext';
 import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
 import DocumentService from '@src/services/document-service';
 import SocketEvent from '@src/types/enums/socket-events';
 import StatusEnum from '@src/types/enums/status-enum';
-import { Typography, Button, Select } from 'antd';
+import { Typography, Button, Select, Space } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 
 // Filter `option.label` match the user type `input`
 const filterOption = (input: string, option?: { label: string; value: string }): boolean =>
   (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
-const statusToOptionMapping = {
-  [StatusEnum.CHANGES_REQUESTED]: 'Changes Requested',
-  [StatusEnum.DRAFT]: 'Draft',
-  [StatusEnum.RAISED]: 'Raised',
-  [StatusEnum.RESOLVED]: 'Resolved',
-  [StatusEnum.REVIEW]: 'Review',
-  [StatusEnum.REVIEW_REQUESTED]: 'Review Requested',
+const statusToHelperTextMapping = {
+  [StatusEnum.CHANGES_REQUESTED]: 'Assignee has requested changes to ticket',
+  [StatusEnum.DRAFT]: "Ticket hasn't been submitted for review yet",
+  [StatusEnum.RAISED]: 'Assignee has raised ticket to proper authority',
+  [StatusEnum.RESOLVED]: 'Ticket has been resolved',
+  [StatusEnum.REVIEW]: 'Assignee is reviewing ticket',
+  [StatusEnum.REVIEW_REQUESTED]: 'Ticket has no assignee',
 };
 
 const disabledOptions = [StatusEnum.DRAFT, StatusEnum.REVIEW, StatusEnum.REVIEW_REQUESTED];
@@ -50,7 +51,9 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
     socket.current.emit(SocketEvent.SEND_STATUS, status);
     void DocumentService.setStatus(accessToken, parseInt(documentId), status)
       .then(() => {
-        success(`Successfully changed status to ${status}`);
+        success(
+          `Successfully changed status to "${statusToOptionMapping[status as keyof typeof statusToOptionMapping]}`,
+        );
         setDocument({ ...document, status });
       })
       .catch((err) => {
@@ -91,23 +94,28 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
       >
         Status
       </Typography.Title>
-      <Select
-        disabled={!hasEditPermission}
-        showSearch
-        placeholder="Select a status"
-        optionFilterProp="children"
-        onChange={onChange}
-        filterOption={filterOption}
-        value={status}
-        options={Object.keys(statusToOptionMapping).map((s) => {
-          // TODO: Fix type error with s
-          return {
-            value: s,
-            label: statusToOptionMapping[s as keyof typeof statusToOptionMapping],
-            disabled: disabledOptions.includes(s as unknown as StatusEnum),
-          };
-        })}
-      />
+      <Space.Compact direction="vertical">
+        <Select
+          disabled={!hasEditPermission}
+          showSearch
+          placeholder="Select a status"
+          optionFilterProp="children"
+          onChange={onChange}
+          filterOption={filterOption}
+          value={status}
+          options={Object.keys(statusToOptionMapping).map((s) => {
+            // TODO: Fix type error with s
+            return {
+              value: s,
+              label: statusToOptionMapping[s as keyof typeof statusToOptionMapping],
+              disabled: disabledOptions.includes(s as unknown as StatusEnum),
+            };
+          })}
+        />
+        <Typography.Text type="secondary">
+          * {statusToHelperTextMapping[status as keyof typeof statusToHelperTextMapping]}
+        </Typography.Text>
+      </Space.Compact>
       <Button disabled={disableButton} onClick={saveStatus}>
         Save Status
       </Button>
