@@ -13,7 +13,7 @@ import SocketEvent from '@src/types/enums/socket-events';
 import DeleteDocumentModal from './DeleteDocumentModal';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-
+import statusToOptionMapping from '@src/constants/statusToOptionMapping';
 
 const CurrentUsers = (): JSX.Element => {
   const { backgroundColor } = useRandomBackground();
@@ -78,7 +78,9 @@ const DocumentMenuBar = (): JSX.Element => {
     socket.current.emit(SocketEvent.SEND_STATUS, newStatus);
     void DocumentService.setStatus(accessToken, document.id, newStatus)
       .then(() => {
-        success(`Successfully changed status to ${newStatus}`);
+        success(
+          `Successfully changed status to ${statusToOptionMapping[newStatus as keyof typeof statusToOptionMapping]}`,
+        );
         setDocument({ ...document, status: newStatus });
       })
       .catch((err) => {
