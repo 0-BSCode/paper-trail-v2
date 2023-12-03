@@ -27,6 +27,7 @@ const AssignedTickets = (): JSX.Element => {
       );
     } else {
       setFilteredTickets(allTickets.filter((doc) => doc.assigneeId !== null));
+      console.log(filteredTickets);
     }
   }, [titleFilter, assigneeFilter, dropDownFilter, allTickets]);
 
@@ -61,7 +62,9 @@ const AssignedTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <AssignedTicketsTable documents={filteredTickets} />
+      <AssignedTicketsTable
+        documents={filteredTickets.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())}
+      />
     </div>
   );
 };

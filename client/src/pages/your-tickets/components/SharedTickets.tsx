@@ -9,7 +9,6 @@ import StatusEnum from '@src/types/enums/status-enum';
 const SharedTickets = (): JSX.Element => {
   const { allTickets } = useDocuments();
   const { userId } = useAuth();
-  const [filtered, setFiltered] = useState<boolean>(false);
   const [titleFilter, setTitleFilter] = useState<string>('');
   const [assigneeFilter, setAssigneeFilter] = useState<string>('');
   const [dropDownFilter, setDropDownFilter] = useState<StatusEnum>(StatusEnum.ALL);
@@ -17,8 +16,6 @@ const SharedTickets = (): JSX.Element => {
 
   useEffect(() => {
     if (titleFilter.length > 3 || assigneeFilter.length > 3 || dropDownFilter !== StatusEnum.ALL) {
-      setFiltered(true);
-
       setFilteredTickets(
         allTickets.filter(
           (t) =>
@@ -27,14 +24,13 @@ const SharedTickets = (): JSX.Element => {
               ? t.assignee?.email.toLowerCase().includes(assigneeFilter.toLowerCase())
               : true) &&
             (dropDownFilter === StatusEnum.ALL ? true : t.status === dropDownFilter) &&
-            t.assigneeId,
+            t.users.some((u) => u.userId === userId),
         ),
       );
     } else {
-      setFiltered(false);
-      setFilteredTickets(allTickets.filter((doc) => doc.assigneeId !== null));
+      setFilteredTickets(allTickets.filter((doc) => doc.users.some((t) => t.userId === userId)));
     }
-  }, [titleFilter, assigneeFilter, dropDownFilter]);
+  }, [titleFilter, assigneeFilter, dropDownFilter, allTickets]);
 
   return (
     <div className="w-[95%] h-[45%] bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -68,7 +64,7 @@ const SharedTickets = (): JSX.Element => {
         </div>
       </div>
       <SharedTicketsTable
-        documents={filtered ? filteredTickets : allTickets.filter((doc) => doc.users.some((t) => t.userId === userId))}
+        documents={filteredTickets.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())}
       />
     </div>
   );

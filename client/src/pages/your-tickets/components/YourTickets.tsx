@@ -16,7 +16,6 @@ const YourTickets = (): JSX.Element => {
   const { error } = useContext(ToastContext);
   const { userId, accessToken } = useAuth();
   const { allTickets } = useDocuments();
-  const [filtered, setFiltered] = useState<boolean>(false);
   const [titleFilter, setTitleFilter] = useState<string>('');
   const [assigneeFilter, setAssigneeFilter] = useState<string>('');
   const [dropDownFilter, setDropDownFilter] = useState<StatusEnum>(StatusEnum.ALL);
@@ -42,8 +41,6 @@ const YourTickets = (): JSX.Element => {
 
   useEffect(() => {
     if (titleFilter.length > 3 || assigneeFilter.length > 3 || dropDownFilter !== StatusEnum.ALL) {
-      setFiltered(true);
-
       setFilteredTickets(
         allTickets.filter(
           (t) =>
@@ -52,14 +49,13 @@ const YourTickets = (): JSX.Element => {
               ? t.assignee?.email.toLowerCase().includes(assigneeFilter.toLowerCase())
               : true) &&
             (dropDownFilter === StatusEnum.ALL ? true : t.status === dropDownFilter) &&
-            t.assigneeId,
+            t.userId === userId,
         ),
       );
     } else {
-      setFiltered(false);
-      setFilteredTickets(allTickets.filter((doc) => doc.assigneeId !== null));
+      setFilteredTickets(allTickets.filter((doc) => doc.userId === userId));
     }
-  }, [titleFilter, assigneeFilter, dropDownFilter]);
+  }, [titleFilter, assigneeFilter, dropDownFilter, allTickets]);
 
   return (
     <div className="w-[95%] h-full bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -104,7 +100,9 @@ const YourTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <YourTicketsTable documents={filtered ? filteredTickets : allTickets.filter((doc) => doc.userId === userId)} />
+      <YourTicketsTable
+        documents={filteredTickets.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())}
+      />
     </div>
   );
 };
