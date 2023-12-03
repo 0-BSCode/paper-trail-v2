@@ -8,6 +8,7 @@ import FormRoleInput from './RoleInput';
 import UserService from '@src/services/user-service';
 import { ToastContext } from '@src/context/ToastContext';
 import isValid from '@src/utils/isValid.helper';
+import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
 
 const { Title } = Typography;
 
@@ -68,16 +69,6 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
   useEffect(() => {
     void fetchUserDetails();
   }, []);
-
-  const handleUploadNewPhoto = (): void => {
-    // TODO (Ian): Integrate with backend when routes are ready.
-    window.alert('Uploading new profile picture to the server.');
-  };
-
-  const handleRemovePhoto = (): void => {
-    // TODO (Ian): Integrate with backend when routes are ready.
-    window.alert('Removing profile picture from the server.');
-  };
 
   const handleUpdateInfo = async (): Promise<void> => {
     if (accessToken === null || userId === null) {
@@ -142,16 +133,10 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
           Department of Computer, Information Sciences, and Mathematics
         </Title>
         <Divider />
-        <Flex justify="center" align="center" gap={64} style={{ margin: '32px 0 32px 0' }}>
+        <Flex justify="center" align="center" gap={88} style={{ margin: '32px 0 32px 0' }}>
           {/* Left Side */}
           <Flex vertical justify="start" align="center" gap="middle">
-            <Avatar size={256} src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=1`} />
-            <Button onClick={handleUploadNewPhoto} type="primary" style={{ minWidth: '60%' }}>
-              Upload New Photo
-            </Button>
-            <Button onClick={handleRemovePhoto} type="primary" danger style={{ minWidth: '60%' }}>
-              Remove Photo
-            </Button>
+            <Avatar size={256} src={getAvatarImageUrlByEmail(email)} />
           </Flex>
           {/* Right Side */}
           <Flex vertical justify="center" align="center" gap="middle">

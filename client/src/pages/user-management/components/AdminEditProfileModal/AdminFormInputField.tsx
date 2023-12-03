@@ -28,7 +28,7 @@ function AdminFormInputField({
   const status = disabled === true || isValid ? '' : 'error';
   return (
     <Form.Item name={name} label={label} style={{ marginBottom: '16px' }}>
-      <Flex gap="small">
+      <Flex gap="small" className="relative items-center">
         <Input
           disabled={disabled}
           value={value}
@@ -37,7 +37,13 @@ function AdminFormInputField({
           placeholder={placeholder}
           status={status}
         />
-        {isEditable === false ? '' : <EditOutlined />}
+        {isEditable === false ? (
+          ''
+        ) : (
+          <div className="absolute translate-x-full -right-3">
+            <EditOutlined className="text-neutral-400" />
+          </div>
+        )}
       </Flex>
     </Form.Item>
   );
