@@ -85,7 +85,6 @@ const NotificationModal = (): JSX.Element => {
                   <List.Item.Meta
                     avatar={<Avatar size={72} src={getAvatarImageUrlByEmail(item.user.email)} className="ms-4" />}
                   />
-
                   <div className="flex flex-col w-full ml-2">
                     <div>
                       <p className="w-full text-lg">
