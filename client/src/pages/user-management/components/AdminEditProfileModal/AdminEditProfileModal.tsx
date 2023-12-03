@@ -20,7 +20,6 @@ interface Props {
 }
 
 const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props): JSX.Element => {
-  console.log(getAvatarImageUrlByEmail(email));
   const { success, error } = useContext(ToastContext);
   const [isOpen, setIsOpen] = useState(false);
   const { accessToken } = useAuth();

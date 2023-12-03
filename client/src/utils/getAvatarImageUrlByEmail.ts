@@ -5,7 +5,10 @@
  * @param maxIndex The upper bound of the result, inclusive
  */
 function hashStringToNumber(str: string, maxIndex: number): number {
-  return Array.from(str).reduce((total, cur) => total + cur.charCodeAt(0), 0) % (maxIndex + 1);
+  const EMAIL_ASCII_VALUE = Array.from(str).reduce((total, cur) => total + cur.charCodeAt(0), 0);
+  const SALT = 7;
+  const HASH_VALUE = EMAIL_ASCII_VALUE * 31 * SALT;
+  return HASH_VALUE % (maxIndex + 1);
 }
 
 /**
@@ -14,9 +17,8 @@ function hashStringToNumber(str: string, maxIndex: number): number {
  * @param email the email of the user
  */
 export default function getAvatarImageUrlByEmail(email: string): string {
-  const IMAGE_ID_UPPER_BOUND = 30;
+  const IMAGE_ID_UPPER_BOUND = 70;
   const HASH_VALUE = hashStringToNumber(email, IMAGE_ID_UPPER_BOUND);
-  console.log(HASH_VALUE);
   const GENDER = HASH_VALUE % 2 === 0 ? 'men' : 'women';
   return `https://randomuser.me/api/portraits/${GENDER}/${HASH_VALUE}.jpg`;
 }
