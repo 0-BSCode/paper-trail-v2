@@ -61,3 +61,20 @@ export const deleteFileById = mutation({
     }
   },
 });
+
+export const deleteFilesbyDocId = mutation({
+  args: { documentId: v.string() },
+  handler: async (ctx, args) => {
+    const documentFiles = await ctx.db
+      .query('documentFiles')
+      .filter((q) => q.eq(q.field('documentId'), args.documentId))
+      .collect();
+
+    if (documentFiles) {
+      for (const documentFile of documentFiles) {
+        await ctx.storage.delete(documentFile.storageId);
+        await ctx.db.delete(documentFile._id);
+      }
+    }
+  },
+});

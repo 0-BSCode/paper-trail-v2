@@ -7,6 +7,7 @@ import { UserOutlined } from '@ant-design/icons';
 import FormInputField from './FormInputField';
 import UserService from '@src/services/user-service';
 import { ToastContext } from '@src/context/ToastContext';
+import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
 const { Title } = Typography;
 
 const UserProfileModal = (): JSX.Element => {
@@ -75,10 +76,10 @@ const UserProfileModal = (): JSX.Element => {
           Department of Computer, Information Sciences, and Mathematics
         </Title>
         <Divider />
-        <Flex justify="center" align="center" gap={64} style={{ margin: '32px 0 32px 0' }}>
+        <Flex justify="center" align="center" gap={88} style={{ margin: '32px 0 32px 0' }}>
           {/* Left Side */}
           <Flex vertical justify="start" align="center" gap="middle">
-            <Avatar size={256} src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=1`} />
+            <Avatar size={256} src={getAvatarImageUrlByEmail(email)} />
           </Flex>
           {/* Right Side */}
           <Flex vertical justify="center" align="center" gap="middle">
