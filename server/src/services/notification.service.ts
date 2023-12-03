@@ -18,7 +18,16 @@ class NotificationService {
   };
 
   public getNotifications = async (userId: number): Promise<Notification[]> => {
-    const notifications = await Notification.findAll({ where: { userId } });
+    const notifications = await Notification.findAll({
+      where: { userId },
+      include: [
+        {
+          model: User,
+          attributes: { exclude: ["password", "passwordResetToken", "verificationToken", "createdAt", "updatedAt"] }
+        },
+        { model: Document, attributes: ["title", "id", "status"] }
+      ]
+    });
 
     if (!notifications || notifications.length === 0) {
       return [];
