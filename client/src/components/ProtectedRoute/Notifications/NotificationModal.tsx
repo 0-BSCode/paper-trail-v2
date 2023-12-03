@@ -6,6 +6,7 @@ import { ToastContext } from '@src/context/ToastContext';
 import NotificationService from '@src/services/notification-service';
 import type Notification from '@src/types/interfaces/notification';
 import { Link } from 'react-router-dom';
+import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
 
 const NotificationModal = (): JSX.Element => {
   const { userId, accessToken } = useAuth();
@@ -78,12 +79,11 @@ const NotificationModal = (): JSX.Element => {
           <List
             itemLayout="horizontal"
             dataSource={notifications?.filter((n) => !n.isRead)}
-            renderItem={(item, index) => {
-              console.log(item);
+            renderItem={(item) => {
               return (
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar size={64} src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />}
+                    avatar={<Avatar size={72} src={getAvatarImageUrlByEmail(item.user.email)} className="ms-4" />}
                   />
 
                   <div className="flex flex-col w-full ml-2">
