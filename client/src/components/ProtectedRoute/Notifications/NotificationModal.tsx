@@ -1,6 +1,6 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import useAuth from '@src/hooks/useAuth';
-import { Modal, Button, Avatar, List, Spin } from 'antd';
+import { Modal, Button, Avatar, List, Spin, Badge } from 'antd';
 import { BellOutlined, InfoCircleFilled } from '@ant-design/icons';
 import { ToastContext } from '@src/context/ToastContext';
 import NotificationService from '@src/services/notification-service';
@@ -14,6 +14,7 @@ const NotificationModal = (): JSX.Element => {
   const [isNotificationsModalOpen, setIsNotificationsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [notifications, setNotifications] = useState<Notification[] | undefined>(undefined);
+  const unreadNotifications = notifications?.filter((n) => !n.isRead);
 
   const fetchNotifications = async (): Promise<void> => {
     setIsLoading(true);
@@ -56,12 +57,19 @@ const NotificationModal = (): JSX.Element => {
     void fetchNotifications();
   };
 
+  // Fetches only once to to display an indicator if there are any unread ones
+  useEffect(() => {
+    void fetchNotifications();
+  }, []);
+
   return (
     <>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <Button type="link" size="middle" onClick={handleOpenNotificationsModal}>
-        <BellOutlined />
-      </Button>
+      <Badge size="small" count={unreadNotifications?.length} offset={[-8, 8]}>
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+        <Button title="Notifications" type="link" size="large" onClick={handleOpenNotificationsModal}>
+          <BellOutlined />
+        </Button>
+      </Badge>
       <Modal
         style={{ height: 'calc(100vh - 200px)' }}
         title="Notifications"
@@ -78,7 +86,7 @@ const NotificationModal = (): JSX.Element => {
         ) : (
           <List
             itemLayout="horizontal"
-            dataSource={notifications?.filter((n) => !n.isRead)}
+            dataSource={unreadNotifications}
             renderItem={(item) => {
               return (
                 <List.Item>

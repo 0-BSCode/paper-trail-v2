@@ -3,7 +3,6 @@ import type { ChangeEvent, Dispatch } from 'react';
 import { useState, useEffect, useContext } from 'react';
 import useAuth from '@src/hooks/useAuth';
 import { Modal, Button, Typography, Divider, Flex, Avatar, Form } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 import FormInputField from './FormInputField';
 import UserService from '@src/services/user-service';
 import { ToastContext } from '@src/context/ToastContext';
@@ -56,8 +55,8 @@ const UserProfileModal = (): JSX.Element => {
 
   return (
     <>
-      <Button type="link" size="middle" onClick={handleOpen}>
-        <UserOutlined />
+      <Button title="User Profile" type="link" className="flex items-center px-2" size="middle" onClick={handleOpen}>
+        <Avatar src={<img src={getAvatarImageUrlByEmail(authEmail as string)} alt="Your Profile" />} />
       </Button>
       <Modal
         title="Student Profile"

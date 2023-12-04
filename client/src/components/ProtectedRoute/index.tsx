@@ -6,6 +6,7 @@ import LogoWhite from '@src/assets/logo-white.svg';
 import { ToastContext } from '@src/context/ToastContext';
 import { NotificationModal } from './Notifications';
 import { UserProfileModal } from './UserProfile';
+import { LogoutOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -52,17 +53,19 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
                   Paper Trail
                 </Title>
               </div>
-              <div className="flex gap-1">
+              <div className="flex items-center gap-1">
                 <NotificationModal />
                 <UserProfileModal />
                 <Button
-                  type="primary"
-                  size="middle"
-                  className="text-white"
-                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                  onClick={logoutUser}
+                  danger
+                  title="Log Out"
+                  type="link"
+                  size="large"
+                  onClick={() => {
+                    void logoutUser();
+                  }}
                 >
-                  Log Out
+                  <LogoutOutlined />
                 </Button>
               </div>
             </Flex>
