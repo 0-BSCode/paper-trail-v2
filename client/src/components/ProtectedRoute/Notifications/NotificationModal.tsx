@@ -59,7 +59,7 @@ const NotificationModal = (): JSX.Element => {
   return (
     <>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <Button type="link" size="middle" onClick={handleOpenNotificationsModal}>
+      <Button title="Notifications" type="link" size="large" onClick={handleOpenNotificationsModal}>
         <BellOutlined />
       </Button>
       <Modal

@@ -55,7 +55,7 @@ const UserProfileModal = (): JSX.Element => {
 
   return (
     <>
-      <Button type="link" className="flex items-center pl-0" size="middle" onClick={handleOpen}>
+      <Button title="User Profile" type="link" className="flex items-center px-2" size="middle" onClick={handleOpen}>
         <Avatar src={<img src={getAvatarImageUrlByEmail(authEmail as string)} alt="Your Profile" />} />
       </Button>
       <Modal
