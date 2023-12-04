@@ -8,8 +8,9 @@ import type DocumentInterface from '@src/types/interfaces/document';
 import type DocumentUser from '@src/types/interfaces/document-user';
 import PermissionEnum from '@src/types/enums/permission-enum';
 import validator from 'validator';
-import { Button, Space, Switch } from 'antd';
+import { Avatar, Button, Space, Switch } from 'antd';
 import { EyeIcon, PencilIcon } from '@heroicons/react/24/outline';
+import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
 
 interface SharedUsersProps {
   documentUsers: DocumentUser[];
@@ -82,11 +83,13 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
     <div className="max-h-[150px] overflow-y-auto">
       <div className="flex items-center justify-between w-full px-2 py-4 rounded-md hover:bg-gray-100">
         <div className="flex items-center space-x-2">
-          <div
-            className={`${backgroundColor} w-8 h-8 flex justify-center items-center text-white uppercase rounded-full text-xl font-medium`}
-          >
-            {email?.[0]}
-          </div>
+          <Avatar
+            size={32}
+            src={getAvatarImageUrlByEmail(email ?? '')}
+            className={
+              'w-8 h-8 text-white font-semibold flex justify-center items-center rounded-full flex-shrink-0 uppercase ring-2'
+            }
+          />
           <p className="font-medium">{email !== null && email} (You)</p>
         </div>
         <p className="italic text-gray-500">Owner</p>
@@ -98,11 +101,13 @@ const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Elem
             className="flex items-center justify-between w-full px-2 py-4 rounded-md hover:bg-gray-100"
           >
             <div className="flex items-center space-x-2">
-              <div
-                className={`${sharedUserBackgroundColor} w-8 h-8 flex justify-center items-center text-white uppercase rounded-full text-xl font-medium`}
-              >
-                {documentUser.user.email[0]}
-              </div>
+              <Avatar
+                size={32}
+                src={getAvatarImageUrlByEmail(documentUser.user.email)}
+                className={
+                  'w-8 h-8 text-white font-semibold flex justify-center items-center rounded-full flex-shrink-0 uppercase ring-2'
+                }
+              />
               <p className="font-medium">
                 {documentUser.user.email} ({documentUser.permission})
               </p>

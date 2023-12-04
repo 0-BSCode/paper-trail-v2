@@ -1,12 +1,11 @@
 import { type ChangeEvent, type FocusEvent, useContext, useState } from 'react';
 import UserDropdown from '@src/components/UserDropdown';
 import ShareDocumentModal from './ShareDocumentModal';
-import useRandomBackground from '@src/hooks/useRandomBackground';
 import useAuth from '@src/hooks/useAuth';
 import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
-import { Button, Input, Space, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Input, Space, Tooltip, Typography } from 'antd';
 import StatusEnum from '@src/types/enums/status-enum';
 import { ToastContext } from '@src/context/ToastContext';
 import SocketEvent from '@src/types/enums/socket-events';
@@ -14,24 +13,26 @@ import DeleteDocumentModal from './DeleteDocumentModal';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import statusToOptionMapping from '@src/constants/statusToOptionMapping';
+import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
 
 const CurrentUsers = (): JSX.Element => {
-  const { backgroundColor } = useRandomBackground();
-  const { fullName } = useAuth();
+  const { email } = useAuth();
   const { currentUsers } = useContext(DocumentContext);
 
   return (
     <>
       {Array.from(currentUsers)
-        .filter((currentUser) => currentUser !== fullName)
+        .filter((currentUser) => currentUser !== email)
         .map((currentUser) => {
           return (
-            <div
+            <Avatar
               key={currentUser}
-              className={`${backgroundColor} w-8 h-8 text-white font-semibold flex justify-center items-center rounded-full flex-shrink-0 uppercase ring-2`}
-            >
-              {currentUser[0]}
-            </div>
+              size={32}
+              src={getAvatarImageUrlByEmail(currentUser)}
+              className={
+                'w-8 h-8 text-white font-semibold flex justify-center items-center rounded-full flex-shrink-0 uppercase ring-2'
+              }
+            />
           );
         })}
     </>

@@ -4,13 +4,15 @@ import { CSSTransition } from 'react-transition-group';
 import { useNavigate } from 'react-router-dom';
 import { ToastContext } from '@src/context/ToastContext';
 import useAuth from '@src/hooks/useAuth';
+import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
+import { Avatar } from 'antd';
 
 const UserDropdown = (): JSX.Element => {
   const { backgroundColor } = useRandomBackground();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const { success } = useContext(ToastContext);
-  const { fullName, logout } = useAuth();
+  const { email, logout } = useAuth();
   const navigate = useNavigate();
 
   const logoutUser = async (): Promise<void> => {
@@ -32,7 +34,13 @@ const UserDropdown = (): JSX.Element => {
         }}
         className={`${backgroundColor} w-8 h-8 text-white font-semibold flex justify-center items-center rounded-full ring-2 flex-shrink-0 uppercase`}
       >
-        {fullName?.[0]}
+        <Avatar
+          size={32}
+          src={getAvatarImageUrlByEmail(email ?? '')}
+          className={
+            'w-8 h-8 text-white font-semibold flex justify-center items-center rounded-full flex-shrink-0 uppercase ring-2'
+          }
+        />
       </button>
       <CSSTransition nodeRef={dropdownRef} in={showDropdown} timeout={200} classNames="fade-in" unmountOnExit>
         <div
