@@ -24,7 +24,7 @@ const RegisterPage = (): JSX.Element => {
   const [password2, setPassword2] = useState('');
   const [password2Errors, setPassword2Errors] = useState<string[]>([]);
   const navigate = useNavigate();
-  const { addToast, error } = useContext(ToastContext);
+  const { success, error } = useContext(ToastContext);
 
   const validate = (): boolean => {
     setStudentIdNumberErrors([]);
@@ -74,10 +74,7 @@ const RegisterPage = (): JSX.Element => {
         fullName,
       });
 
-      addToast({
-        title: `Successfully registered ${email}!`,
-        color: 'success',
-      });
+      success(`Successfully registered ${email}!`);
       navigate('/login');
     } catch (err) {
       if (axios.isAxiosError(err)) {
