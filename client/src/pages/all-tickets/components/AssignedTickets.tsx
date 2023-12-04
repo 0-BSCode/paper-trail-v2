@@ -12,7 +12,6 @@ const AssignedTickets = (): JSX.Element => {
   const [assigneeFilter, setAssigneeFilter] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<StatusEnum>(StatusEnum.ALL);
   const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
-  const [sortedTickets, setSortedTickets] = useState<TicketInterface[]>([]);
 
   useEffect(() => {
     if (titleFilter.length > 3 || assigneeFilter || statusFilter !== StatusEnum.ALL) {
@@ -30,12 +29,9 @@ const AssignedTickets = (): JSX.Element => {
     }
   }, [titleFilter, assigneeFilter, statusFilter, allTickets]);
 
-  useEffect(() => {
-    const newSortedTickets = filteredTickets.sort(
-      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-    );
-    setSortedTickets(newSortedTickets);
-  }, [filteredTickets]);
+  const sortedTickets = filteredTickets.sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  );
 
   return (
     <div className="w-[95%] h-[45%] bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
