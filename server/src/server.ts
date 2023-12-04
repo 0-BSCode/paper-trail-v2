@@ -29,8 +29,9 @@ io.on("connection", (socket) => {
   if (!accessToken || !documentId) return socket.disconnect();
   else {
     jwt.verify(accessToken, env.ACCESS_TOKEN_SECRET, (err: VerifyErrors | null, decoded: unknown) => {
-      const { id, email } = decoded as RequestUser;
-      (socket as any).username = email;
+      const { id, email, fullName } = decoded as RequestUser;
+      (socket as any).fullName = fullName;
+      (socket as any).email = email;
 
       documentService
         .findDocumentById(parseInt(documentId), parseInt(id))
@@ -43,7 +44,12 @@ io.on("connection", (socket) => {
             .then((clients) => {
               io.sockets.in(documentId).emit(
                 SocketEvent.CURRENT_USERS_UPDATE,
-                clients.map((client) => (client as any).username)
+                clients.map((client) => {
+                  return {
+                    fullName: (client as any).fullName,
+                    email: (client as any).email
+                  };
+                })
               );
             });
 
@@ -71,7 +77,12 @@ io.on("connection", (socket) => {
               .then((clients) => {
                 io.sockets.in(documentId).emit(
                   SocketEvent.CURRENT_USERS_UPDATE,
-                  clients.map((client) => (client as any).username)
+                  clients.map((client) => {
+                    return {
+                      fullName: (client as any).fullName,
+                      email: (client as any).email
+                    };
+                  })
                 );
               });
           });

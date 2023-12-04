@@ -1,5 +1,4 @@
 import { type ChangeEvent, type FocusEvent, useContext, useState } from 'react';
-import UserDropdown from '@src/components/UserDropdown';
 import ShareDocumentModal from './ShareDocumentModal';
 import useAuth from '@src/hooks/useAuth';
 import { DocumentContext } from '@src/context/DocumentContext';
@@ -22,17 +21,18 @@ const CurrentUsers = (): JSX.Element => {
   return (
     <>
       {Array.from(currentUsers)
-        .filter((currentUser) => currentUser !== email)
+        .filter((currentUser) => currentUser.email !== email)
         .map((currentUser) => {
           return (
-            <Avatar
-              key={currentUser}
-              size={32}
-              src={getAvatarImageUrlByEmail(currentUser)}
-              className={
-                'w-8 h-8 text-white font-semibold flex justify-center items-center rounded-full flex-shrink-0 uppercase ring-2'
-              }
-            />
+            <Tooltip title={currentUser.fullName} key={currentUser.email}>
+              <Avatar
+                size={32}
+                src={getAvatarImageUrlByEmail(currentUser.email)}
+                className={
+                  'w-8 h-8 text-white font-semibold flex justify-center items-center rounded-full flex-shrink-0 uppercase ring-2'
+                }
+              />
+            </Tooltip>
           );
         })}
     </>
@@ -40,7 +40,7 @@ const CurrentUsers = (): JSX.Element => {
 };
 
 const DocumentMenuBar = (): JSX.Element => {
-  const { accessToken, userId } = useAuth();
+  const { accessToken, userId, email, fullName } = useAuth();
   const { success } = useContext(ToastContext);
   const { document, saving, socket, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
   const navigate = useNavigate();
@@ -164,7 +164,15 @@ const DocumentMenuBar = (): JSX.Element => {
         <div className="flex items-center flex-shrink-0 pl-3 gap-x-4">
           <div className="flex gap-x-2">
             <CurrentUsers />
-            <UserDropdown />
+            <Tooltip title={fullName}>
+              <Avatar
+                size={32}
+                src={getAvatarImageUrlByEmail(email ?? '')}
+                className={
+                  'w-8 h-8 text-white font-semibold flex justify-center items-center rounded-full flex-shrink-0 uppercase ring-2'
+                }
+              />
+            </Tooltip>
           </div>
           <Space>
             {hasDeletePermissions && <DeleteDocumentModal />}

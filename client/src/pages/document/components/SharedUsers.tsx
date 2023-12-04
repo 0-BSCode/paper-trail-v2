@@ -2,7 +2,6 @@ import { type Dispatch, type SetStateAction, useContext, useState } from 'react'
 import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
 import useAuth from '@src/hooks/useAuth';
-import useRandomBackground from '@src/hooks/useRandomBackground';
 import DocumentUserService from '@src/services/document-user-service';
 import type DocumentInterface from '@src/types/interfaces/document';
 import type DocumentUser from '@src/types/interfaces/document-user';
@@ -18,8 +17,6 @@ interface SharedUsersProps {
 }
 
 const SharedUsers = ({ documentUsers, setDocument }: SharedUsersProps): JSX.Element => {
-  const { backgroundColor } = useRandomBackground();
-  const { backgroundColor: sharedUserBackgroundColor } = useRandomBackground();
   const { accessToken, email } = useAuth();
   const [loading, setLoading] = useState(false);
   const { success, error } = useContext(ToastContext);

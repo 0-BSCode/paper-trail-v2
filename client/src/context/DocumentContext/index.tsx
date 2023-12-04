@@ -14,6 +14,7 @@ import useAuth from '../../hooks/useAuth';
 import DocumentService from '../../services/document-service';
 import type DocumentInterface from '../../types/interfaces/document';
 import { ToastContext } from '../ToastContext';
+import type CurrentUserInterface from '@src/types/interfaces/current-user';
 
 interface DocumentContextInterface {
   document: DocumentInterface | null;
@@ -24,8 +25,8 @@ interface DocumentContextInterface {
   setLoading: Dispatch<SetStateAction<boolean>>;
   saving: boolean;
   setSaving: Dispatch<SetStateAction<boolean>>;
-  currentUsers: Set<string>;
-  setCurrentUsers: Dispatch<SetStateAction<Set<string>>>;
+  currentUsers: Set<CurrentUserInterface>;
+  setCurrentUsers: Dispatch<SetStateAction<Set<CurrentUserInterface>>>;
   setDocumentTitle: (title: string) => void;
   saveDocument: (updatedDocument: DocumentInterface) => Promise<void>;
   socket: MutableRefObject<any>;
@@ -40,7 +41,7 @@ const defaultValues = {
   setLoading: () => {},
   saving: false,
   setSaving: () => {},
-  currentUsers: new Set<string>(),
+  currentUsers: new Set<CurrentUserInterface>(),
   setCurrentUsers: () => {},
   setDocumentTitle: () => {},
   saveDocument: async () => {},
