@@ -62,7 +62,7 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
                   type="link"
                   size="large"
                   onClick={() => {
-                    void logoutUser;
+                    void logoutUser();
                   }}
                 >
                   <LogoutOutlined />
