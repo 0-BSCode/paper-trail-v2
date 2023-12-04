@@ -122,61 +122,63 @@ const DocumentMenuBar = (): JSX.Element => {
   };
 
   return (
-    <div className="w-full flex justify-between items-center border-b">
-      <div className="w-full flex justify-start items-center overflow-x-hidden md:overflow-visible gap-x-4">
-        <Tooltip title="Go back">
-          <Button onClick={handleBackNavigation} shape="circle" icon={<ArrowLeftOutlined />} />
-        </Tooltip>
-        <Space.Compact direction="vertical">
-          <Space>
-            <Input
-              readOnly={!canEditTitle}
-              type="text"
-              onBlur={(event) => {
-                void handleTitleInputBlur(event);
-              }}
-              onChange={(event) => {
-                handleTitleInputChange(event);
-              }}
-              value={document?.title ? document?.title : ''}
-              name=""
-              id=""
-              placeholder="Untitled Document"
-            />
-            <p className={`text-sm text-gray-500 px-2 ${saving ? 'visible' : 'invisible'}`}>Saving...</p>
-          </Space>
-          <Space>
-            <Typography.Text strong>Owner:</Typography.Text>
-            <Tooltip title={document?.owner.email} placement="bottom">
-              <Typography.Text
-                style={{
-                  color: 'grey',
+    <div className="border-b w-full bg-white flex flex-col px-5 py-3 shadow-md z-[999]">
+      <div className="w-full flex justify-between items-center border-b">
+        <div className="w-full flex justify-start items-center overflow-x-hidden md:overflow-visible gap-x-4">
+          <Tooltip title="Go back">
+            <Button onClick={handleBackNavigation} shape="circle" icon={<ArrowLeftOutlined />} />
+          </Tooltip>
+          <Space.Compact direction="vertical">
+            <Space>
+              <Input
+                readOnly={!canEditTitle}
+                type="text"
+                onBlur={(event) => {
+                  void handleTitleInputBlur(event);
                 }}
-              >
-                {document?.owner.fullName}
-              </Typography.Text>
-            </Tooltip>
-          </Space>
-        </Space.Compact>
-      </div>
-      <div className="flex items-center flex-shrink-0 pl-3 gap-x-4">
-        <div className="flex gap-x-2">
-          <CurrentUsers />
-          <UserDropdown />
+                onChange={(event) => {
+                  handleTitleInputChange(event);
+                }}
+                value={document?.title ? document?.title : ''}
+                name=""
+                id=""
+                placeholder="Untitled Document"
+              />
+              <p className={`text-sm text-gray-500 px-2 ${saving ? 'visible' : 'invisible'}`}>Saving...</p>
+            </Space>
+            <Space>
+              <Typography.Text strong>Owner:</Typography.Text>
+              <Tooltip title={document?.owner.email} placement="bottom">
+                <Typography.Text
+                  style={{
+                    color: 'grey',
+                  }}
+                >
+                  {document?.owner.fullName}
+                </Typography.Text>
+              </Tooltip>
+            </Space>
+          </Space.Compact>
         </div>
-        <Space>
-          {hasDeletePermissions && <DeleteDocumentModal />}
-          {document !== null && document.userId === userId && <ShareDocumentModal />}
-          <Button
-            disabled={!canSubmit}
-            type="primary"
-            onClick={() => {
-              saveStatus(document?.status);
-            }}
-          >
-            {document?.status === StatusEnum.CHANGES_REQUESTED ? 'Resubmit' : 'Submit'}
-          </Button>
-        </Space>
+        <div className="flex items-center flex-shrink-0 pl-3 gap-x-4">
+          <div className="flex gap-x-2">
+            <CurrentUsers />
+            <UserDropdown />
+          </div>
+          <Space>
+            {hasDeletePermissions && <DeleteDocumentModal />}
+            {document !== null && document.userId === userId && <ShareDocumentModal />}
+            <Button
+              disabled={!canSubmit}
+              type="primary"
+              onClick={() => {
+                saveStatus(document?.status);
+              }}
+            >
+              {document?.status === StatusEnum.CHANGES_REQUESTED ? 'Resubmit' : 'Submit'}
+            </Button>
+          </Space>
+        </div>
       </div>
     </div>
   );
