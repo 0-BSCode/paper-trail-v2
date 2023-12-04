@@ -49,11 +49,11 @@ const RegisterPage = (): JSX.Element => {
       isValid = false;
     }
     if (!(password1.length >= 8 && password1.length <= 25)) {
-      setPassword1Errors((prev) => [...prev, '- Password must be between 8 and 25 characters.']);
+      setPassword1Errors((prev) => [...prev, '• Password must be between 8 and 25 characters.']);
       isValid = false;
     }
     if (!/\d/.test(password1)) {
-      setPassword1Errors((prev) => [...prev, '- Password must contain at least 1 number.']);
+      setPassword1Errors((prev) => [...prev, '• Password must contain at least 1 number.']);
       isValid = false;
     }
     if (password1 !== password2) {
@@ -79,7 +79,7 @@ const RegisterPage = (): JSX.Element => {
       const response = await AuthService.login({ email, password: password1 });
       const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
       login(newAccessToken, newRefreshToken);
-      success('Successfully registered and logged in!');
+      success('Successfully registered!');
       navigate('/home');
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -173,7 +173,7 @@ const RegisterPage = (): JSX.Element => {
               }}
             />
             {!!studentIdNumberErrors.length && (
-              <div className="text-sm text-red-500">{studentIdNumberErrors.join(', ')}</div>
+              <div className="text-sm text-[#ff4d4f]">{studentIdNumberErrors.join(', ')}</div>
             )}
           </div>
           <div>
@@ -187,7 +187,7 @@ const RegisterPage = (): JSX.Element => {
                 handleOnInputFullName(e.target.value);
               }}
             />
-            {!!fullNameErrors.length && <div className="text-sm text-red-500">{fullNameErrors.join(', ')}</div>}
+            {!!fullNameErrors.length && <div className="text-sm text-[#ff4d4f]">{fullNameErrors.join(', ')}</div>}
           </div>
           <div>
             <Input
@@ -200,7 +200,7 @@ const RegisterPage = (): JSX.Element => {
                 handleOnInputEmail(e.target.value);
               }}
             />
-            {!!emailErrors.length && <div className="text-sm text-red-500">{emailErrors.join(', ')}</div>}
+            {!!emailErrors.length && <div className="text-sm text-[#ff4d4f]">{emailErrors.join(', ')}</div>}
           </div>
           <div>
             <Input.Password
@@ -215,7 +215,7 @@ const RegisterPage = (): JSX.Element => {
               }}
             />
             {!!password1Errors.length && (
-              <div className="text-sm text-red-500" style={{ whiteSpace: 'pre-line' }}>
+              <div className="text-sm text-[#ff4d4f]" style={{ whiteSpace: 'pre-line' }}>
                 {password1Errors.join('\n')}
               </div>
             )}
@@ -232,7 +232,7 @@ const RegisterPage = (): JSX.Element => {
                 handleOnInputPassword2(e.target.value);
               }}
             />
-            {!!password2Errors.length && <div className="text-sm text-red-500">{password2Errors.join(', ')}</div>}
+            {!!password2Errors.length && <div className="text-sm text-[#ff4d4f]">{password2Errors.join(', ')}</div>}
           </div>
           <Button
             style={{ borderRadius: '6px', fontFamily: 'roboto' }}
@@ -247,7 +247,7 @@ const RegisterPage = (): JSX.Element => {
           </Button>
           <div className="items-center text-center">
             <span>or </span>
-            <Link to="/login" className="text-blue-500 no-underline hover:underline">
+            <Link to="/login" className="text-[#1677FF] no-underline hover:underline">
               Log In
             </Link>
           </div>
