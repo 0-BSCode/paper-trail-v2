@@ -131,7 +131,7 @@ const LoginPage = (): JSX.Element => {
                   handleOnInputPassword(e.target.value);
                 }}
               />
-              {passwordErrors.length > 0 && <div className="text-sm text-red-500">{passwordErrors.join(', ')}</div>}
+              {passwordErrors.length > 0 && <div className="text-sm text-[#ff4d4f]">{passwordErrors.join(', ')}</div>}
             </div>
             <Button
               style={{ borderRadius: '6px', fontFamily: 'roboto' }}
