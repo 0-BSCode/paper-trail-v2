@@ -23,6 +23,7 @@ const AssigneeDropDown = ({ setAssigneeFilter }: DropDownProps): JSX.Element => 
 
   const onChange = (assignee: string): void => {
     setAssigneeFilter(assignee);
+    setSearchText('');
   };
 
   return (
@@ -30,7 +31,6 @@ const AssigneeDropDown = ({ setAssigneeFilter }: DropDownProps): JSX.Element => 
       open={searchText.length >= 3}
       showSearch
       allowClear
-      style={{ width: '100%' }}
       placeholder="Assignee"
       optionFilterProp="children"
       filterOption={(input, option) => (option?.label ?? '').includes(input)}
@@ -40,6 +40,7 @@ const AssigneeDropDown = ({ setAssigneeFilter }: DropDownProps): JSX.Element => 
       onChange={onChange}
       onSearch={onSearch}
       options={ciscoOfficers}
+      style={{ width: '100%' }}
     />
   );
 };
