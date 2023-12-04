@@ -1,7 +1,7 @@
 import useUsers from '@src/hooks/useUsers';
 import RoleEnum from '@src/types/enums/role-enum';
 import { Select } from 'antd';
-import type { Dispatch, SetStateAction } from 'react';
+import { useState, type Dispatch, type SetStateAction } from 'react';
 
 interface DropDownProps {
   setAssigneeFilter: Dispatch<SetStateAction<string>>;
@@ -9,11 +9,7 @@ interface DropDownProps {
 
 const AssigneeDropDown = ({ setAssigneeFilter }: DropDownProps): JSX.Element => {
   const { allUsers } = useUsers();
-
-  const onChange = (assignee: string): void => {
-    setAssigneeFilter(assignee);
-  };
-
+  const [searchText, setSearchText] = useState('');
   const ciscoOfficers = allUsers
     .filter((u) => u.roles.some((r) => r.name === RoleEnum.CISCO_MEMBER || r.name === RoleEnum.CISCO_ADMIN))
     .map((u) => ({
@@ -21,8 +17,17 @@ const AssigneeDropDown = ({ setAssigneeFilter }: DropDownProps): JSX.Element => 
       label: u.email,
     }));
 
+  const onSearch = (searchVal: string): void => {
+    setSearchText(searchVal);
+  };
+
+  const onChange = (assignee: string): void => {
+    setAssigneeFilter(assignee);
+  };
+
   return (
     <Select
+      open={searchText.length >= 3}
       showSearch
       allowClear
       style={{ width: '100%' }}
@@ -33,6 +38,7 @@ const AssigneeDropDown = ({ setAssigneeFilter }: DropDownProps): JSX.Element => 
         (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
       }
       onChange={onChange}
+      onSearch={onSearch}
       options={ciscoOfficers}
     />
   );
