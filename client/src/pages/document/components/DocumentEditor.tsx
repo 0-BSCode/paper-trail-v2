@@ -18,7 +18,7 @@ const DocumentEditor = (): JSX.Element => {
     document?.status !== StatusEnum.RAISED;
 
   return (
-    <div className="w-[850px] h-[650px] bg-white shadow-md flex-shrink-0 cursor-text p-10">
+    <div className="w-[850px] h-[700px] bg-white shadow-md flex-shrink-0 cursor-text p-10">
       <RichTextEditor onChange={handleEditorChange} editorRef={editorRef} editable={hasEditPermission} />
     </div>
   );

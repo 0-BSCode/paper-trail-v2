@@ -46,8 +46,11 @@ const DocumentPage = (): JSX.Element => {
     <div className="w-full h-full bg-gray-100 flex flex-col">
       <DocumentMenuBar />
       <div className="w-full flex flex-col justify-start items-center overflow-hidden">
-        <div style={{ width: widthStr }} className="h-full w-full overflow-auto flex items-start gap-x-3 p-4">
-          <div className="flex flex-col gap-y-4">
+        <div
+          style={{ width: widthStr }}
+          className="h-full w-full overflow-auto flex items-start justify-center gap-x-8 py-8"
+        >
+          <div className="flex flex-col gap-y-8">
             <DocumentEditor />
             {userId && (
               <Space.Compact className="bg-white px-10 py-5 w-[850px] h-fit shadow-md">
@@ -57,7 +60,7 @@ const DocumentPage = (): JSX.Element => {
             )}
           </div>
           <div className="flex flex-col">
-            <Space direction="vertical" className="h-fit">
+            <Space direction="vertical" className="h-fit gap-6">
               <DocumentStatus documentId={documentId} />
               <DocumentAssignee documentId={documentId} />
               <DocumentComments />

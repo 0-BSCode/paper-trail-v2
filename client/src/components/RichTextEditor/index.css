@@ -1,5 +1,5 @@
 /* Override default styles for editor */
 .css-1lrqz9v .remirror-editor.ProseMirror {
   overflow-y: auto !important;
-  height: 500px;
+  height: 550px;
 }
