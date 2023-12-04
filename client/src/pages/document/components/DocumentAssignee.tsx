@@ -94,7 +94,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
   }, [document]);
 
   return (
-    <div className="flex flex-col border-r-4 gap-y-3 bg-white shadow-md p-3">
+    <div className="flex flex-col p-3 bg-white border-r-4 shadow-md gap-y-3">
       <Typography.Title
         level={5}
         style={{

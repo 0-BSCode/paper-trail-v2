@@ -200,7 +200,7 @@ const ShareDocumentModal = (): JSX.Element => {
                 <h1 className="text-xl font-medium">Get Link</h1>
               </div>
               <div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div className="space-y-1">{document.isPublic ? publicAccessBtn : restrictedAccessBtn}</div>
                   <input ref={copyLinkInputRef} type="text" className="d-none opacity-0 cursor-default" />
                   <Button type="primary" onClick={handleCopyLinkBtnClick}>

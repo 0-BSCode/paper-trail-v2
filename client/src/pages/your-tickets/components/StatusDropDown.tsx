@@ -6,13 +6,13 @@ import { Button, Dropdown, Space } from 'antd';
 import { type Dispatch, type SetStateAction } from 'react';
 
 interface DropDownProps {
-  dropDownFilter: string;
-  setDropDownFilter: Dispatch<SetStateAction<StatusEnum>>;
+  statusFilter: string;
+  setStatusFilter: Dispatch<SetStateAction<StatusEnum>>;
 }
 
-const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Element => {
+const StatusDropDown = ({ statusFilter, setStatusFilter }: DropDownProps): JSX.Element => {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    setDropDownFilter(e.key as StatusEnum);
+    setStatusFilter(e.key as StatusEnum);
   };
 
   const items: MenuProps['items'] = [
@@ -52,10 +52,10 @@ const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Ele
   };
 
   return (
-    <Dropdown menu={menuProps} className="border-gray-300">
+    <Dropdown menu={menuProps}>
       <Button>
         <Space>
-          {convertToTitleCase(dropDownFilter)}
+          {convertToTitleCase(statusFilter)}
           <DownOutlined />
         </Space>
       </Button>
@@ -63,4 +63,4 @@ const DropDown = ({ dropDownFilter, setDropDownFilter }: DropDownProps): JSX.Ele
   );
 };
 
-export default DropDown;
+export default StatusDropDown;

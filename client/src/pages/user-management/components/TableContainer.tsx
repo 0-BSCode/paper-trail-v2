@@ -34,7 +34,7 @@ const TableContainer = (): JSX.Element => {
           <div className="flex  flex-col justify-start w-[40%]">
             <p className="my-2 font-semibold ">Search by Email</p>
             <input
-              className="w-full p-2 border border-gray-300 border-solid rounded-md focus:outline-none focus:ring-1 focus:border-cyan-400 border-t-solid"
+              className="w-full p-2 placeholder-gray-300 border border-gray-300 border-solid rounded-md focus:outline-none focus:ring-1 focus:border-cyan-400 border-t-solid"
               onChange={(e) => {
                 setEmailFilter(e.target.value);
               }}
