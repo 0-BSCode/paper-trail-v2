@@ -10,7 +10,7 @@ import DocumentService from '@src/services/document-service';
 import type DocumentInterface from '@src/types/interfaces/document';
 import { ToastContext } from '@src/context/ToastContext';
 import YourTicketsTable from './YourTicketsTable';
-import AssigneeDropDown from './AssigneeDropDown';
+import AssigneeDropDown from '@src/components/AssigneeDropDown';
 
 const YourTickets = (): JSX.Element => {
   const navigate = useNavigate();

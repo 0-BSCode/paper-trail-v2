@@ -4,7 +4,7 @@ import useDocuments from '@src/hooks/useDocuments';
 import { useEffect, useState } from 'react';
 import type TicketInterface from '@src/types/interfaces/ticket';
 import StatusEnum from '@src/types/enums/status-enum';
-import AssigneeDropDown from './AssigneeDropDown';
+import AssigneeDropDown from '@src/components/AssigneeDropDown';
 
 const AssignedTickets = (): JSX.Element => {
   const { allTickets } = useDocuments();
@@ -12,6 +12,7 @@ const AssignedTickets = (): JSX.Element => {
   const [assigneeFilter, setAssigneeFilter] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<StatusEnum>(StatusEnum.ALL);
   const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
+  const [sortedTickets, setSortedTickets] = useState<TicketInterface[]>([]);
 
   useEffect(() => {
     if (titleFilter.length > 3 || assigneeFilter || statusFilter !== StatusEnum.ALL) {
@@ -28,6 +29,13 @@ const AssignedTickets = (): JSX.Element => {
       setFilteredTickets(allTickets.filter((doc) => doc.assigneeId !== null));
     }
   }, [titleFilter, assigneeFilter, statusFilter, allTickets]);
+
+  useEffect(() => {
+    const newSortedTickets = filteredTickets.sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    );
+    setSortedTickets(newSortedTickets);
+  }, [filteredTickets]);
 
   return (
     <div className="w-[95%] h-[45%] bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -54,9 +62,7 @@ const AssignedTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <AssignedTicketsTable
-        documents={filteredTickets.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())}
-      />
+      <AssignedTicketsTable documents={sortedTickets} />
     </div>
   );
 };

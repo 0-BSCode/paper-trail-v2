@@ -5,7 +5,7 @@ import useAuth from '@src/hooks/useAuth';
 import { useEffect, useState } from 'react';
 import type TicketInterface from '@src/types/interfaces/ticket';
 import StatusEnum from '@src/types/enums/status-enum';
-import AssigneeDropDown from './AssigneeDropDown';
+import AssigneeDropDown from '@src/components/AssigneeDropDown';
 
 const SharedTickets = (): JSX.Element => {
   const { allTickets } = useDocuments();
@@ -14,6 +14,7 @@ const SharedTickets = (): JSX.Element => {
   const [assigneeFilter, setAssigneeFilter] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<StatusEnum>(StatusEnum.ALL);
   const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
+  const [sortedTickets, setSortedTickets] = useState<TicketInterface[]>([]);
 
   useEffect(() => {
     if (titleFilter.length > 3 || assigneeFilter || statusFilter !== StatusEnum.ALL) {
@@ -30,6 +31,13 @@ const SharedTickets = (): JSX.Element => {
       setFilteredTickets(allTickets.filter((doc) => doc.users.some((t) => t.userId === userId)));
     }
   }, [titleFilter, assigneeFilter, statusFilter, allTickets]);
+
+  useEffect(() => {
+    const newSortedTickets = filteredTickets.sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    );
+    setSortedTickets(newSortedTickets);
+  }, [filteredTickets]);
 
   return (
     <div className="w-[95%] h-[45%] bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -56,9 +64,7 @@ const SharedTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <SharedTicketsTable
-        documents={filteredTickets.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())}
-      />
+      <SharedTicketsTable documents={sortedTickets} />
     </div>
   );
 };
