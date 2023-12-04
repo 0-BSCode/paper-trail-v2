@@ -21,6 +21,7 @@ const YourTickets = (): JSX.Element => {
   const [assigneeFilter, setAssigneeFilter] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<StatusEnum>(StatusEnum.ALL);
   const [filteredTickets, setFilteredTickets] = useState<TicketInterface[]>(allTickets);
+  const [sortedTickets, setSortedTickets] = useState<TicketInterface[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleDocumentCreateBtnClick = async (): Promise<void> => {
@@ -55,6 +56,13 @@ const YourTickets = (): JSX.Element => {
       setFilteredTickets(allTickets.filter((doc) => doc.userId === userId));
     }
   }, [titleFilter, assigneeFilter, statusFilter, allTickets]);
+
+  useEffect(() => {
+    const newSortedTickets = filteredTickets.sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    );
+    setSortedTickets(newSortedTickets);
+  }, [filteredTickets]);
 
   return (
     <div className="w-[95%] h-full bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
@@ -93,9 +101,7 @@ const YourTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <YourTicketsTable
-        documents={filteredTickets.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())}
-      />
+      <YourTicketsTable documents={sortedTickets} />
     </div>
   );
 };
