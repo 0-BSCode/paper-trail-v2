@@ -9,6 +9,7 @@ import axios, { type AxiosError } from 'axios';
 import AuthService from '@src/services/auth-service';
 import { Input, Button } from 'antd';
 import isValidHelper from '@src/utils/isValid.helper';
+import useAuth from '@src/hooks/useAuth';
 
 const RegisterPage = (): JSX.Element => {
   const { widthStr, heightStr } = useWindowSize();
@@ -23,8 +24,9 @@ const RegisterPage = (): JSX.Element => {
   const [password1Errors, setPassword1Errors] = useState<string[]>([]);
   const [password2, setPassword2] = useState('');
   const [password2Errors, setPassword2Errors] = useState<string[]>([]);
+  const { success, error } = useContext(ToastContext);
   const navigate = useNavigate();
-  const { addToast, error } = useContext(ToastContext);
+  const { login } = useAuth();
 
   const validate = (): boolean => {
     setStudentIdNumberErrors([]);
@@ -47,11 +49,11 @@ const RegisterPage = (): JSX.Element => {
       isValid = false;
     }
     if (!(password1.length >= 8 && password1.length <= 25)) {
-      setPassword1Errors((prev) => [...prev, 'Password must be between 1 and 25 characters.']);
+      setPassword1Errors((prev) => [...prev, '- Password must be between 8 and 25 characters.']);
       isValid = false;
     }
     if (!/\d/.test(password1)) {
-      setPassword1Errors((prev) => [...prev, 'Password must contain at least 1 number.']);
+      setPassword1Errors((prev) => [...prev, '- Password must contain at least 1 number.']);
       isValid = false;
     }
     if (password1 !== password2) {
@@ -65,6 +67,7 @@ const RegisterPage = (): JSX.Element => {
   const register = async (): Promise<void> => {
     if (!validate()) return;
 
+    setLoading(true);
     try {
       await AuthService.register({
         email,
@@ -73,12 +76,11 @@ const RegisterPage = (): JSX.Element => {
         studentIdNumber,
         fullName,
       });
-
-      addToast({
-        title: `Successfully registered ${email}!`,
-        color: 'success',
-      });
-      navigate('/login');
+      const response = await AuthService.login({ email, password: password1 });
+      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
+      login(newAccessToken, newRefreshToken);
+      success('Successfully registered and logged in!');
+      navigate('/home');
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const { response } = err as AxiosError;
@@ -212,7 +214,11 @@ const RegisterPage = (): JSX.Element => {
                 handleOnInputPassword1(e.target.value);
               }}
             />
-            {!!password1Errors.length && <div className="text-sm text-red-500">{password1Errors.join(', ')}</div>}
+            {!!password1Errors.length && (
+              <div className="text-sm text-red-500" style={{ whiteSpace: 'pre-line' }}>
+                {password1Errors.join('\n')}
+              </div>
+            )}
           </div>
           <div>
             <Input.Password
