@@ -116,7 +116,7 @@ const LoginPage = (): JSX.Element => {
                   handleOnInputEmail(e.target.value);
                 }}
               />
-              {emailErrors.length > 0 && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
+              {emailErrors.length > 0 && <div className="text-sm text-[#ff4d4f]">{emailErrors.join(', ')}</div>}
             </div>
             <div>
               <Input.Password
@@ -129,7 +129,7 @@ const LoginPage = (): JSX.Element => {
                   handleOnInputPassword(e.target.value);
                 }}
               />
-              {passwordErrors.length > 0 && <div className="text-red-500 text-sm">{passwordErrors.join(', ')}</div>}
+              {passwordErrors.length > 0 && <div className="text-sm text-[#ff4d4f]">{passwordErrors.join(', ')}</div>}
             </div>
             <Button
               style={{ borderRadius: '6px', fontFamily: 'roboto' }}
@@ -144,7 +144,7 @@ const LoginPage = (): JSX.Element => {
             </Button>
             <div className="text-center items-center">
               <span>or </span>
-              <Link to="/register" className=" no-underline hover:underline text-blue-500">
+              <Link to="/register" className=" no-underline hover:underline text-[#1677FF]">
                 Register
               </Link>
             </div>
