@@ -44,6 +44,7 @@ const DocumentMenuBar = (): JSX.Element => {
   const { document, saving, socket, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
   const navigate = useNavigate();
   const [isStatusSaving, setIsStatusSaving] = useState(false);
+  const [titleErrors, setTitleErrors] = useState<string[]>([]);
   const hasDeletePermissions: boolean =
     document !== null && document.userId === userId && document.status === StatusEnum.DRAFT;
 
@@ -93,6 +94,15 @@ const DocumentMenuBar = (): JSX.Element => {
 
   const handleTitleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const title = event.target.value;
+
+    if (!title.length) {
+      setTitleErrors(['Document must have a title.']);
+    } else if (title.length < 5) {
+      setTitleErrors(['Title must be at least 5 characters.']);
+    } else {
+      setTitleErrors([]);
+    }
+
     setDocumentTitle(title);
   };
 
@@ -122,8 +132,8 @@ const DocumentMenuBar = (): JSX.Element => {
   };
 
   return (
-    <div className="w-full flex justify-between items-center border-b">
-      <div className="w-full flex justify-start items-center overflow-x-hidden md:overflow-visible gap-x-4">
+    <div className="flex items-center justify-between w-full border-b">
+      <div className="flex items-center justify-start w-full overflow-x-hidden md:overflow-visible gap-x-4">
         <Tooltip title="Go back">
           <Button onClick={handleBackNavigation} shape="circle" icon={<ArrowLeftOutlined />} />
         </Tooltip>
@@ -131,6 +141,7 @@ const DocumentMenuBar = (): JSX.Element => {
           <Space>
             <Input
               readOnly={!canEditTitle}
+              maxLength={25}
               type="text"
               onBlur={(event) => {
                 void handleTitleInputBlur(event);
@@ -143,6 +154,7 @@ const DocumentMenuBar = (): JSX.Element => {
               id=""
               placeholder="Untitled Document"
             />
+            {titleErrors.length > 0 && <div className="text-sm text-[#ff4d4f]">{titleErrors.join(', ')}</div>}
             <p className={`text-sm text-gray-500 px-2 ${saving ? 'visible' : 'invisible'}`}>Saving...</p>
           </Space>
           <Space>
