@@ -5,7 +5,7 @@ import StatusEnum from "../../types/enums/status-enum";
 const seedDocuments = [
   {
     id: 4,
-    title: "Ineffective Teaching Method",
+    title: "Ineffective Teaching",
     user_id: 1,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -16,7 +16,7 @@ const seedDocuments = [
   },
   {
     id: 5,
-    title: "Lack of Feedback from Professor",
+    title: "Lack of Feedback",
     user_id: 1,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"Some more content"}]},{"type":"table","attrs":{"dir":null,"ignoreBidiAutoUpdate":null,"isControllersInjected":true,"insertButtonAttrs":null},"content":[{"type":"tableRow","content":[{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}}]},{"type":"tableRow","content":[{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableHeaderCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"Sample"}]}]},{"type":"tableHeaderCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"Stuff"}]}]},{"type":"tableHeaderCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"Here"}]}]}]},{"type":"tableRow","content":[{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]}]},{"type":"tableRow","content":[{"type":"tableControllerCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null}},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"colwidth":null,"background":null},"content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]}]}]},{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null}}]}',
@@ -27,7 +27,7 @@ const seedDocuments = [
   },
   {
     id: 6,
-    title: "Midterm Examination Topics not Part of Syllabus",
+    title: "Wrong Topics for Midterms",
     user_id: 1,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -38,7 +38,7 @@ const seedDocuments = [
   },
   {
     id: 7,
-    title: "Unresponsive Administration",
+    title: "Unresponsive Faculty",
     user_id: 1,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -49,7 +49,7 @@ const seedDocuments = [
   },
   {
     id: 8,
-    title: "Vandalism on School Property",
+    title: "Vandalism in School",
     user_id: 1,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -60,7 +60,7 @@ const seedDocuments = [
   },
   {
     id: 9,
-    title: "Overly Strict Attendance Policies",
+    title: "Overly Strict Attendance",
     user_id: 1,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -81,7 +81,7 @@ const seedDocuments = [
   },
   {
     id: 11,
-    title: "Outdated Learning Materials",
+    title: "Outdated School Materials",
     user_id: 2,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -92,7 +92,7 @@ const seedDocuments = [
   },
   {
     id: 12,
-    title: "Inadequate Time to Perform Project",
+    title: "Unrealistic Deadlines",
     user_id: 2,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -103,7 +103,7 @@ const seedDocuments = [
   },
   {
     id: 13,
-    title: "Unreasonable Project Deadline",
+    title: "Unreasonable Test Scoring",
     user_id: 3,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -113,7 +113,7 @@ const seedDocuments = [
   },
   {
     id: 14,
-    title: "Neglect of Special Education Needs",
+    title: "Neglect of Special Needs",
     user_id: 3,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -135,7 +135,7 @@ const seedDocuments = [
   },
   {
     id: 16,
-    title: "Uninspiring Course Content",
+    title: "Uninspiring Curriculum",
     user_id: 2,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -156,7 +156,7 @@ const seedDocuments = [
   },
   {
     id: 18,
-    title: "NodeJs Installation on School Laboratories",
+    title: "NodeJs Installation",
     user_id: 2,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -188,7 +188,7 @@ const seedDocuments = [
   },
   {
     id: 21,
-    title: "Unpredictable Schedule Changes",
+    title: "Random Schedule Changes",
     user_id: 4,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -198,7 +198,7 @@ const seedDocuments = [
   },
   {
     id: 22,
-    title: "Unaddressed Student Concerns",
+    title: "Unaddressed Concerns",
     user_id: 4,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -219,7 +219,7 @@ const seedDocuments = [
   },
   {
     id: 24,
-    title: "Lack of Diversity in Curriculum",
+    title: "Lack of Course Diversity",
     user_id: 4,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -241,7 +241,7 @@ const seedDocuments = [
   },
   {
     id: 26,
-    title: "Consistent Absence From Professor",
+    title: "Professor Always Absent",
     user_id: 3,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -252,7 +252,7 @@ const seedDocuments = [
   },
   {
     id: 27,
-    title: "Last Minute Asynchronous Class Announcements",
+    title: "Last Minute Announcements",
     user_id: 3,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
@@ -263,7 +263,7 @@ const seedDocuments = [
   },
   {
     id: 28,
-    title: "Professor Overextending Class Hours",
+    title: "Overextending Class Hours",
     user_id: 4,
     content:
       '{"type":"doc","content":[{"type":"paragraph","attrs":{"dir":null,"ignoreBidiAutoUpdate":null},"content":[{"type":"text","text":"This is some sample "},{"type":"text","marks":[{"type":"bold"}],"text":"content"},{"type":"text","text":"!"}]}]}',
