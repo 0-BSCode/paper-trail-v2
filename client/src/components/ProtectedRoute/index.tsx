@@ -38,7 +38,7 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
     if (isAuthenticated)
       return (
         <Layout className="h-screen">
-          <Header className="bg-black h-fit">
+          <Header className="h-fit">
             <Flex className="items-center justify-between">
               <WordmarkLogo />
               <div className="flex gap-1">
