@@ -19,6 +19,13 @@ interface Props {
   reloadUsers: () => Promise<void>;
 }
 
+interface UserDetails {
+  studentIdNumber: string;
+  fullName: string;
+  contactNumber: string;
+  courseAndYear: string;
+}
+
 const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props): JSX.Element => {
   const { success, error } = useContext(ToastContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +52,8 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
   const [contactNumber, setContactNumber] = useState('');
   const [courseAndYear, setCourseAndYear] = useState('');
   const [roles, setRoles] = useState<string[]>(userRoles.map((r) => r.name));
+  const [previousUserDetails, setPreviousUserDetails] = useState<UserDetails | null>(null);
+  const currentUserDetails: UserDetails = { studentIdNumber, fullName, contactNumber, courseAndYear };
 
   // Booleans for input validation
   const isValidFullName = isValid.fullName(fullName);
@@ -53,17 +62,32 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
   const isValidCourseAndYear = isValid.courseAndYear(courseAndYear);
   const isValidFormDetails = isValidFullName && isValidStudentIdNumber && isValidContactNumber && isValidCourseAndYear;
 
+  // Check if details of the user were edited for conditionally enabling Update Info button
+  const isEdited = JSON.stringify(previousUserDetails) !== JSON.stringify(currentUserDetails);
+
   const fetchUserDetails = async (): Promise<void> => {
     if (accessToken === null || userId === null) {
       error('Please log in.');
       return;
     }
 
-    const fetchedUser = await UserService.getUserById(accessToken, userId);
-    setStudentIdNumber(fetchedUser.studentIdNumber);
-    setFullName(fetchedUser.fullName);
-    setContactNumber(fetchedUser.contactNumber);
-    setCourseAndYear(fetchedUser.courseAndYear);
+    const fetchedUser: UserDetails = await UserService.getUserById(accessToken, userId);
+    const { studentIdNumber, fullName, contactNumber, courseAndYear } = fetchedUser;
+
+    setStudentIdNumber(studentIdNumber);
+    setFullName(fullName);
+    setContactNumber(contactNumber);
+    setCourseAndYear(courseAndYear);
+
+    // For conditionally enabling the Update Info button
+    const initialPreviousUserDetails = {
+      studentIdNumber,
+      fullName,
+      contactNumber,
+      courseAndYear,
+    };
+
+    setPreviousUserDetails(initialPreviousUserDetails);
   };
 
   useEffect(() => {
@@ -92,6 +116,7 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
     try {
       await UserService.updateUserDetails(accessToken, userId, newDetails);
       await UserService.updateUserRoles(accessToken, userId, newRoles);
+      setPreviousUserDetails(currentUserDetails);
       success('Successfully updated personal information!');
       await reloadUsers();
     } catch (e) {
@@ -123,6 +148,7 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
         okText={'Update Info'}
         /* eslint-disable @typescript-eslint/no-misused-promises */
         onOk={handleUpdateInfo}
+        okButtonProps={{ disabled: !isEdited || !isValidFormDetails }}
         cancelText={'Close'}
         onCancel={handleClose}
         width={1000}
