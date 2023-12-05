@@ -163,6 +163,7 @@ const RegisterPage = (): JSX.Element => {
           </div>
           <div>
             <Input
+              id="id"
               style={{ fontFamily: 'roboto' }}
               className="p-2"
               placeholder="USC ID Number"
@@ -178,6 +179,7 @@ const RegisterPage = (): JSX.Element => {
           </div>
           <div>
             <Input
+              id="name"
               style={{ fontFamily: 'roboto' }}
               className="p-2"
               placeholder="Full Name"
@@ -191,6 +193,7 @@ const RegisterPage = (): JSX.Element => {
           </div>
           <div>
             <Input
+              id="email"
               style={{ fontFamily: 'roboto' }}
               className="p-2"
               placeholder="Email"
@@ -204,6 +207,7 @@ const RegisterPage = (): JSX.Element => {
           </div>
           <div>
             <Input.Password
+              id="password"
               className="p-2"
               placeholder="Password (8 characters at least, case sensitive)"
               type="password"
@@ -222,6 +226,7 @@ const RegisterPage = (): JSX.Element => {
           </div>
           <div>
             <Input.Password
+              id="confirm-password"
               style={{ fontFamily: 'roboto' }}
               className="p-2"
               placeholder="Confirm Password"
