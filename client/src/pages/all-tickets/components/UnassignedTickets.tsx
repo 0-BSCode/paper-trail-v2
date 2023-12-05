@@ -26,6 +26,10 @@ const UnassignedTickets = (): JSX.Element => {
     }
   }, [titleFilter, statusFilter, allTickets]);
 
+  const sortedTickets = filteredTickets.sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  );
+
   return (
     <div className="w-[95%] h-[45%] bg-white-100 flex flex-col gap-2 px-[2rem] py-[1.3rem]">
       <h1 className="m-0 text-xl font-bold">Unassigned Tickets</h1>
@@ -48,7 +52,7 @@ const UnassignedTickets = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <UnassignedTicketsTable documents={filteredTickets} />
+      <UnassignedTicketsTable documents={sortedTickets} />
     </div>
   );
 };
