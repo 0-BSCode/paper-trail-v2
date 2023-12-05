@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 function LandingHeader(): JSX.Element {
   return (
-    <Header className="bg-black h-fit">
+    <Header className="h-fit">
       <Flex className="items-center justify-between">
         <WordmarkLogo />
         <div className="flex gap-1">
