@@ -1,8 +1,7 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect } from 'react';
 import useWindowSize from '@src/hooks/useWindowSize';
 import { useParams } from 'react-router-dom';
 import useDocument from '@src/hooks/useDocument';
-import DocumentHeader from './components/DocumentHeader';
 import { DocumentContext } from '@src/context/DocumentContext';
 import DocumentEditor from './components/DocumentEditor';
 import FileDropZone from '@src/components/FileDropZone';
@@ -15,13 +14,12 @@ import DocumentAssignee from './components/DocumentAssignee';
 import DocumentStatus from './components/DocumentStatus';
 import PermissionEnum from '@src/types/enums/permission-enum';
 import StatusEnum from '@src/types/enums/status-enum';
+import DocumentMenuBar from './components/DocumentMenuBar';
 
 const DocumentPage = (): JSX.Element => {
   const { id: documentId } = useParams();
   const { userId, loading: authLoading } = useContext(AuthContext);
-  const { heightStr, widthStr } = useWindowSize();
-  const documentHeaderRef = useRef<null | HTMLDivElement>(null);
-  const documentViewerHeight = `calc(${heightStr} - ${documentHeaderRef.current?.clientHeight}px)`;
+  const { widthStr } = useWindowSize();
   const { document: docInfo, setDocument } = useContext(DocumentContext);
   const { document, loading: documentLoading } = useDocument(parseInt(documentId as string));
   const documentUser = document?.users.find((user) => user.userId === userId);
@@ -45,26 +43,24 @@ const DocumentPage = (): JSX.Element => {
   }
 
   return (
-    <div style={{ height: heightStr }} className="w-full h-full bg-gray-100 flex flex-col">
-      <DocumentHeader documentHeaderRef={documentHeaderRef} />
-      <div
-        style={{
-          height: documentViewerHeight,
-        }}
-        className="w-full flex flex-col justify-start items-center overflow-hidden"
-      >
-        <div style={{ width: widthStr }} className="h-full w-full overflow-auto flex items-start gap-x-3 p-4">
-          <div className="flex flex-col gap-y-4">
+    <div className="w-full h-full bg-gray-100 flex flex-col">
+      <DocumentMenuBar />
+      <div className="w-full flex flex-col justify-start items-center overflow-hidden">
+        <div
+          style={{ width: widthStr }}
+          className="h-full w-full overflow-auto flex items-start justify-center gap-x-8 py-8"
+        >
+          <div className="flex flex-col gap-y-8">
             <DocumentEditor />
             {userId && (
-              <Space.Compact className="bg-white px-10 py-5 w-[850px] h-fit">
+              <Space.Compact className="bg-white px-10 py-5 w-[850px] h-fit shadow-md">
                 <FileDropZone userId={userId} documentId={documentId} canUpload={hasEditPermission} />
                 <DocumentFiles documentId={documentId} canDelete={hasEditPermission} />
               </Space.Compact>
             )}
           </div>
           <div className="flex flex-col">
-            <Space direction="vertical" className="h-fit">
+            <Space direction="vertical" className="h-fit gap-6">
               <DocumentStatus documentId={documentId} />
               <DocumentAssignee documentId={documentId} />
               <DocumentComments />

@@ -18,6 +18,7 @@ import { DocumentContext } from '@src/context/DocumentContext';
 import { ToastContext } from '@src/context/ToastContext';
 import type { RemirrorJSON } from 'remirror';
 import { type EditorRef } from '@src/types/interfaces/editor-ref';
+import type CurrentUserInterface from '@src/types/interfaces/current-user';
 
 interface EditorContextInterface {
   editorState: RemirrorJSON;
@@ -163,8 +164,10 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
   useEffect(() => {
     if (socket.current === null) return;
 
-    const handler = (currentUsers: string[]): void => {
-      setCurrentUsers(new Set<string>(currentUsers));
+    const handler = (currentUsers: CurrentUserInterface[]): void => {
+      const uniqueUsers = new Set<string>(currentUsers.map((u) => JSON.stringify(u)));
+      const users = [...uniqueUsers].map((u) => JSON.parse(u) as CurrentUserInterface);
+      setCurrentUsers(users);
     };
 
     socket.current.on(SocketEvent.CURRENT_USERS_UPDATE, handler);
@@ -173,6 +176,13 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
       socket.current.off(SocketEvent.CURRENT_USERS_UPDATE, handler);
     };
   }, [socket.current]);
+
+  // Disconnect socket
+  useEffect(() => {
+    return () => {
+      socket?.current?.disconnect();
+    };
+  }, []);
 
   return (
     <EditorContext.Provider

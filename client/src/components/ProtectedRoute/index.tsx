@@ -40,7 +40,7 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
       return (
         <Layout className="h-screen">
           <Header className="h-fit">
-            <Flex className="items-center justify-between">
+            <Flex className="sticky top-0 items-center justify-between">
               <div className="flex items-center gap-4">
                 <Image width={30} src={LogoWhite} alt="Wordmark Logo of Paper Trail" />
                 <Title

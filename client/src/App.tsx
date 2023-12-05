@@ -9,7 +9,6 @@ import { DocumentProvider } from './context/DocumentContext';
 import DocumentPage from './pages/document';
 import { EditorProvider } from './context/EditorContext';
 import HomePage from './pages/home';
-import { SocketProvider } from './context/SocketContext';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function App() {
@@ -17,29 +16,27 @@ function App() {
     <Router>
       <AuthProvider>
         <ToastProvider>
-          <SocketProvider>
-            <Routes>
-              <Route path="/landing" element={<Landing />} />
-              <Route path="/" element={<Navigate replace to="/home" />} />
-              <Route
-                path="/document/:id"
-                element={
-                  <ProtectedRoute
-                    element={
-                      <DocumentProvider>
-                        <EditorProvider>
-                          <DocumentPage />
-                        </EditorProvider>
-                      </DocumentProvider>
-                    }
-                  />
-                }
-              />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/home" element={<ProtectedRoute element={<HomePage />} />} />
-            </Routes>
-          </SocketProvider>
+          <Routes>
+            <Route path="/landing" element={<Landing />} />
+            <Route path="/" element={<Navigate replace to="/home" />} />
+            <Route
+              path="/document/:id"
+              element={
+                <ProtectedRoute
+                  element={
+                    <DocumentProvider>
+                      <EditorProvider>
+                        <DocumentPage />
+                      </EditorProvider>
+                    </DocumentProvider>
+                  }
+                />
+              }
+            />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/home" element={<ProtectedRoute element={<HomePage />} />} />
+          </Routes>
         </ToastProvider>
       </AuthProvider>
     </Router>
