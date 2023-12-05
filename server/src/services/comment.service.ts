@@ -45,7 +45,7 @@ class CommentService {
         {
           model: User,
           attributes: {
-            exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
+            exclude: ["password", "createdAt", "updatedAt"]
           }
         }
       ],
@@ -73,7 +73,7 @@ class CommentService {
             {
               model: User,
               attributes: {
-                exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
+                exclude: ["password", "createdAt", "updatedAt"]
               }
             }
           ] // Include the User model associated with each Comment

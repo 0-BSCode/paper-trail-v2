@@ -8,10 +8,7 @@ if (
   process.env.ACCESS_TOKEN_SECRET === undefined ||
   process.env.ACCESS_TOKEN_EXPIRATION === undefined ||
   process.env.REFRESH_TOKEN_SECRET === undefined ||
-  process.env.REFRESH_TOKEN_EXPIRATION === undefined ||
-  process.env.PASSWORD_RESET_SECRET === undefined ||
-  process.env.PASSWORD_RESET_EXPIRATION === undefined ||
-  process.env.VERIFY_EMAIL_SECRET === undefined
+  process.env.REFRESH_TOKEN_EXPIRATION === undefined
 ) {
   throw new Error("Environment variables missing.");
 }
@@ -26,10 +23,7 @@ const env = {
   ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
   ACCESS_TOKEN_EXPIRATION: process.env.ACCESS_TOKEN_EXPIRATION,
   REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
-  REFRESH_TOKEN_EXPIRATION: process.env.REFRESH_TOKEN_EXPIRATION,
-  PASSWORD_RESET_SECRET: process.env.PASSWORD_RESET_SECRET,
-  PASSWORD_RESET_EXPIRATION: process.env.PASSWORD_RESET_EXPIRATION,
-  VERIFY_EMAIL_SECRET: process.env.VERIFY_EMAIL_SECRET
+  REFRESH_TOKEN_EXPIRATION: process.env.REFRESH_TOKEN_EXPIRATION
 };
 
 export default env;

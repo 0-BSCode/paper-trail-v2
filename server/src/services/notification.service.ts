@@ -30,12 +30,12 @@ class NotificationService {
         {
           model: User,
           as: "receiver",
-          attributes: { exclude: ["password", "passwordResetToken", "verificationToken", "createdAt", "updatedAt"] }
+          attributes: { exclude: ["password", "createdAt", "updatedAt"] }
         },
         {
           model: User,
           as: "sender",
-          attributes: { exclude: ["password", "passwordResetToken", "verificationToken", "createdAt", "updatedAt"] }
+          attributes: { exclude: ["password", "createdAt", "updatedAt"] }
         },
         { model: Document, attributes: ["title", "id", "status"] }
       ]

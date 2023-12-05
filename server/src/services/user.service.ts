@@ -34,7 +34,7 @@ class UserService {
         }
       ],
       attributes: {
-        exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
+        exclude: ["password", "createdAt", "updatedAt"]
       }
     });
   };
@@ -56,7 +56,7 @@ class UserService {
         }
       ],
       attributes: {
-        exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
+        exclude: ["password", "createdAt", "updatedAt"]
       }
     });
   };
@@ -64,13 +64,11 @@ class UserService {
   public createUser = async (email: string, password: string, fullName: string, studentIdNumber: string) => {
     const salt = await genSalt();
     const hashedPassword = await hash(password, salt);
-    const verificationToken = jwt.sign({ email }, env.VERIFY_EMAIL_SECRET);
     const newUser = await User.create({
       email: email,
       password: hashedPassword,
       fullName,
-      studentIdNumber,
-      verificationToken: verificationToken
+      studentIdNumber
     });
 
     await UserRole.create({
@@ -215,7 +213,7 @@ class UserService {
 
     const updatedUserWithFilteredData = updatedUserWithRoles.toJSON();
 
-    const excludedProperties = ["password", "verificationToken", "passwordResetToken", "createdAt", "updatedAt"];
+    const excludedProperties = ["password", "createdAt", "updatedAt"];
     excludedProperties.forEach((prop) => {
       delete updatedUserWithFilteredData[prop as keyof User];
     });
