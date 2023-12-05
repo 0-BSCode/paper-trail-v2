@@ -165,7 +165,9 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
     if (socket.current === null) return;
 
     const handler = (currentUsers: CurrentUserInterface[]): void => {
-      setCurrentUsers(new Set<CurrentUserInterface>(currentUsers));
+      const uniqueUsers = new Set<string>(currentUsers.map((u) => JSON.stringify(u)));
+      const users = [...uniqueUsers].map((u) => JSON.parse(u) as CurrentUserInterface);
+      setCurrentUsers(users);
     };
 
     socket.current.on(SocketEvent.CURRENT_USERS_UPDATE, handler);
@@ -174,6 +176,13 @@ export const EditorProvider = ({ children }: EditorProviderInterface): JSX.Eleme
       socket.current.off(SocketEvent.CURRENT_USERS_UPDATE, handler);
     };
   }, [socket.current]);
+
+  // Disconnect socket
+  useEffect(() => {
+    return () => {
+      socket?.current?.disconnect();
+    };
+  }, []);
 
   return (
     <EditorContext.Provider

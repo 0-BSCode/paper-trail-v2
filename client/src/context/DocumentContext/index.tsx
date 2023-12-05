@@ -25,8 +25,8 @@ interface DocumentContextInterface {
   setLoading: Dispatch<SetStateAction<boolean>>;
   saving: boolean;
   setSaving: Dispatch<SetStateAction<boolean>>;
-  currentUsers: Set<CurrentUserInterface>;
-  setCurrentUsers: Dispatch<SetStateAction<Set<CurrentUserInterface>>>;
+  currentUsers: CurrentUserInterface[];
+  setCurrentUsers: Dispatch<SetStateAction<CurrentUserInterface[]>>;
   setDocumentTitle: (title: string) => void;
   saveDocument: (updatedDocument: DocumentInterface) => Promise<void>;
   socket: MutableRefObject<any>;
@@ -41,7 +41,7 @@ const defaultValues = {
   setLoading: () => {},
   saving: false,
   setSaving: () => {},
-  currentUsers: new Set<CurrentUserInterface>(),
+  currentUsers: [],
   setCurrentUsers: () => {},
   setDocumentTitle: () => {},
   saveDocument: async () => {},
@@ -61,7 +61,7 @@ export const DocumentProvider = ({ children }: DocumentProviderInterface): JSX.E
   const [errors, setErrors] = useState<string[]>(defaultValues.errors);
   const [loading, setLoading] = useState(defaultValues.loading);
   const [saving, setSaving] = useState(defaultValues.saving);
-  const [currentUsers, setCurrentUsers] = useState(defaultValues.currentUsers);
+  const [currentUsers, setCurrentUsers] = useState<CurrentUserInterface[]>(defaultValues.currentUsers);
   const socket = useRef<any>(null);
 
   const setDocumentTitle = (title: string): void => {

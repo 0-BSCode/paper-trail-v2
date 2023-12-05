@@ -45,10 +45,11 @@ io.on("connection", (socket) => {
               io.sockets.in(documentId).emit(
                 SocketEvent.CURRENT_USERS_UPDATE,
                 clients.map((client) => {
-                  return {
+                  const clientInfo = {
                     fullName: (client as any).fullName,
                     email: (client as any).email
                   };
+                  return clientInfo;
                 })
               );
             });
@@ -78,10 +79,11 @@ io.on("connection", (socket) => {
                 io.sockets.in(documentId).emit(
                   SocketEvent.CURRENT_USERS_UPDATE,
                   clients.map((client) => {
-                    return {
+                    const clientInfo = {
                       fullName: (client as any).fullName,
                       email: (client as any).email
                     };
+                    return clientInfo;
                   })
                 );
               });

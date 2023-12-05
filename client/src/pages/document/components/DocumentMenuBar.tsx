@@ -164,7 +164,7 @@ const DocumentMenuBar = (): JSX.Element => {
         <div className="flex items-center flex-shrink-0 pl-3 gap-x-4">
           <div className="flex gap-x-2">
             <CurrentUsers />
-            <Tooltip title={fullName}>
+            <Tooltip title={`${fullName} (you)`}>
               <Avatar
                 size={32}
                 src={getAvatarImageUrlByEmail(email ?? '')}
