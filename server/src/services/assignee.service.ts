@@ -45,26 +45,6 @@ class AssigneeService {
     return assigneeId;
   };
 
-  public findAssigneeById = async (documentId: number) => {
-    const document = await Document.findOne({
-      where: {
-        id: documentId
-      }
-    });
-
-    if (!document) {
-      return null;
-    }
-
-    const assignee = await User.findByPk(document.assigneeId, {
-      attributes: {
-        exclude: ["password", "passwordResetToken", "createdAt", "updatedAt", "isVerified", "verificationToken"]
-      }
-    });
-
-    return assignee;
-  };
-
   public getDocumentsOfAssignee = async (assigneeId: number) => {
     const documents = await Document.findAll({ where: { assigneeId } });
 

@@ -21,9 +21,6 @@ class AuthController {
     const validPassword = await userService.checkPassword(user, password);
     if (!validPassword) return res.status(401).json({ errors: userNotFound });
 
-    // TODO: Remove email verification for now
-    // if (!user.isVerified) return res.status(403).json({ errors: emailNotVerified });
-
     const authResponse = await userService.generateAuthResponse(user);
     return res.status(200).json(authResponse);
   });

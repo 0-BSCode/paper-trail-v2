@@ -22,28 +22,6 @@ class UserService {
     return user;
   };
 
-  public findUserByVerificationToken = async (email: string, verificationToken: string): Promise<User | null> => {
-    const user = await User.findOne({
-      where: {
-        email,
-        verificationToken
-      }
-    });
-
-    return user;
-  };
-
-  public findUserByPasswordResetToken = async (email: string, passwordResetToken: string): Promise<User | null> => {
-    const user = await User.findOne({
-      where: {
-        email,
-        passwordResetToken
-      }
-    });
-
-    return user;
-  };
-
   public getAllUsers = async (): Promise<User[]> => {
     return await User.findAll({
       include: [
@@ -138,30 +116,6 @@ class UserService {
       where: {
         userId
       }
-    });
-  };
-
-  public resetPassword = async (user: User) => {
-    const passwordResetToken = jwt.sign({ id: user.id, email: user.email }, env.PASSWORD_RESET_SECRET, {
-      expiresIn: env.PASSWORD_RESET_EXPIRATION
-    });
-
-    await user.update({
-      passwordResetToken
-    });
-  };
-
-  public updatePassword = async (user: User, password: string) => {
-    const salt = await genSalt();
-    const hashedPassword = await hash(password, salt);
-    await user.update({
-      password: hashedPassword
-    });
-  };
-
-  public updateIsVerified = async (user: User, isVerified: boolean) => {
-    await user.update({
-      isVerified
     });
   };
 
