@@ -6,6 +6,7 @@ import { ToastContext } from '@src/context/ToastContext';
 import { NotificationModal } from './Notifications';
 import { UserProfileModal } from './UserProfile';
 import WordmarkLogo from '../WordmarkLogo';
+import { LogoutOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
 
