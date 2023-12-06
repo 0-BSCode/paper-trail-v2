@@ -40,6 +40,12 @@ class NotificationService {
    * Notifies a student (ticket owner) of a change in ticket status.
    */
   public notifyStatusChange = async (userId: number, documentId: number): Promise<Notification | null> => {
+    const convertToTitleCase = (str: string): string => {
+      return str.replace(/_/g, " ").replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
+    };
+
     // We check if the userId is associated with a document
     const targetDocument = await Document.findByPk(documentId);
     const userToNotify = await User.findByPk(userId);
@@ -59,7 +65,7 @@ class NotificationService {
     const newNotification: Notification = await this.createNotification(
       userId,
       documentId,
-      `Your ticket "${targetDocument.title}" had its status updated to ${targetDocument.status}`
+      `Your ticket "${targetDocument.title}" had its status updated to ${convertToTitleCase(targetDocument.status)}.`
     );
 
     return newNotification;
