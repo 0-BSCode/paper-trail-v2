@@ -115,7 +115,9 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
         <Typography.Text type="danger">
           * {statusToHelperTextMapping[status as keyof typeof statusToHelperTextMapping]}
         </Typography.Text>
-        <Typography.Text type="secondary">* Please leave a comment before updating</Typography.Text>
+        {status !== StatusEnum.RESOLVED && (
+          <Typography.Text type="secondary">* Please leave a comment before updating</Typography.Text>
+        )}
       </Space.Compact>
       <Button disabled={disableButton} onClick={saveStatus}>
         Save Status
