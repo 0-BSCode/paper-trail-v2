@@ -245,7 +245,7 @@ class NotificationService {
       assigneeId,
       admin.id,
       targetDocument.id,
-      `A ticket "${targetDocument.title}" was assigned to you by: "${assignee.email}".`
+      `A ticket "${targetDocument.title}" was assigned to you by: "${admin.email}".`
     );
 
     return newNotification;
