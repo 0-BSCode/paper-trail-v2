@@ -178,6 +178,11 @@ class NotificationService {
       return null;
     }
 
+    // No notification should be created when the assignee themself comments.
+    if (document.assigneeId === newComment.userId) {
+      return null;
+    }
+
     const newNotification = await this.createNotification(
       document.assigneeId,
       newComment.userId,
