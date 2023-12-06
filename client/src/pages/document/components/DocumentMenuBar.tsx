@@ -66,8 +66,10 @@ const DocumentMenuBar = (): JSX.Element => {
 
     switch (status) {
       case StatusEnum.DRAFT:
-      case StatusEnum.CHANGES_REQUESTED:
         newStatus = StatusEnum.REVIEW_REQUESTED;
+        break;
+      case StatusEnum.CHANGES_REQUESTED:
+        newStatus = StatusEnum.REVIEW;
         break;
       default:
         newStatus = status;
