@@ -58,6 +58,10 @@ const NotificationModal = (): JSX.Element => {
     void fetchNotifications();
   };
 
+  const handleSingleMarkAsRead = async (notificationId: number): Promise<void> => {
+    await NotificationService.markNotificationAsRead(accessToken as string, notificationId);
+  };
+
   // Fetches only once to to display an indicator if there are any unread ones
   useEffect(() => {
     void fetchNotifications();
@@ -102,6 +106,9 @@ const NotificationModal = (): JSX.Element => {
                           message={item.message}
                           url={`/document/${item.documentId}`}
                           closeModal={handleClose}
+                          markAsRead={async () => {
+                            await handleSingleMarkAsRead(item.id);
+                          }}
                         />
                       </p>
                       <p className="font-semibold text-end">{formatTimeAgo(item.createdAt)}</p>
