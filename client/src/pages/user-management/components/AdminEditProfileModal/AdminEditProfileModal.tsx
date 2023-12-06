@@ -24,6 +24,7 @@ interface UserDetails {
   fullName: string;
   contactNumber: string;
   courseAndYear: string;
+  roles: string[] | undefined;
 }
 
 const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props): JSX.Element => {
@@ -53,7 +54,7 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
   const [courseAndYear, setCourseAndYear] = useState('');
   const [roles, setRoles] = useState<string[]>(userRoles.map((r) => r.name));
   const [previousUserDetails, setPreviousUserDetails] = useState<UserDetails | null>(null);
-  const currentUserDetails: UserDetails = { studentIdNumber, fullName, contactNumber, courseAndYear };
+  const currentUserDetails: UserDetails = { studentIdNumber, fullName, contactNumber, courseAndYear, roles };
 
   // Booleans for input validation
   const isValidFullName = isValid.fullName(fullName);
@@ -85,6 +86,7 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
       fullName,
       contactNumber,
       courseAndYear,
+      roles,
     };
 
     setPreviousUserDetails(initialPreviousUserDetails);
