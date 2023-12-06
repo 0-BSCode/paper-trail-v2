@@ -9,6 +9,7 @@ import UserService from '@src/services/user-service';
 import { ToastContext } from '@src/context/ToastContext';
 import isValid from '@src/utils/isValid.helper';
 import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
+import sortRoles from './sortRoles';
 
 const { Title } = Typography;
 
@@ -52,7 +53,7 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
   const [fullName, setFullName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [courseAndYear, setCourseAndYear] = useState('');
-  const [roles, setRoles] = useState<string[]>(userRoles.map((r) => r.name));
+  const [roles, setRoles] = useState<string[]>(sortRoles(userRoles.map((r) => r.name)));
   const [previousUserDetails, setPreviousUserDetails] = useState<UserDetails | null>(null);
   const currentUserDetails: UserDetails = { studentIdNumber, fullName, contactNumber, courseAndYear, roles };
 
@@ -127,6 +128,7 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
   };
 
   const handleOpen = (): void => {
+    setRoles(sortRoles(userRoles.map((r) => r.name)));
     void fetchUserDetails();
     setIsOpen(true);
   };
