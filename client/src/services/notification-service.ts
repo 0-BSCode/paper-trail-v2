@@ -7,7 +7,7 @@ const NotificationService = {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-    const createdTicketMessagePattern = /^A new Ticket #\d+ was created: \[.*\]\.$/;
+    const createdTicketMessagePattern = /^A new Ticket #\d+ was created: ".*"\.$/;
     const processedData = (data as Notification[]).map((n) => {
       if (createdTicketMessagePattern.test(n.message)) {
         return { ...n, message: `A new ticket was created: "${n.document.title}".` };
