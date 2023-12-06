@@ -1,3 +1,4 @@
+import './index.css';
 import { type FormEvent, useRef, useState } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '@src/_convex/_generated/api';

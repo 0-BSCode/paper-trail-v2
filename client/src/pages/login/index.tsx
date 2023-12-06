@@ -86,7 +86,7 @@ const LoginPage = (): JSX.Element => {
   return (
     <div
       onKeyPress={handleOnKeyPress}
-      className="w-full flex flex-col sm:justify-center items-center bg-gray-100 dark:bg-slate-900 text-primary font-sans"
+      className="flex flex-col items-center w-full font-sans bg-gray-100 sm:justify-center dark:bg-slate-900 text-primary"
       style={{
         width: widthStr,
         height: heightStr,
@@ -96,7 +96,7 @@ const LoginPage = (): JSX.Element => {
     >
       <div>
         <div className="flex flex-col space-y-4">
-          <div className="w-full text-center flex flex-col justify-center items-center">
+          <div className="flex flex-col items-center justify-center w-full text-center">
             <svg width="61" height="85" viewBox="0 0 249 282" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M139.172 204.927V281.043H248.199L196.833 0H139.172V70.2607H109.897V0H52.084L0.354492 281.043H109.897V204.927H139.172ZM109.897 99.536H139.172V181.507H109.897V99.536Z"
@@ -105,9 +105,10 @@ const LoginPage = (): JSX.Element => {
             </svg>
             <h1 className="text-6xl">Paper Trail</h1>
           </div>
-          <div className="w-full flex flex-col gap-4">
+          <div className="flex flex-col w-full gap-4">
             <div>
               <Input
+                id="email"
                 style={{ fontFamily: 'roboto' }}
                 className="p-2"
                 placeholder="Email"
@@ -116,10 +117,11 @@ const LoginPage = (): JSX.Element => {
                   handleOnInputEmail(e.target.value);
                 }}
               />
-              {emailErrors.length > 0 && <div className="text-red-500 text-sm">{emailErrors.join(', ')}</div>}
+              {emailErrors.length > 0 && <div className="text-sm text-red-500">{emailErrors.join(', ')}</div>}
             </div>
             <div>
               <Input.Password
+                id="password"
                 className="p-2"
                 placeholder="Password"
                 type="password"
@@ -129,7 +131,7 @@ const LoginPage = (): JSX.Element => {
                   handleOnInputPassword(e.target.value);
                 }}
               />
-              {passwordErrors.length > 0 && <div className="text-red-500 text-sm">{passwordErrors.join(', ')}</div>}
+              {passwordErrors.length > 0 && <div className="text-sm text-[#ff4d4f]">{passwordErrors.join(', ')}</div>}
             </div>
             <Button
               style={{ borderRadius: '6px', fontFamily: 'roboto' }}
@@ -142,9 +144,9 @@ const LoginPage = (): JSX.Element => {
               <span className={`${loading && 'opacity-0'}`}>Log In</span>
               {loading && <Spinner size="sm" />}
             </Button>
-            <div className="text-center items-center">
+            <div className="items-center text-center">
               <span>or </span>
-              <Link to="/register" className=" no-underline hover:underline text-blue-500">
+              <Link to="/register" className="text-blue-500 no-underline hover:underline">
                 Register
               </Link>
             </div>

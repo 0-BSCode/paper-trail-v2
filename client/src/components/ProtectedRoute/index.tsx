@@ -39,19 +39,21 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
       return (
         <Layout className="h-screen">
           <Header className="h-fit">
-            <Flex className="items-center justify-between">
+            <Flex className="sticky top-0 items-center justify-between">
               <WordmarkLogo />
-              <div className="flex gap-1">
+              <div className="flex items-center gap-1">
                 <NotificationModal />
                 <UserProfileModal />
                 <Button
-                  type="primary"
-                  size="middle"
-                  className="text-white"
-                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                  onClick={logoutUser}
+                  danger
+                  title="Log Out"
+                  type="link"
+                  size="large"
+                  onClick={() => {
+                    void logoutUser();
+                  }}
                 >
-                  Log Out
+                  <LogoutOutlined />
                 </Button>
               </div>
             </Flex>
