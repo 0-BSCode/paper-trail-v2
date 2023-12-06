@@ -73,6 +73,8 @@ class DocumentController {
     const { id } = req.params;
     const { title, content, isPublic, status } = req.body;
 
+    if (title.length < 5) return res.sendStatus(400);
+
     const document = await documentService.findDocumentById(parseInt(id), parseInt(req.user.id));
 
     if (document === null) return res.sendStatus(404);

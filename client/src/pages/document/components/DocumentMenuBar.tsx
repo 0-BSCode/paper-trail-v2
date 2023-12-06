@@ -45,6 +45,7 @@ const DocumentMenuBar = (): JSX.Element => {
   const { document, saving, socket, setDocumentTitle, setDocument, setSaving, setErrors } = useContext(DocumentContext);
   const navigate = useNavigate();
   const [isStatusSaving, setIsStatusSaving] = useState(false);
+  const [titleError, setTitleError] = useState<string>('');
   const hasDeletePermissions: boolean =
     document !== null && document.userId === userId && document.status === StatusEnum.DRAFT;
 
@@ -94,6 +95,15 @@ const DocumentMenuBar = (): JSX.Element => {
 
   const handleTitleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const title = event.target.value;
+
+    if (!title.length) {
+      setTitleError('Document must have a title.');
+    } else if (title.length < 5) {
+      setTitleError('Title must be at least 5 characters.');
+    } else {
+      setTitleError('');
+    }
+
     setDocumentTitle(title);
   };
 
@@ -134,6 +144,7 @@ const DocumentMenuBar = (): JSX.Element => {
               <Input
                 readOnly={!canEditTitle}
                 type="text"
+                maxLength={25}
                 onBlur={(event) => {
                   void handleTitleInputBlur(event);
                 }}
@@ -145,6 +156,7 @@ const DocumentMenuBar = (): JSX.Element => {
                 id=""
                 placeholder="Untitled Document"
               />
+              {titleError && <div className="text-sm text-[#ff4d4f]">{titleError}</div>}
               <p className={`text-sm text-gray-500 px-2 ${saving ? 'visible' : 'invisible'}`}>Saving...</p>
             </Space>
             <Space>
