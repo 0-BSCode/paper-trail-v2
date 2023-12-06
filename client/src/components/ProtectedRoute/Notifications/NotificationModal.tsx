@@ -5,7 +5,6 @@ import { BellOutlined, InfoCircleFilled } from '@ant-design/icons';
 import { ToastContext } from '@src/context/ToastContext';
 import NotificationService from '@src/services/notification-service';
 import type Notification from '@src/types/interfaces/notification';
-import { Link } from 'react-router-dom';
 import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
 import formatTimeAgo from './formatTimeAgo';
 import NotificationMessage from './notificationMessage';
@@ -99,9 +98,11 @@ const NotificationModal = (): JSX.Element => {
                     <div>
                       <p className="w-full text-lg">
                         {!item.isRead && <InfoCircleFilled className="text-[#ce3131] me-2" />}
-                        <Link className="text-black" to={`/document/${item.documentId}`}>
-                          <NotificationMessage message={item.message} />
-                        </Link>
+                        <NotificationMessage
+                          message={item.message}
+                          url={`/document/${item.documentId}`}
+                          closeModal={handleClose}
+                        />
                       </p>
                       <p className="font-semibold text-end">{formatTimeAgo(item.createdAt)}</p>
                     </div>
