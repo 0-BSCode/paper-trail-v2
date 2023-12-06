@@ -1,21 +1,22 @@
 import WordmarkLogo from '@src/components/WordmarkLogo';
-import ContainedButton from '@src/components/ContainedButton';
+import { Header } from 'antd/es/layout/layout';
+import { Button, Flex } from 'antd';
+import { Link } from 'react-router-dom';
 
 function LandingHeader(): JSX.Element {
-  const handleRegisterButtonClick = (): void => {
-    window.alert('You clicked the Register Button in the LandingHeader.tsx component');
-  };
-
   return (
-    <header className="h-[64px] bg-black px-5 text-white flex justify-between shadow-md z-50 sticky top-0 ">
-      <h1 className="flex">
+    <Header className="h-fit">
+      <Flex className="items-center justify-between">
         <WordmarkLogo />
-      </h1>
-
-      <div className="flex items-center">
-        <ContainedButton onClick={handleRegisterButtonClick}>Register Now</ContainedButton>
-      </div>
-    </header>
+        <div className="flex gap-1">
+          <Link to="/register">
+            <Button type="primary" size="middle" className="text-white">
+              Register Now
+            </Button>
+          </Link>
+        </div>
+      </Flex>
+    </Header>
   );
 }
 

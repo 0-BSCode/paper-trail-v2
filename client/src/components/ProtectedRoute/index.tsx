@@ -1,15 +1,14 @@
 import { useEffect, useRef, useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import useAuth from '@src/hooks/useAuth';
-import { Layout, Flex, Image, Typography, Button } from 'antd';
-import LogoWhite from '@src/assets/logo-white.svg';
+import { Layout, Flex, Button } from 'antd';
 import { ToastContext } from '@src/context/ToastContext';
 import { NotificationModal } from './Notifications';
 import { UserProfileModal } from './UserProfile';
-import { LogoutOutlined } from '@ant-design/icons';
+import WordmarkLogo from '../WordmarkLogo';
 
 const { Header, Content } = Layout;
-const { Title } = Typography;
+
 interface AuthRouteProps {
   element: JSX.Element;
 }
@@ -41,18 +40,7 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
         <Layout className="h-screen">
           <Header className="h-fit">
             <Flex className="sticky top-0 items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Image width={30} src={LogoWhite} alt="Wordmark Logo of Paper Trail" />
-                <Title
-                  style={{
-                    color: 'white',
-                    marginTop: 1,
-                    marginBottom: 5,
-                  }}
-                >
-                  Paper Trail
-                </Title>
-              </div>
+              <WordmarkLogo />
               <div className="flex items-center gap-1">
                 <NotificationModal />
                 <UserProfileModal />

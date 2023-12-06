@@ -18,7 +18,7 @@ function App() {
         <ToastProvider>
           <Routes>
             <Route path="/landing" element={<Landing />} />
-            <Route path="/" element={<Navigate replace to="/home" />} />
+            <Route path="/" element={<Navigate replace to="/landing" />} />
             <Route
               path="/document/:id"
               element={

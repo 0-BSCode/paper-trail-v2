@@ -1,16 +1,8 @@
 import Illustration from '@src/assets/hero-illustration.png';
-import ContainedButton from '@src/components/ContainedButton';
-import OutlinedButton from '@src/components/OutlinedButton';
+import { Button } from 'antd';
+import { Link } from 'react-router-dom';
 
 function HeroSection(): JSX.Element {
-  const handleGetStartedClick = (): void => {
-    window.alert('You clicked the Get Started Button in the HeroSection.tsx component');
-  };
-
-  const handleLogInClick = (): void => {
-    window.alert('You clicked the Log In Button in the HeroSection.tsx component');
-  };
-
   return (
     <section className="grid px-24 grid-cols-2 h-[calc(100lvh-64px)]">
       <div className="relative flex flex-col justify-center gap-4 -top-16">
@@ -20,9 +12,15 @@ function HeroSection(): JSX.Element {
           of your grievances in real-time, knowing exactly where your concern stands in the resolution process.
           It&lsquo;s your ticket to clarity and confidence!
         </p>
-        <div className="flex gap-4">
-          <ContainedButton onClick={handleGetStartedClick}>Get Started</ContainedButton>
-          <OutlinedButton onClick={handleLogInClick}>Log In</OutlinedButton>
+        <div className="flex gap-3">
+          <Link to="/register">
+            <Button size="large" type="primary">
+              Get Started
+            </Button>
+          </Link>
+          <Link to="/login">
+            <Button size="large">Log In</Button>
+          </Link>
         </div>
       </div>
       <img className="place-self-center" src={Illustration} alt="Girl Riding a Rocket Ship with a Thumbs-up" />
