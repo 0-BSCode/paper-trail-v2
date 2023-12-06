@@ -18,7 +18,7 @@ const statusToHelperTextMapping = {
   [StatusEnum.RAISED]: 'Assignee has raised ticket to proper authority',
   [StatusEnum.RESOLVED]: 'Ticket has been resolved',
   [StatusEnum.REVIEW]: 'Assignee is reviewing ticket',
-  [StatusEnum.REVIEW_REQUESTED]: 'Ticket has no assignee',
+  [StatusEnum.REVIEW_REQUESTED]: 'Ticket is yet to be reviewed',
 };
 
 const disabledOptions = [StatusEnum.DRAFT, StatusEnum.REVIEW, StatusEnum.REVIEW_REQUESTED];
@@ -76,7 +76,7 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
     return () => {
       socket.current.off(SocketEvent.RECEIVE_STATUS, handler);
     };
-  }, [socket.current]);
+  }, [socket.current, document]);
 
   useEffect(() => {
     if (document) {
@@ -112,9 +112,10 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
             };
           })}
         />
-        <Typography.Text type="secondary">
+        <Typography.Text type="danger">
           * {statusToHelperTextMapping[status as keyof typeof statusToHelperTextMapping]}
         </Typography.Text>
+        <Typography.Text type="secondary">* Please leave a comment before updating</Typography.Text>
       </Space.Compact>
       <Button disabled={disableButton} onClick={saveStatus}>
         Save Status
