@@ -76,7 +76,6 @@ const NotificationModal = (): JSX.Element => {
         </Button>
       </Badge>
       <Modal
-        style={{ height: 'calc(100vh - 200px)' }}
         title="Notifications"
         open={isNotificationsModalOpen}
         okText={'Mark as Read'}
@@ -91,6 +90,11 @@ const NotificationModal = (): JSX.Element => {
         ) : (
           <List
             itemLayout="horizontal"
+            style={{
+              height: '420px',
+              overflowY: 'auto',
+              paddingRight: '20px',
+            }}
             dataSource={unreadNotifications}
             renderItem={(item) => {
               return (
