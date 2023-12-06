@@ -133,7 +133,7 @@ class NotificationService {
       const createdNotification = await this.createNotification(
         ciscoMemberUserIds[i],
         targetDocument.id,
-        `A new Ticket #${targetDocument.id} was created: ${targetDocument.title}.`
+        `A new Ticket #${targetDocument.id} was created: "${targetDocument.title}".`
       );
       newNotifications.push(createdNotification);
     }
