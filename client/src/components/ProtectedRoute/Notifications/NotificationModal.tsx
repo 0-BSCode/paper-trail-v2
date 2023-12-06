@@ -67,8 +67,6 @@ const NotificationModal = (): JSX.Element => {
     void fetchNotifications();
   }, []);
 
-  console.log(notifications);
-
   return (
     <>
       <Badge size="small" count={unreadNotifications?.length} offset={[-8, 8]}>
