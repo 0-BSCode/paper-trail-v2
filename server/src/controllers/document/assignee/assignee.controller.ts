@@ -32,6 +32,7 @@ class AssigneeController {
 
     const assigneeId = await assigneeService.updateAssignee(userId ? parseInt(userId) : null, parseInt(documentId));
     await notificationService.notifyOwnerNewAssignee(parseInt(documentId), userId);
+    await notificationService.notifyCiscoMemberAssignee(parseInt(documentId), userId, parseInt(req.user.id));
 
     return res.status(200).json({ assigneeId });
   });

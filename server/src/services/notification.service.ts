@@ -213,7 +213,39 @@ class NotificationService {
       targetDocument.userId,
       assigneeId,
       targetDocument.id,
-      `Your ticket "${targetDocument.title}" has a new assignee: "${assignee.email}".`
+      `Your ticket "${targetDocument.title}" has a new assignee: ${assignee.email}.`
+    );
+
+    return newNotification;
+  };
+
+  /**
+   * Notifies a CISCO member when a CISCO admin assigns them a ticket.
+   */
+  public notifyCiscoMemberAssignee = async (documentId: number, assigneeId: number, adminId: number) => {
+    const targetDocument = await Document.findByPk(documentId);
+
+    if (!targetDocument) {
+      return null;
+    }
+
+    const assignee = await User.findByPk(assigneeId);
+
+    if (!assignee) {
+      return null;
+    }
+
+    const admin = await User.findByPk(adminId);
+
+    if (!admin) {
+      return null;
+    }
+
+    const newNotification = await this.createNotification(
+      assigneeId,
+      admin.id,
+      targetDocument.id,
+      `A ticket "${targetDocument.title}" was assigned to you by: "${assignee.email}".`
     );
 
     return newNotification;
