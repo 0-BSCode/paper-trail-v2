@@ -74,7 +74,7 @@ const DocumentAssignee = ({ documentId }: { documentId: string }): JSX.Element =
     return () => {
       socket.current.off(SocketEvent.RECEIVE_ASSIGNEE, handler);
     };
-  });
+  }, [socket.current, document]);
 
   useEffect(() => {
     if (accessToken === null) return;
