@@ -1,13 +1,13 @@
 import { useState, useContext, useEffect } from 'react';
 import useAuth from '@src/hooks/useAuth';
 import { Modal, Button, Avatar, List, Spin, Badge } from 'antd';
-import { BellOutlined, InfoCircleFilled } from '@ant-design/icons';
+import { BellOutlined } from '@ant-design/icons';
 import { ToastContext } from '@src/context/ToastContext';
 import NotificationService from '@src/services/notification-service';
 import type Notification from '@src/types/interfaces/notification';
 import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
 import formatTimeAgo from './formatTimeAgo';
-import NotificationMessage from './notificationMessage';
+import NotificationMessage from './NotificationMessage';
 
 const NotificationModal = (): JSX.Element => {
   const { userId, accessToken } = useAuth();
@@ -101,7 +101,6 @@ const NotificationModal = (): JSX.Element => {
                   <div className="flex flex-col w-full ml-2">
                     <div>
                       <p className="w-full text-lg">
-                        {!item.isRead && <InfoCircleFilled className="text-[#ce3131] me-2" />}
                         <NotificationMessage
                           message={item.message}
                           url={`/document/${item.documentId}`}
