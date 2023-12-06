@@ -7,10 +7,18 @@ class Notification extends Model {
   @ForeignKey(() => User)
   @AllowNull(false)
   @Column(DataType.NUMBER)
-  userId!: number;
+  receiverId!: number;
 
-  @BelongsTo(() => User)
-  user!: User;
+  @BelongsTo(() => User, { foreignKey: "receiverId", as: "receiver" })
+  receiver!: User;
+
+  @ForeignKey(() => User)
+  @AllowNull(true)
+  @Column(DataType.NUMBER)
+  senderId!: number;
+
+  @BelongsTo(() => User, { foreignKey: "senderId", as: "sender" })
+  sender!: User;
 
   @ForeignKey(() => Document)
   @AllowNull(true)

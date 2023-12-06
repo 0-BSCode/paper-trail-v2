@@ -21,7 +21,7 @@ class NotificationController {
 
     if (targetNotification === undefined || targetNotification === null) {
       return res.status(404).json({ error: `"Notification with id: ${targetNotificationId} does not exist.` });
-    } else if (targetNotification.userId !== parseInt(req.user.id)) {
+    } else if (targetNotification.receiverId !== parseInt(req.user.id)) {
       return res
         .status(403)
         .json({ error: `"Notification with id: ${targetNotificationId} does not belong to your userId.` });

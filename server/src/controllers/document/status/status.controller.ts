@@ -44,7 +44,7 @@ class StatusController {
     document.status = status;
     await document.save();
 
-    await notificationService.notifyStatusChange(document.userId, document.id);
+    await notificationService.notifyStatusChange(document.userId, parseInt(req.user.id), document.id);
 
     return res.status(200).json(status);
   });

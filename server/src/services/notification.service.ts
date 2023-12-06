@@ -7,9 +7,15 @@ import RoleEnum from "../types/enums/role-enum";
 import { Op } from "sequelize";
 
 class NotificationService {
-  private createNotification = async (userId: number, documentId: number, message: string): Promise<Notification> => {
+  private createNotification = async (
+    receiverId: number,
+    senderId: number,
+    documentId: number,
+    message: string
+  ): Promise<Notification> => {
     const newNotification: Notification = await Notification.create({
-      userId,
+      receiverId,
+      senderId,
       documentId,
       message
     });
@@ -17,21 +23,23 @@ class NotificationService {
     return newNotification;
   };
 
-  public getNotifications = async (userId: number): Promise<Notification[]> => {
+  public getNotifications = async (receiverId: number): Promise<Notification[]> => {
     const notifications = await Notification.findAll({
-      where: { userId },
+      where: { receiverId },
       include: [
         {
           model: User,
+          as: "receiver",
+          attributes: { exclude: ["password", "passwordResetToken", "verificationToken", "createdAt", "updatedAt"] }
+        },
+        {
+          model: User,
+          as: "sender",
           attributes: { exclude: ["password", "passwordResetToken", "verificationToken", "createdAt", "updatedAt"] }
         },
         { model: Document, attributes: ["title", "id", "status"] }
       ]
     });
-
-    if (!notifications || notifications.length === 0) {
-      return [];
-    }
 
     return notifications;
   };
@@ -39,7 +47,11 @@ class NotificationService {
   /**
    * Notifies a student (ticket owner) of a change in ticket status.
    */
-  public notifyStatusChange = async (userId: number, documentId: number): Promise<Notification | null> => {
+  public notifyStatusChange = async (
+    receiverId: number,
+    senderId: number,
+    documentId: number
+  ): Promise<Notification | null> => {
     const convertToTitleCase = (str: string): string => {
       return str.replace(/_/g, " ").replace(/\w\S*/g, function (txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -48,14 +60,14 @@ class NotificationService {
 
     // We check if the userId is associated with a document
     const targetDocument = await Document.findByPk(documentId);
-    const userToNotify = await User.findByPk(userId);
+    const userToNotify = await User.findByPk(receiverId);
 
     if (targetDocument === null || userToNotify === null) {
       // No notification is created
       return null;
     }
 
-    const isOwner = targetDocument.userId === userId;
+    const isOwner = targetDocument.userId === receiverId;
 
     if (!isOwner) {
       // No notification is created
@@ -63,7 +75,8 @@ class NotificationService {
     }
 
     const newNotification: Notification = await this.createNotification(
-      userId,
+      receiverId,
+      senderId,
       documentId,
       `Your ticket "${targetDocument.title}" had its status updated to ${convertToTitleCase(targetDocument.status)}.`
     );
@@ -98,6 +111,7 @@ class NotificationService {
 
     const newNotification: Notification = await this.createNotification(
       newComment.document.userId,
+      newComment.userId,
       newComment.document.id,
       `Your ticket "${newComment.document.title}" has a new comment from ${newComment.user.email}: "${newComment.content}".`
     );
@@ -132,6 +146,7 @@ class NotificationService {
     for (let i = 0; i < ciscoMemberUserIds.length; i++) {
       const createdNotification = await this.createNotification(
         ciscoMemberUserIds[i],
+        targetDocument.userId,
         targetDocument.id,
         `A new Ticket #${targetDocument.id} was created: "${targetDocument.title}".`
       );
@@ -165,6 +180,7 @@ class NotificationService {
 
     const newNotification = await this.createNotification(
       document.assigneeId,
+      newComment.userId,
       document.id,
       `Ticket #${document.id}: "${document.title}" assigned to you has a new comment: "${newComment.content}"`
     );

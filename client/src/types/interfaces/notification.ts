@@ -7,7 +7,7 @@ interface NotificationInterface {
   createdAt: string;
   documentId: number;
   userId: number;
-  user: { email: string; fullName: string };
+  sender: { email: string; fullName: string };
   document: { title: string; status: StatusEnum };
 }
 
