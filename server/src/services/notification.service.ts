@@ -91,7 +91,7 @@ class NotificationService {
     const newComment = await Comment.findByPk(commentId, { include: [Document, User] });
 
     // No notification should be created with non-existent comments.
-    if (newComment === undefined || newComment === null) {
+    if (!newComment) {
       return null;
     }
 
@@ -163,18 +163,18 @@ class NotificationService {
     const newComment = await Comment.findByPk(commentId, { include: [Document, User] });
 
     // No notification should be created about non-existed comments or documents.
-    if (newComment === undefined || newComment === null) {
+    if (!newComment) {
       return null;
     }
 
     const document = newComment.document;
 
-    if (document === undefined || document === null) {
+    if (!document === undefined) {
       return null;
     }
 
     // No notification should be created on documents with no assignee.
-    if (document.assigneeId === undefined || document.assigneeId === null) {
+    if (!document.assigneeId) {
       return null;
     }
 
@@ -188,6 +188,32 @@ class NotificationService {
       newComment.userId,
       document.id,
       `Ticket #${document.id}: "${document.title}" assigned to you has a new comment: "${newComment.content}"`
+    );
+
+    return newNotification;
+  };
+
+  /**
+   * Notifies a ticket owner when a new user is assigned to their ticket.
+   */
+  public notifyOwnerNewAssignee = async (documentId: number, assigneeId: number) => {
+    const targetDocument = await Document.findByPk(documentId);
+
+    if (!targetDocument) {
+      return null;
+    }
+
+    const assignee = await User.findByPk(assigneeId);
+
+    if (!assignee) {
+      return null;
+    }
+
+    const newNotification = await this.createNotification(
+      targetDocument.userId,
+      assigneeId,
+      targetDocument.id,
+      `Your ticket "${targetDocument.title}" has a new assignee: "${assignee.email}".`
     );
 
     return newNotification;
