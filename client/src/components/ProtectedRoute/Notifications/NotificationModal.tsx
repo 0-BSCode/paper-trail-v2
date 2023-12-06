@@ -67,6 +67,8 @@ const NotificationModal = (): JSX.Element => {
     void fetchNotifications();
   }, []);
 
+  console.log(notifications);
+
   return (
     <>
       <Badge size="small" count={unreadNotifications?.length} offset={[-8, 8]}>
@@ -81,6 +83,9 @@ const NotificationModal = (): JSX.Element => {
         okText={'Mark as Read'}
         /* eslint-disable-next-line @typescript-eslint/no-misused-promises */
         onOk={handleMarkAsRead}
+        okButtonProps={{
+          disabled: !unreadNotifications?.length,
+        }}
         cancelText={'Close'}
         onCancel={handleClose}
         width={1000}
