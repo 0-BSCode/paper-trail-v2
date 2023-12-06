@@ -55,17 +55,6 @@ class User extends Model {
   @Column(DataType.STRING)
   studentIdNumber!: string;
 
-  @AllowNull(false)
-  @Default(0)
-  @Column(DataType.BOOLEAN)
-  isVerified!: boolean;
-
-  @Column(DataType.STRING)
-  verificationToken!: string;
-
-  @Column(DataType.STRING)
-  passwordResetToken!: string;
-
   @HasMany(() => RefreshToken, {
     onDelete: "CASCADE"
   })

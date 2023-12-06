@@ -23,9 +23,6 @@ const AuthService = {
       },
     });
   },
-  verifyEmail: async (token: string) => {
-    return await API.put(`auth/verify-email/${token}`);
-  },
 };
 
 export default AuthService;
