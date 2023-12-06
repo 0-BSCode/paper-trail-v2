@@ -52,7 +52,7 @@ const DocumentStatus = ({ documentId }: { documentId: string }): JSX.Element => 
     void DocumentService.setStatus(accessToken, parseInt(documentId), status)
       .then(() => {
         success(
-          `Successfully changed status to "${statusToOptionMapping[status as keyof typeof statusToOptionMapping]}`,
+          `Successfully changed status to "${statusToOptionMapping[status as keyof typeof statusToOptionMapping]}"`,
         );
         setDocument({ ...document, status });
       })
