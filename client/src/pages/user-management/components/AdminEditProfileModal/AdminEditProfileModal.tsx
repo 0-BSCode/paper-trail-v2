@@ -25,7 +25,6 @@ interface UserDetails {
   fullName: string;
   contactNumber: string;
   courseAndYear: string;
-  roles: string[] | undefined;
 }
 
 const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props): JSX.Element => {
@@ -55,17 +54,22 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
   const [courseAndYear, setCourseAndYear] = useState('');
   const [roles, setRoles] = useState<string[]>(sortRoles(userRoles.map((r) => r.name)));
   const [previousUserDetails, setPreviousUserDetails] = useState<UserDetails | null>(null);
-  const currentUserDetails: UserDetails = { studentIdNumber, fullName, contactNumber, courseAndYear, roles };
+  const currentUserDetails: UserDetails = { studentIdNumber, fullName, contactNumber, courseAndYear };
+  const initialRoles: string[] = sortRoles(userRoles.map((r) => r.name));
+  const currentRoles: string[] = roles;
 
   // Booleans for input validation
   const isValidFullName = isValid.fullName(fullName);
   const isValidStudentIdNumber = isValid.studentNumber(studentIdNumber);
   const isValidContactNumber = isValid.contactNumber(contactNumber);
   const isValidCourseAndYear = isValid.courseAndYear(courseAndYear);
-  const isValidFormDetails = isValidFullName && isValidStudentIdNumber && isValidContactNumber && isValidCourseAndYear;
+  const isValidRoles = roles.length >= 1;
+  const isValidFormDetails =
+    isValidFullName && isValidStudentIdNumber && isValidContactNumber && isValidCourseAndYear && isValidRoles;
 
   // Check if details of the user were edited for conditionally enabling Update Info button
-  const isEdited = JSON.stringify(previousUserDetails) !== JSON.stringify(currentUserDetails);
+  const isEditedRoles = JSON.stringify(initialRoles) !== JSON.stringify(currentRoles);
+  const isEdited = JSON.stringify(previousUserDetails) !== JSON.stringify(currentUserDetails) || isEditedRoles;
 
   const fetchUserDetails = async (): Promise<void> => {
     if (accessToken === null || userId === null) {
@@ -87,7 +91,6 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
       fullName,
       contactNumber,
       courseAndYear,
-      roles,
     };
 
     setPreviousUserDetails(initialPreviousUserDetails);
