@@ -1,4 +1,6 @@
 import type { ChangeEventHandler } from 'react';
+import type { InputRef } from 'antd';
+import { useRef, useState } from 'react';
 import { Form, Flex, Input } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
@@ -25,11 +27,29 @@ function AdminFormInputField({
   isValid,
   isEditable,
 }: Props): JSX.Element {
+  const inputFieldRef = useRef<InputRef | null>(null);
+  const [isActive, setIsActive] = useState(false);
+
   const status = disabled === true || isValid ? '' : 'error';
   return (
     <Form.Item name={name} label={label} style={{ marginBottom: '16px' }}>
-      <Flex gap="small" className="relative items-center">
+      <Flex
+        onClick={() => {
+          if (inputFieldRef.current) {
+            inputFieldRef.current.focus();
+          }
+        }}
+        gap="small"
+        className="relative items-center"
+      >
         <Input
+          onFocus={() => {
+            setIsActive(true);
+          }}
+          onBlur={() => {
+            setIsActive(false);
+          }}
+          ref={inputFieldRef}
           disabled={disabled}
           value={value}
           onChange={onChange}
@@ -41,7 +61,9 @@ function AdminFormInputField({
           ''
         ) : (
           <div className="absolute translate-x-full -right-3">
-            <EditOutlined className="text-neutral-400" />
+            <EditOutlined
+              className={`cursor-pointer hover:text-[#4096ff] ${isActive ? 'text-[#4096ff]' : 'text-neutral-400'}`}
+            />
           </div>
         )}
       </Flex>
