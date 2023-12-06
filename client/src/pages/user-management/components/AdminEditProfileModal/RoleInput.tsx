@@ -3,6 +3,7 @@ import { Select, Form } from 'antd';
 import RoleEnum from '@src/types/enums/role-enum';
 import RoleTag from './RoleTag';
 import convertToTitleCase from '@src/utils/convertToTitleCase';
+import sortRoles from './sortRoles';
 
 const OPTIONS = Object.values(RoleEnum).filter((r) => r !== RoleEnum.ALL);
 
@@ -15,13 +16,15 @@ const RoleInput = ({ roles, setRoles }: Props): JSX.Element => {
   const filteredOptions = OPTIONS.filter((o) => !roles.includes(o));
 
   return (
-    <Form.Item name={'roles'} label={'Roles'} style={{ marginBottom: '16px' }} initialValue={roles}>
+    <Form.Item label={'Roles'} style={{ marginBottom: '16px' }} initialValue={roles}>
       <Select
         mode="multiple"
         tagRender={RoleTag}
         placeholder="User does not have roles"
         value={roles}
-        onChange={setRoles}
+        onChange={(e) => {
+          setRoles(sortRoles(e));
+        }}
         className="w-100"
         options={filteredOptions.map((i) => ({
           value: i,

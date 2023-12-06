@@ -9,6 +9,7 @@ import UserService from '@src/services/user-service';
 import { ToastContext } from '@src/context/ToastContext';
 import isValid from '@src/utils/isValid.helper';
 import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
+import sortRoles from './sortRoles';
 
 const { Title } = Typography;
 
@@ -51,19 +52,24 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
   const [fullName, setFullName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [courseAndYear, setCourseAndYear] = useState('');
-  const [roles, setRoles] = useState<string[]>(userRoles.map((r) => r.name));
+  const [roles, setRoles] = useState<string[]>(sortRoles(userRoles.map((r) => r.name)));
   const [previousUserDetails, setPreviousUserDetails] = useState<UserDetails | null>(null);
   const currentUserDetails: UserDetails = { studentIdNumber, fullName, contactNumber, courseAndYear };
+  const initialRoles: string[] = sortRoles(userRoles.map((r) => r.name));
+  const currentRoles: string[] = roles;
 
   // Booleans for input validation
   const isValidFullName = isValid.fullName(fullName);
   const isValidStudentIdNumber = isValid.studentNumber(studentIdNumber);
   const isValidContactNumber = isValid.contactNumber(contactNumber);
   const isValidCourseAndYear = isValid.courseAndYear(courseAndYear);
-  const isValidFormDetails = isValidFullName && isValidStudentIdNumber && isValidContactNumber && isValidCourseAndYear;
+  const isValidRoles = roles.length >= 1;
+  const isValidFormDetails =
+    isValidFullName && isValidStudentIdNumber && isValidContactNumber && isValidCourseAndYear && isValidRoles;
 
   // Check if details of the user were edited for conditionally enabling Update Info button
-  const isEdited = JSON.stringify(previousUserDetails) !== JSON.stringify(currentUserDetails);
+  const isEditedRoles = JSON.stringify(initialRoles) !== JSON.stringify(currentRoles);
+  const isEdited = JSON.stringify(previousUserDetails) !== JSON.stringify(currentUserDetails) || isEditedRoles;
 
   const fetchUserDetails = async (): Promise<void> => {
     if (accessToken === null || userId === null) {
@@ -125,6 +131,7 @@ const AdminEditProfileModal = ({ userId, email, userRoles, reloadUsers }: Props)
   };
 
   const handleOpen = (): void => {
+    setRoles(sortRoles(userRoles.map((r) => r.name)));
     void fetchUserDetails();
     setIsOpen(true);
   };
