@@ -1,12 +1,13 @@
 import { useState, useContext, useEffect } from 'react';
 import useAuth from '@src/hooks/useAuth';
 import { Modal, Button, Avatar, List, Spin, Badge } from 'antd';
-import { BellOutlined, InfoCircleFilled } from '@ant-design/icons';
+import { BellOutlined } from '@ant-design/icons';
 import { ToastContext } from '@src/context/ToastContext';
 import NotificationService from '@src/services/notification-service';
 import type Notification from '@src/types/interfaces/notification';
-import { Link } from 'react-router-dom';
 import getAvatarImageUrlByEmail from '@src/utils/getAvatarImageUrlByEmail';
+import formatTimeAgo from './formatTimeAgo';
+import NotificationMessage from './NotificationMessage';
 
 const NotificationModal = (): JSX.Element => {
   const { userId, accessToken } = useAuth();
@@ -57,6 +58,10 @@ const NotificationModal = (): JSX.Element => {
     void fetchNotifications();
   };
 
+  const handleSingleMarkAsRead = async (notificationId: number): Promise<void> => {
+    await NotificationService.markNotificationAsRead(accessToken as string, notificationId);
+  };
+
   // Fetches only once to to display an indicator if there are any unread ones
   useEffect(() => {
     void fetchNotifications();
@@ -91,15 +96,19 @@ const NotificationModal = (): JSX.Element => {
               return (
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar size={72} src={getAvatarImageUrlByEmail(item.user.email)} className="ms-4" />}
+                    avatar={<Avatar size={72} src={getAvatarImageUrlByEmail(item.sender.email)} className="ms-4" />}
                   />
                   <div className="flex flex-col w-full ml-2">
                     <div>
                       <p className="w-full text-lg">
-                        {!item.isRead && <InfoCircleFilled className="text-[#ce3131] me-2" />}
-                        <Link className="text-black" to={`/document/${item.documentId}`}>
-                          {item.message}
-                        </Link>
+                        <NotificationMessage
+                          message={item.message}
+                          url={`/document/${item.documentId}`}
+                          closeModal={handleClose}
+                          markAsRead={async () => {
+                            await handleSingleMarkAsRead(item.id);
+                          }}
+                        />
                       </p>
                       <p className="font-semibold text-end">{formatTimeAgo(item.createdAt)}</p>
                     </div>
@@ -113,38 +122,5 @@ const NotificationModal = (): JSX.Element => {
     </>
   );
 };
-
-/**
- * Converts a given date string into a human-readable format representing elapsed time.
- *
- * @param dateString An ISO 8601 string with the "YYYY-MM-DD HH:mm:ss" format
- * @returns a formatted timestamp
- */
-function formatTimeAgo(dateString: string): string {
-  const currentDate: Date = new Date();
-  const inputDate: Date = new Date(dateString);
-
-  // Calculate the time difference in milliseconds
-  const timeDifference = currentDate.getTime() - inputDate.getTime();
-
-  const seconds = Math.floor(timeDifference / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-
-  if (days > 0) {
-    return inputDate.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  } else if (hours > 0) {
-    return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
-  } else if (minutes > 0) {
-    return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
-  } else {
-    return `${seconds} ${seconds === 1 ? 'second' : 'seconds'} ago`;
-  }
-}
 
 export default NotificationModal;
