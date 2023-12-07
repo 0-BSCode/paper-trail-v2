@@ -64,7 +64,14 @@ class DocumentService {
             documentId: id
           },
           include: {
-            model: Document
+            model: Document,
+            include: [
+              {
+                model: User,
+                as: "owner",
+                attributes: ["id", "fullName", "email"]
+              }
+            ]
           }
         });
 
