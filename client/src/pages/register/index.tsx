@@ -85,12 +85,12 @@ const RegisterPage = (): JSX.Element => {
       if (axios.isAxiosError(err)) {
         const { response } = err as AxiosError;
         const errors = (response as any).data.errors;
-        const emailFieldErrors = errors.filter((error: any) => error.param === 'email').map((error: any) => error.msg);
+        const emailFieldErrors = errors.filter((error: any) => error.path === 'email').map((error: any) => error.msg);
         const password1FieldErrors = errors
-          .filter((error: any) => error.param === 'password1')
+          .filter((error: any) => error.path === 'password1')
           .map((error: any) => error.msg);
         const passsword2FieldErrors = errors
-          .filter((error: any) => error.param === 'password2')
+          .filter((error: any) => error.path === 'password2')
           .map((error: any) => error.msg);
 
         if (emailFieldErrors) setEmailErrors(emailFieldErrors);
