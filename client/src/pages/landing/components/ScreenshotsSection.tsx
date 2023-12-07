@@ -11,7 +11,7 @@ function ScreenshotsSection(): JSX.Element {
           alt="A Chatroom User Interface For Sending Messages"
         />
         <div className="flex flex-col">
-          <h2 className="mb-4 text-5xl font-bold">One-on-one assistance</h2>
+          <h2 className="mb-4 text-5xl font-bold">One-on-one Assistance</h2>
           <p className="leading-8">
             You can conveniently communicate with CISCO officers via our chat system to address and resolve your issues.
             Any messages sent will be forwarded to the parties involved in the ticket.
@@ -20,10 +20,10 @@ function ScreenshotsSection(): JSX.Element {
       </div>
       <div className="flex items-center justify-between gap-16">
         <div className="flex flex-col">
-          <h2 className="mb-4 text-5xl font-bold">Email notifications</h2>
+          <h2 className="mb-4 text-5xl font-bold">Real-time Notifications</h2>
           <p className="justify-start leading-8">
-            All app notifications are automatically sent to your registered email addresses, <br /> ensuring easy access
-            to information even when you&lsquo;re not in the app.
+            All app notifications are automatically sent to you through our website&apos;s real-time notification
+            system, <br /> ensuring easy access to information while you are using the app.
           </p>
         </div>
         <img
