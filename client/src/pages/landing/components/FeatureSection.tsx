@@ -23,8 +23,8 @@ function FeaturesSection(): JSX.Element {
           iconAltText="Dashboard Views"
         />
         <FeatureCard
-          title="Direct Messaging"
-          body="Bridging the communication gap between students and teachers, our messaging system offers quick, efficient, and hassle-free interactions."
+          title="Direct Interactions"
+          body="Bridging the communication gap between students, teachers, and CISCO officers. our ticket commenting system offers quick, efficient, and hassle-free interactions."
           iconSrc={EmailFastIcon}
           iconAltText="Fast Messaging"
         />
