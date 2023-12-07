@@ -102,6 +102,8 @@ const DocumentMenuBar = (): JSX.Element => {
       setTitleError('Document must have a title.');
     } else if (title.length < 5) {
       setTitleError('Title must be at least 5 characters.');
+    } else if (title.length > 25) {
+      setTitleError('Title must be a maximum of 25 characters.');
     } else {
       setTitleError('');
     }
@@ -136,8 +138,8 @@ const DocumentMenuBar = (): JSX.Element => {
 
   return (
     <div className="border-b w-full bg-white flex flex-col px-5 py-3 shadow-md z-[999]">
-      <div className="w-full flex justify-between items-center border-b">
-        <div className="w-full flex justify-start items-center overflow-x-hidden md:overflow-visible gap-x-4">
+      <div className="flex items-center justify-between w-full border-b">
+        <div className="flex items-center justify-start w-full overflow-x-hidden md:overflow-visible gap-x-4">
           <Tooltip title="Go back">
             <Button onClick={handleBackNavigation} shape="circle" icon={<ArrowLeftOutlined />} />
           </Tooltip>
@@ -146,7 +148,6 @@ const DocumentMenuBar = (): JSX.Element => {
               <Input
                 readOnly={!canEditTitle}
                 type="text"
-                maxLength={25}
                 onBlur={(event) => {
                   void handleTitleInputBlur(event);
                 }}
