@@ -29,7 +29,7 @@ const DocumentComments = (): JSX.Element => {
   };
 
   return (
-    <div onKeyDown={handleOnKeyPress} className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-3 w-full">
+    <div onKeyDown={handleOnKeyPress} className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-3">
       <Typography.Title
         level={5}
         style={{
