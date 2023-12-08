@@ -16,7 +16,7 @@ interface AuthHookType {
   email: string | null;
   roles: string[] | null;
   fullName: string | null;
-  login: (accessToken: string, refreshToken: string) => void;
+  login: (accessToken: string, refreshToken: string, setSilentRefresh: boolean) => void;
   logout: () => Promise<void>;
   refreshAccessToken: () => Promise<void>;
 }
@@ -42,9 +42,8 @@ const useAuth = (): AuthHookType => {
   } = useContext(AuthContext);
   const [refreshToken, setRefreshToken] = useLocalStorage<string | null>('refreshToken', null);
 
-  const login = (accessToken: string, refreshToken: string): void => {
+  const login = (accessToken: string, refreshToken: string, setSilentRefresh: boolean = true): void => {
     const { exp, id, email, roles, fullName } = jwt_decode<Token>(accessToken);
-    silentRefresh(exp);
     setUserId(id);
     setEmail(email);
     setRoles(roles);
@@ -52,16 +51,21 @@ const useAuth = (): AuthHookType => {
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setIsAuthenticated(true);
+    if (setSilentRefresh) {
+      silentRefresh(exp);
+    }
   };
 
   const refreshAccessToken = async (): Promise<void> => {
-    if (refreshToken === null) {
+    const token = localStorage.getItem('refreshToken');
+    if (token === null) {
       destroyAuth();
       setLoadingAuth(false);
       return;
     }
+    setLoadingAuth(true);
     try {
-      const response = await AuthService.refreshToken({ token: refreshToken });
+      const response = await AuthService.refreshToken({ token: JSON.parse(token) });
       const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
       login(newAccessToken, newRefreshToken);
     } catch (error) {
@@ -93,6 +97,8 @@ const useAuth = (): AuthHookType => {
     setAccessToken(null);
     setUserId(null);
     setEmail(null);
+    setRoles(null);
+    setFullName(null);
     setIsAuthenticated(false);
   };
 
