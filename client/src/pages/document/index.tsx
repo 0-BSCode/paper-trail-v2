@@ -60,7 +60,7 @@ const DocumentPage = (): JSX.Element => {
             )}
           </div>
           <div className="flex flex-col">
-            <Space direction="vertical" className="h-fit gap-6 w-[400px]">
+            <Space direction="vertical" className="h-fit gap-6 w-[410px]">
               <DocumentStatus documentId={documentId} />
               <DocumentAssignee documentId={documentId} />
               <DocumentComments />

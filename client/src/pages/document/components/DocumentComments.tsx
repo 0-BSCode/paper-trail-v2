@@ -29,7 +29,7 @@ const DocumentComments = (): JSX.Element => {
   };
 
   return (
-    <div onKeyDown={handleOnKeyPress} className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-3">
+    <div onKeyDown={handleOnKeyPress} className="flex flex-col gap-y-3 bg-white shadow-md border-r-4 p-3 w-full">
       <Typography.Title
         level={5}
         style={{
@@ -56,12 +56,11 @@ const DocumentComments = (): JSX.Element => {
           comments.map((comment) => <DocumentComment key={`comment_${comment.id}`} comment={comment} />)
         )}
       </Space>
-      <Space.Compact style={{ alignItems: 'stretch', columnGap: 5 }}>
+      <Space direction="vertical" style={{ alignItems: 'stretch', rowGap: 5 }}>
         <Input.TextArea
           placeholder="Leave a comment..."
           disabled={!hasCommentPermission}
           rows={1}
-          style={{ width: '80%' }}
           value={content}
           onChange={(e) => {
             setContent(e.target.value);
@@ -69,14 +68,14 @@ const DocumentComments = (): JSX.Element => {
         />
         <Button
           disabled={!hasCommentPermission || !content.length}
-          icon={<ArrowRightOutlined />}
           type="primary"
-          style={{
-            flex: 1,
-          }}
           onClick={handleAddComment}
-        />
-      </Space.Compact>
+          style={{ width: '100%' }}
+        >
+          Send
+          <ArrowRightOutlined />
+        </Button>
+      </Space>
     </div>
   );
 };
