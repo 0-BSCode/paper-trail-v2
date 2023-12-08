@@ -1,11 +1,17 @@
 import { Sequelize } from "sequelize-typescript";
 import env from "./env.config";
 import { Umzug, SequelizeStorage } from "umzug";
+import { format } from "sql-formatter";
 
 const sequelize = new Sequelize(env.DATABASE, env.USER, env.PASSWORD, {
   host: env.DB_HOST,
   dialect: "mysql",
-  logging: console.log
+  logging: (query) => {
+    const [_prefix, stmt] = query.split(":");
+    console.log("========== QUERY ==========");
+    console.log(format(stmt, { language: "mysql" }));
+    console.log("===========================\n");
+  }
 });
 
 export const migrator = new Umzug({
