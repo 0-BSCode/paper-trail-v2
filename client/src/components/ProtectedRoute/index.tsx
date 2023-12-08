@@ -7,7 +7,7 @@ import { NotificationModal } from './Notifications';
 import { UserProfileModal } from './UserProfile';
 import WordmarkLogo from '../WordmarkLogo';
 import { LogoutOutlined } from '@ant-design/icons';
-
+import Spinner from '../Spinner';
 const { Header, Content } = Layout;
 
 interface AuthRouteProps {
@@ -34,7 +34,7 @@ const ProtectedRoute = ({ element }: AuthRouteProps): JSX.Element => {
   }, []);
 
   if (loadingAuth) {
-    return <></>;
+    return <Spinner size="lg" />;
   } else {
     if (isAuthenticated)
       return (

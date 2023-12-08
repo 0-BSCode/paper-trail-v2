@@ -46,9 +46,12 @@ const LoginPage = (): JSX.Element => {
 
     setLoading(true);
     try {
+      // TODO: JWT pair generated here are overriden automatically
+      // due to redirecting to a protected route
       const response = await AuthService.login({ email, password });
       const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
-      login(newAccessToken, newRefreshToken);
+      // Don't trigger silent refresh since it's done in protected route already
+      login(newAccessToken, newRefreshToken, false);
       success('Successfully logged in!');
       navigate('/home');
     } catch (err) {
