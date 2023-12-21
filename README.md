@@ -3,7 +3,7 @@
 ## Installation Instructions
 1. Clone the repo to your local machine
 2. Run `npm install` in the root directory, the client directory, and the server directory
-3. Create a db on your local machine (this project uses XAMPP)
+3. Create a db on your local machine (this project uses XAMPP) called `paper_trail_db_v2`
 4. Change the `.env.example` file to `.env` and fill in the required values for the environment variables
 5. Go into `server/` and run `npm run db:up` to run all the migrations and seeders
 6. Run `npm run dev` to run the server
