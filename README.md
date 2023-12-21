@@ -4,8 +4,8 @@
 1. Clone the repo to your local machine
 2. Run `npm install` in the root directory, the client directory, and the server directory
 3. Create a db on your local machine (this project uses XAMPP) called `paper_trail_db_v2`
-4. Change the `.env.example` file to `.env` and fill in the required values for the environment variables
-5. Go into `server/` and run `npm run db:up` to run all the migrations and seeders
+4. In `server/`, change the `.env.example` file to `.env` and fill in the required values for the environment variables
+5. In `server/`, run `npm run db:up` to run all the migrations and seeders
 6. Run `npm run dev` to run the server
 7. On a separate terminal, go into `client/` and run `npm run dev` to run the client app
 
