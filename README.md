@@ -8,6 +8,7 @@
 5. In `server/`, run `npm run db:up` to run all the migrations and seeders
 6. Run `npm run dev` to run the server
 7. On a separate terminal, go into `client/` and run `npm run dev` to run the client app
+8. This project uses Convex to manage document files. If you want access to it, please reach out to `bipsanchez.work@gmail.com`. **Note:** Without access to Convex, user won't be able to create and edit documents.
 
 ## Developer Workflow
 ### Working on a feature/bug
@@ -40,4 +41,4 @@
 
 ### Database
 - [XAMPP](https://www.apachefriends.org/)
-
+- [Convex](https://www.convex.dev/)
