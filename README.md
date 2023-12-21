@@ -7,8 +7,16 @@
 4. In `server/`, change the `.env.example` file to `.env` and fill in the required values for the environment variables
 5. In `server/`, run `npm run db:up` to run all the migrations and seeders
 6. Run `npm run dev` to run the server
-7. On a separate terminal, go into `client/` and run `npm run dev` to run the client app
-8. This project uses Convex to manage document files. If you want access to it, please reach out to `bipsanchez.work@gmail.com`. **Note:** Without access to Convex, user won't be able to create and edit documents.
+7. Follow the [Convex Installation](#convex-installation) steps
+8. On a separate terminal, go into `client/` and run `npm run dev` to run the client app
+
+### Convex Installation
+This project uses [Convex](https://www.convex.dev/) to manage document files. If you want access to our team, please reach out to `bipsanchez.work@gmail.com`.
+> **Note:** Without access to Convex, user won't be able to create and edit documents.
+
+Once your email is added to the Convex team, you can follow the installation process below:
+1. In `client/`, run `npx convex dev` and configure an existing project in the team's `paper-trail` project
+2. In `client/`, create a `client/convex.json` file with the following data `{ "functions": "./src/_convex" }`
 
 ## Developer Workflow
 ### Working on a feature/bug
