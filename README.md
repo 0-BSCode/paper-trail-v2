@@ -16,7 +16,7 @@ This project uses [Convex](https://www.convex.dev/) to manage document files. If
 
 Once your email is added to the Convex team, you can follow the installation process below:
 1. In `client/`, run `npx convex dev` and configure an existing project in the team's `paper-trail` project
-2. Create a `client/convex.json` file with the following data `{ "functions": "./src/_convex" }`
+2. In `client/`, create a `client/convex.json` file with the following data `{ "functions": "./src/_convex" }`
 
 ## Developer Workflow
 ### Working on a feature/bug
